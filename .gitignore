@@ -1,0 +1,5 @@
+# Raw source media folder (not needed on production server)
+WEB/
+*.log
+.DS_Store
+Thumbs.db
