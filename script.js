@@ -1,86 +1,236 @@
 /**
- * Elektro Pižeta — Dual Responsive Video Showcase (1.0x Prirodna brzina, bez trzanja),
- * Hamburger Izbornik & Svijetla / Tamna Tema (Light / Dark Mode za PC i Mobitel)
+ * Elektro Pižeta — Video Showcase (60fps Mobile / 1.0x Normal Speed),
+ * Hamburger Menu, Light/Dark Mode & HR/EN Language Switcher
  */
 
-// 7 HORIZONTALNIH (panoramskih 16:9) videa za PC (1.0x prirodna brzina, svi < 6.5s, 0 B-frameova)
 const PC_VIDEO_PLAYLIST = [
   {
     src: 'assets/videos/pc-1.mp4',
-    title: 'Poslovne zgrade',
+    title_hr: 'Poslovne zgrade',
+    title_en: 'Office Buildings',
     poster: 'assets/images/poster-pc-1.jpg'
   },
   {
     src: 'assets/videos/pc-2.mp4',
-    title: 'Poslovna pročelja',
+    title_hr: 'Poslovna pročelja',
+    title_en: 'Commercial Facades',
     poster: 'assets/images/poster-pc-2.jpg'
   },
   {
     src: 'assets/videos/pc-3.mp4',
-    title: 'Dekoracija fasada',
+    title_hr: 'Dekoracija fasada',
+    title_en: 'Facade Lighting',
     poster: 'assets/images/poster-pc-3.jpg'
   },
   {
     src: 'assets/videos/pc-4.mp4',
-    title: 'Poslovni kompleksi',
+    title_hr: 'Poslovni kompleksi',
+    title_en: 'Business Complexes',
     poster: 'assets/images/poster-pc-4.jpg'
   },
   {
     src: 'assets/videos/pc-5.mp4',
-    title: 'Moderne vile',
+    title_hr: 'Moderne vile',
+    title_en: 'Modern Villas',
     poster: 'assets/images/poster-pc-5.jpg'
   },
   {
     src: 'assets/videos/pc-6.mp4',
-    title: 'Obiteljske rezidencije',
+    title_hr: 'Obiteljske rezidencije',
+    title_en: 'Private Residences',
     poster: 'assets/images/poster-pc-6.jpg'
   },
   {
     src: 'assets/videos/pc-7.mp4',
-    title: 'Kuće i okućnice',
+    title_hr: 'Kuće i okućnice',
+    title_en: 'Homes & Gardens',
     poster: 'assets/images/poster-pc-7.jpg'
   }
 ];
 
-// 7 VERTIKALNIH (9:16) videa za mobilnu verziju (1.0x prirodna brzina, svi < 6.5s, 0 B-frameova)
 // Redoslijed: 01 Zlatna pročelja prvi, a Svečane dvorane pri kraju (06)
 const MOBILE_VIDEO_PLAYLIST = [
   {
     src: 'assets/videos/mob-6.mp4',
-    title: 'Zlatna pročelja',
+    title_hr: 'Zlatna pročelja',
+    title_en: 'Golden Facades',
     poster: 'assets/images/poster-mob-6.jpg'
   },
   {
     src: 'assets/videos/mob-2.mp4',
-    title: 'Poslovni objekti',
+    title_hr: 'Poslovni objekti',
+    title_en: 'Commercial Buildings',
     poster: 'assets/images/poster-mob-2.jpg'
   },
   {
     src: 'assets/videos/mob-3.mp4',
-    title: 'Trgovački centri',
+    title_hr: 'Trgovački centri',
+    title_en: 'Shopping Centers',
     poster: 'assets/images/poster-mob-3.jpg'
   },
   {
     src: 'assets/videos/mob-4.mp4',
-    title: 'Visoke fasade',
+    title_hr: 'Visoke fasade',
+    title_en: 'High-Rise Facades',
     poster: 'assets/images/poster-mob-4.jpg'
   },
   {
     src: 'assets/videos/mob-5.mp4',
-    title: 'Svjetlosni tuneli',
+    title_hr: 'Svjetlosni tuneli',
+    title_en: 'Light Canopies',
     poster: 'assets/images/poster-mob-5.jpg'
   },
   {
     src: 'assets/videos/mob-1.mp4',
-    title: 'Svečane dvorane',
+    title_hr: 'Svečane dvorane',
+    title_en: 'Concert Halls',
     poster: 'assets/images/poster-mob-1.jpg'
   },
   {
     src: 'assets/videos/mob-7.mp4',
-    title: '3D dekoracije',
+    title_hr: '3D dekoracije',
+    title_en: '3D Installations',
     poster: 'assets/images/poster-mob-7.jpg'
   }
 ];
+
+const I18N = {
+  hr: {
+    'nav.home': 'Početna',
+    'nav.services': 'Usluge',
+    'nav.contact': 'Kontakt',
+    'nav.cta': 'Pošalji upit',
+    'drawer.theme': 'Tema',
+    'drawer.dark': 'Tamni',
+    'drawer.light': 'Svijetli',
+    'drawer.lang': 'Jezik',
+    'drawer.sections': 'Sekcije',
+    'hero.badge': 'Dekorativna rasvjeta • Cjelogodišnje dekoracije • Elektroinstalacije • Solari',
+    'hero.title': 'Svjetlost koja stvara <span class="gold-gradient-text">ambijent.</span>',
+    'hero.cta': 'Zatražite ponudu',
+    'services.eyebrow': 'Naše usluge',
+    'services.heading': 'Stručna izvedba za <span class="gold-gradient-text">svaki prostor</span>',
+    'services.subtitle': 'Od idejnog koncepta dekorativne rasvjete i aranžmana do vrhunskih elektroinstalacija i solarnih sustava.',
+    'services.cardCta': 'Zatraži ponudu',
+    's1.tag': 'Eksterijeri & Zgrade',
+    's1.title': 'Dekorativna rasvjeta prostora',
+    's1.desc': 'Osvjetljenje poslovnih zgrada, hotela, fasada i reprezentativnih objekata.',
+    's2.tag': 'Prigodne dekoracije',
+    's2.title': 'Blagdanski i svečani ugođaj',
+    's2.desc': 'Unikatne svjetlosne kulise, 3D figure i dekoracije za gradove, centre i evente.',
+    's3.tag': 'Cvjetne kugle & Aranžmani',
+    's3.title': 'Cjelogodišnje dekoracije',
+    's3.desc': 'Viseće cvjetne kugle, zeleni aranžmani i ambijentalno uređenje terasa i interijera.',
+    's4.tag': 'Izvedba & Održavanje',
+    's4.title': 'Elektroinstalacije',
+    's4.desc': 'Pouzdano izvođenje, adaptacija i održavanje elektroinstalacija za tvrtke i domove.',
+    's5.tag': 'Energetska rješenja',
+    's5.title': 'Solarni sustavi',
+    's5.desc': 'Projektiranje i ugradnja solarnih elektrana za dugoročnu energetsku neovisnost.',
+    'contact.eyebrow': 'Kontakt',
+    'contact.heading': 'Javite se za <span class="gold-gradient-text">ponudu ili savjet</span>',
+    'contact.lead': 'Dostupni smo za sve upite, izlazak na teren i izradu neobvezujuće ponude prilagođene vašem objektu.',
+    'contact.phoneLabel': 'Telefon • Nazovite nas',
+    'contact.emailLabel': 'E-mail adresa',
+    'contact.addressLabel': 'Sjedište • Otvori kartu',
+    'social.badge': 'Društvene mreže',
+    'social.caption': 'Pratite naše najnovije dekoracije i projekte',
+    'form.eyebrow': 'Brzi upit',
+    'form.title': 'Pošaljite nam upit',
+    'form.subtitle': 'Odaberite uslugu i ostavite kontakt — povratno vam se javljamo u najkraćem roku.',
+    'form.topicLabel': 'Što vas zanima?',
+    'chip.s1': 'Dekorativna rasvjeta',
+    'chip.s2': 'Blagdanski ugođaj',
+    'chip.s3': 'Cjelogodišnje dekoracije',
+    'chip.s4': 'Elektroinstalacije',
+    'chip.s5': 'Solarni sustavi',
+    'form.nameLabel': 'Ime i prezime / Tvrtka *',
+    'form.namePlaceholder': 'Vaše ime ili naziv tvrtke',
+    'form.phoneLabel': 'Broj telefona',
+    'form.phonePlaceholder': '+385 9x xxx xxxx (opcionalno)',
+    'form.emailLabel': 'E-mail adresa *',
+    'form.emailPlaceholder': 'vasa.adresa@email.hr',
+    'form.msgLabel': 'Vaša poruka ili opis prostora',
+    'form.msgPlaceholder': 'Ukratko opišite vaš projekt ili prostor (opcionalno)...',
+    'form.submit': 'Pošalji upit na info@elektro-pizeta.hr',
+    'form.feedback': 'Otvaram slanje upita... Hvala vam na javljanju!',
+    'legal.privacy': 'Pravila privatnosti',
+    'legal.cookies': 'Politika kolačića (EU)',
+    'legal.terms': 'Uvjeti korištenja',
+    'footer.rights': 'Sva prava pridržana.',
+    'cookie.text': 'Koristimo nužne kolačiće za ispravan rad stranice.',
+    'cookie.accept': 'Prihvati'
+  },
+  en: {
+    'nav.home': 'Home',
+    'nav.services': 'Services',
+    'nav.contact': 'Contact',
+    'nav.cta': 'Send Inquiry',
+    'drawer.theme': 'Theme',
+    'drawer.dark': 'Dark',
+    'drawer.light': 'Light',
+    'drawer.lang': 'Language',
+    'drawer.sections': 'Sections',
+    'hero.badge': 'Decorative Lighting • Year-Round Decor • Electrical Installations • Solar',
+    'hero.title': 'Light that creates <span class="gold-gradient-text">ambiance.</span>',
+    'hero.cta': 'Request a Quote',
+    'services.eyebrow': 'Our Services',
+    'services.heading': 'Expert execution for <span class="gold-gradient-text">every space</span>',
+    'services.subtitle': 'From bespoke decorative lighting concepts and floral arrangements to electrical installations and solar power systems.',
+    'services.cardCta': 'Request a quote',
+    's1.tag': 'Exteriors & Buildings',
+    's1.title': 'Architectural & Space Lighting',
+    's1.desc': 'Custom lighting for office buildings, hotels, facades, and landmark properties.',
+    's2.tag': 'Seasonal & Event Decor',
+    's2.title': 'Festive & Holiday Ambiance',
+    's2.desc': 'Bespoke light displays, 3D sculptures, and festive decorations for cities, malls, and events.',
+    's3.tag': 'Floral Spheres & Arrangements',
+    's3.title': 'Year-Round Decorations',
+    's3.desc': 'Suspended floral spheres, botanical arrangements, and ambient styling for terraces and interiors.',
+    's4.tag': 'Engineering & Maintenance',
+    's4.title': 'Electrical Installations',
+    's4.desc': 'Reliable execution, upgrades, and maintenance of electrical installations for businesses and homes.',
+    's5.tag': 'Energy Solutions',
+    's5.title': 'Solar Power Systems',
+    's5.desc': 'Turnkey design and installation of solar power plants for long-term energy independence.',
+    'contact.eyebrow': 'Contact',
+    'contact.heading': 'Get in touch for a <span class="gold-gradient-text">quote or consultation</span>',
+    'contact.lead': 'We are available for all inquiries, on-site assessments, and tailored non-binding quotes for your property.',
+    'contact.phoneLabel': 'Phone • Call Us',
+    'contact.emailLabel': 'E-mail Address',
+    'contact.addressLabel': 'Headquarters • Open Map',
+    'social.badge': 'Social Media',
+    'social.caption': 'Follow our latest decorations and lighting projects',
+    'form.eyebrow': 'Quick Inquiry',
+    'form.title': 'Send Us an Inquiry',
+    'form.subtitle': 'Select a service and leave your contact details — we will get back to you promptly.',
+    'form.topicLabel': 'What are you interested in?',
+    'chip.s1': 'Decorative Lighting',
+    'chip.s2': 'Festive Ambiance',
+    'chip.s3': 'Year-Round Decor',
+    'chip.s4': 'Electrical Installations',
+    'chip.s5': 'Solar Systems',
+    'form.nameLabel': 'Full Name / Company *',
+    'form.namePlaceholder': 'Your name or company name',
+    'form.phoneLabel': 'Phone Number',
+    'form.phonePlaceholder': '+385 9x xxx xxxx (optional)',
+    'form.emailLabel': 'E-mail Address *',
+    'form.emailPlaceholder': 'your.address@email.com',
+    'form.msgLabel': 'Your Message or Space Description',
+    'form.msgPlaceholder': 'Briefly describe your project or space (optional)...',
+    'form.submit': 'Send Inquiry to info@elektro-pizeta.hr',
+    'form.feedback': 'Opening your email client... Thank you for reaching out!',
+    'legal.privacy': 'Privacy Policy',
+    'legal.cookies': 'Cookie Policy (EU)',
+    'legal.terms': 'Terms of Use',
+    'footer.rights': 'All rights reserved.',
+    'cookie.text': 'We use essential cookies to ensure proper website operation.',
+    'cookie.accept': 'Accept'
+  }
+};
+
+let currentLang = document.documentElement.getAttribute('lang') === 'en' ? 'en' : 'hr';
+let refreshVideoPillsLanguage = null;
 
 function isMobileOrPortraitViewport() {
   const w = window.innerWidth;
@@ -89,7 +239,7 @@ function isMobileOrPortraitViewport() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  initThemeToggle();
+  initThemeAndLanguage();
   initNavigationDrawer();
   initVideoSequentialPlayer();
   initAmbientBokehCanvas();
@@ -100,44 +250,73 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
- * Svijetla / Tamna tema (Light / Dark Mode) za PC i Mobitel
+ * Svijetli / Tamni mod i Jezik (HR / EN) u Hamburger izborniku
  */
-function initThemeToggle() {
+function initThemeAndLanguage() {
   const root = document.documentElement;
-  const headerToggleBtn = document.getElementById('theme-toggle-btn');
-  const headerToggleLabel = document.getElementById('theme-toggle-label');
   const drawerThemeSwitch = document.getElementById('drawer-theme-switch');
+  const drawerLangSwitch = document.getElementById('drawer-lang-switch');
 
   function applyTheme(theme) {
     const validTheme = theme === 'light' ? 'light' : 'dark';
     root.setAttribute('data-theme', validTheme);
-    if (headerToggleLabel) {
-      headerToggleLabel.textContent = validTheme === 'dark' ? 'Svijetla' : 'Tamna';
-    }
     try {
       localStorage.setItem('ep_theme', validTheme);
     } catch (_) {}
   }
 
-  // Inicijaliziraj tekst oznake prema trenutnoj temi
-  const initialTheme = root.getAttribute('data-theme') || 'dark';
-  applyTheme(initialTheme);
+  function applyLanguage(lang) {
+    currentLang = lang === 'en' ? 'en' : 'hr';
+    root.setAttribute('lang', currentLang);
+    try {
+      localStorage.setItem('ep_lang', currentLang);
+    } catch (_) {}
 
-  if (headerToggleBtn) {
-    headerToggleBtn.addEventListener('click', () => {
-      const current = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
-      applyTheme(current === 'dark' ? 'light' : 'dark');
+    if (drawerLangSwitch) {
+      drawerLangSwitch.querySelectorAll('[data-lang-btn]').forEach((btn) => {
+        btn.classList.toggle('active', btn.getAttribute('data-lang-btn') === currentLang);
+      });
+    }
+
+    const dict = I18N[currentLang] || I18N.hr;
+
+    document.querySelectorAll('[data-i18n]').forEach((el) => {
+      const key = el.getAttribute('data-i18n');
+      if (dict[key]) el.textContent = dict[key];
     });
+
+    document.querySelectorAll('[data-i18n-html]').forEach((el) => {
+      const key = el.getAttribute('data-i18n-html');
+      if (dict[key]) el.innerHTML = dict[key];
+    });
+
+    document.querySelectorAll('[data-i18n-placeholder]').forEach((el) => {
+      const key = el.getAttribute('data-i18n-placeholder');
+      if (dict[key]) el.setAttribute('placeholder', dict[key]);
+    });
+
+    if (typeof refreshVideoPillsLanguage === 'function') {
+      refreshVideoPillsLanguage();
+    }
   }
+
+  applyTheme(root.getAttribute('data-theme') || 'dark');
+  applyLanguage(currentLang);
 
   if (drawerThemeSwitch) {
     drawerThemeSwitch.addEventListener('click', (e) => {
-      const opt = e.target.closest('[data-mode]');
-      if (opt) {
-        applyTheme(opt.getAttribute('data-mode'));
-      } else {
-        const current = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
-        applyTheme(current === 'dark' ? 'light' : 'dark');
+      const btn = e.target.closest('[data-mode]');
+      if (btn) {
+        applyTheme(btn.getAttribute('data-mode'));
+      }
+    });
+  }
+
+  if (drawerLangSwitch) {
+    drawerLangSwitch.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-lang-btn]');
+      if (btn) {
+        applyLanguage(btn.getAttribute('data-lang-btn'));
       }
     });
   }
@@ -202,7 +381,9 @@ function initNavigationDrawer() {
 }
 
 /**
- * Sekvencijalni video player (1.0x prirodna brzina, bez trzanja)
+ * Video Player:
+ * - Na mobitelu koristi 1 hardverski dekoder (videoA) + HTTP cache prefetch kako drugi <video> dekoder ne bi uzrokovao trzanje
+ * - Naslov videa koji se trenutno reproducira (active pill) je UVIJEK centriran i 100% vidljiv u cijelosti
  */
 function initVideoSequentialPlayer() {
   const heroSection = document.getElementById('hero-section');
@@ -230,27 +411,51 @@ function initVideoSequentialPlayer() {
   let advanceLock = false;
   const warmedUrls = new Set();
 
-  function preloadNextIntoStandby() {
+  function getItemTitle(item) {
+    return currentLang === 'en' ? item.title_en : item.title_hr;
+  }
+
+  // Zagrij predmemoriju preglednika za idući video bez pokretanja drugog hardverskog dekodera na mobitelu
+  function warmNextVideoFile() {
     const nextIdx = (currentIndex + 1) % activePlaylist.length;
     const nextItem = activePlaylist[nextIdx];
-    if (!nextItem || !standbyVideo) return;
+    if (!nextItem) return;
 
-    if (standbyVideo.getAttribute('data-raw-src') !== nextItem.src) {
-      standbyVideo.pause();
-      standbyVideo.setAttribute('data-raw-src', nextItem.src);
-      if (nextItem.poster) standbyVideo.poster = nextItem.poster;
-      standbyVideo.muted = true;
-      standbyVideo.preload = 'auto';
-      standbyVideo.src = nextItem.src;
-      standbyVideo.load();
+    if (!warmedUrls.has(nextItem.src)) {
+      warmedUrls.add(nextItem.src);
+      fetch(nextItem.src).catch(() => {});
     }
 
-    const afterNextIdx = (currentIndex + 2) % activePlaylist.length;
-    const afterNextSrc = activePlaylist[afterNextIdx]?.src;
-    if (afterNextSrc && !warmedUrls.has(afterNextSrc)) {
-      warmedUrls.add(afterNextSrc);
-      fetch(afterNextSrc).catch(() => {});
+    // Samo na PC-u pripremi drugi <video> element unaprijed (na mobitelu 1 dekoder daje 100% glatkih 60fps)
+    if (currentMode === 'pc' && standbyVideo) {
+      if (standbyVideo.getAttribute('data-raw-src') !== nextItem.src) {
+        standbyVideo.pause();
+        standbyVideo.setAttribute('data-raw-src', nextItem.src);
+        if (nextItem.poster) standbyVideo.poster = nextItem.poster;
+        standbyVideo.muted = true;
+        standbyVideo.preload = 'auto';
+        standbyVideo.src = nextItem.src;
+        standbyVideo.load();
+      }
     }
+  }
+
+  // Točno centriraj aktivni naslov videa koji se trenutno reproducira unutar trake
+  function centerActivePillInBar(smooth = true) {
+    if (!pillsContainer || !isHeroInView) return;
+    const activePill = pillsContainer.querySelector('.video-pill.active');
+    if (!activePill) return;
+
+    // Budući da .video-playlist-pills ima position: relative, offsetLeft je točna udaljenost unutar trake
+    const containerWidth = pillsContainer.clientWidth;
+    const pillLeft = activePill.offsetLeft;
+    const pillWidth = activePill.offsetWidth;
+
+    const targetScrollLeft = Math.max(0, pillLeft - (containerWidth - pillWidth) / 2);
+    pillsContainer.scrollTo({
+      left: targetScrollLeft,
+      behavior: smooth ? 'smooth' : 'auto'
+    });
   }
 
   function renderPills() {
@@ -263,8 +468,8 @@ function initVideoSequentialPlayer() {
       btn.dataset.index = idx;
       btn.innerHTML = `
         <div class="video-pill-header">
-          <span class="video-pill-title">${item.title}</span>
           <span class="video-pill-index">0${idx + 1}</span>
+          <span class="video-pill-title">${getItemTitle(item)}</span>
         </div>
         <div class="video-pill-progress" id="pill-progress-${idx}"></div>
       `;
@@ -280,7 +485,25 @@ function initVideoSequentialPlayer() {
       });
       pillsContainer.appendChild(btn);
     });
+
+    requestAnimationFrame(() => {
+      centerActivePillInBar(false);
+    });
   }
+
+  refreshVideoPillsLanguage = () => {
+    if (!pillsContainer) return;
+    const pills = pillsContainer.querySelectorAll('.video-pill');
+    pills.forEach((pill, idx) => {
+      const titleEl = pill.querySelector('.video-pill-title');
+      if (titleEl && activePlaylist[idx]) {
+        titleEl.textContent = getItemTitle(activePlaylist[idx]);
+      }
+    });
+    requestAnimationFrame(() => {
+      centerActivePillInBar(false);
+    });
+  };
 
   function updatePillStates() {
     if (!pillsContainer) return;
@@ -290,26 +513,24 @@ function initVideoSequentialPlayer() {
       pill.classList.toggle('active', isAct);
       const bar = pill.querySelector('.video-pill-progress');
       if (bar && !isAct) {
-        bar.style.width = '0%';
+        bar.style.transform = 'scaleX(0)';
       }
-      if (isAct && isHeroInView) {
-        const targetLeft = pill.offsetLeft - (pillsContainer.clientWidth / 2) + (pill.clientWidth / 2);
-        pillsContainer.scrollTo({
-          left: Math.max(0, targetLeft),
-          behavior: 'smooth'
-        });
-      }
+    });
+
+    requestAnimationFrame(() => {
+      centerActivePillInBar(true);
     });
   }
 
+  // GPU-ubrzani napredak pomoću transform: scaleX() (bez Layout/Paint proračuna)
   setInterval(() => {
     if (!isHeroInView || document.hidden) return;
     if (activeVideo && activeVideo.duration && !isNaN(activeVideo.duration) && activeVideo.duration > 0) {
       const cur = activeVideo.currentTime;
       const dur = activeVideo.duration;
-      const pct = Math.min(100, (cur / dur) * 100);
+      const ratio = Math.min(1, Math.max(0, cur / dur));
       const bar = document.getElementById(`pill-progress-${currentIndex}`);
-      if (bar) bar.style.width = `${pct.toFixed(1)}%`;
+      if (bar) bar.style.transform = `scaleX(${ratio.toFixed(3)})`;
 
       if (!isUserPaused && !advanceLock && cur >= dur - 0.08) {
         advanceLock = true;
@@ -320,7 +541,7 @@ function initVideoSequentialPlayer() {
         activeVideo.play().catch(() => {});
       }
     }
-  }, 150);
+  }, 180);
 
   function switchToVideo(nextIndex) {
     const total = activePlaylist.length;
@@ -336,6 +557,37 @@ function initVideoSequentialPlayer() {
     updatePillStates();
 
     const item = activePlaylist[currentIndex];
+
+    // Na mobitelu koristimo isključivo 1 <video> element (videoA) kako nikad ne bi radila 2 dekodera istovremeno
+    if (currentMode === 'mobile') {
+      standbyVideo.pause();
+      standbyVideo.removeAttribute('src');
+      standbyVideo.classList.remove('active');
+      activeVideo = videoA;
+      activeVideo.classList.add('active');
+
+      if (item.poster) activeVideo.poster = item.poster;
+      activeVideo.muted = true;
+      activeVideo.playbackRate = 1.0;
+      activeVideo.setAttribute('data-raw-src', item.src);
+      activeVideo.src = item.src;
+      activeVideo.load();
+
+      advanceLock = false;
+      if (isHeroInView && !isUserPaused) {
+        activeVideo.play().then(() => {
+          if (myToken === switchToken) {
+            updatePlayPauseIcons();
+            warmNextVideoFile();
+          }
+        }).catch(() => {
+          warmNextVideoFile();
+        });
+      }
+      return;
+    }
+
+    // Na PC-u glatki crossfade između dva video elementa
     const incoming = standbyVideo;
     const outgoing = activeVideo;
 
@@ -372,11 +624,11 @@ function initVideoSequentialPlayer() {
             .then(() => {
               if (myToken === switchToken) {
                 updatePlayPauseIcons();
-                preloadNextIntoStandby();
+                warmNextVideoFile();
               }
             })
             .catch(() => {
-              preloadNextIntoStandby();
+              warmNextVideoFile();
             });
         }
       }
@@ -385,7 +637,7 @@ function initVideoSequentialPlayer() {
         if (outgoing !== activeVideo) {
           outgoing.pause();
         }
-      }, 460);
+      }, 420);
     }
 
     if (incoming.readyState >= 2) {
@@ -398,7 +650,7 @@ function initVideoSequentialPlayer() {
       };
       incoming.addEventListener('canplay', onReady, { once: true });
       incoming.addEventListener('loadeddata', onReady, { once: true });
-      setTimeout(commitReveal, 900);
+      setTimeout(commitReveal, 800);
     }
   }
 
@@ -498,6 +750,8 @@ function initVideoSequentialPlayer() {
         currentIndex = 0;
         renderPills();
         switchToVideo(0);
+      } else {
+        centerActivePillInBar(false);
       }
     }, 220);
   });
@@ -512,9 +766,9 @@ function initVideoSequentialPlayer() {
   warmedUrls.add(first.src);
 
   activeVideo.play().then(() => {
-    preloadNextIntoStandby();
+    warmNextVideoFile();
   }).catch(() => {
-    preloadNextIntoStandby();
+    warmNextVideoFile();
   });
 }
 
@@ -666,7 +920,7 @@ function initAmbientBokehCanvas() {
 }
 
 /**
- * Forma za upit + interaktivno klikanje na kartice usluga i u hamburger izborniku
+ * Forma za upit + interaktivno klikanje na kartice usluga
  */
 function initInquiryForm() {
   const chipsContainer = document.getElementById('topic-chips');
@@ -727,8 +981,9 @@ function initInquiryForm() {
       }
       const body = encodeURIComponent(bodyLines.join('\n'));
 
+      const dict = I18N[currentLang] || I18N.hr;
       if (feedback) {
-        feedback.textContent = 'Otvaram slanje upita... Hvala vam na javljanju!';
+        feedback.textContent = dict['form.feedback'];
       }
 
       window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;

@@ -12,13 +12,17 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet" />
 
-  <!-- Inicijalizacija teme prije iscrtavanja kako ne bi bilo bljeskanja -->
+  <!-- Inicijalizacija teme prije iscrtavanja -->
   <script>
     (function () {
       try {
-        var saved = localStorage.getItem('ep_theme');
-        if (saved === 'light' || saved === 'dark') {
-          document.documentElement.setAttribute('data-theme', saved);
+        var savedTheme = localStorage.getItem('ep_theme');
+        if (savedTheme === 'light' || savedTheme === 'dark') {
+          document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+        var savedLang = localStorage.getItem('ep_lang');
+        if (savedLang === 'en' || savedLang === 'hr') {
+          document.documentElement.setAttribute('lang', savedLang);
         }
       } catch (e) {}
     })();
@@ -40,13 +44,11 @@
           <stop offset="100%" stop-color="#f7b955" stop-opacity="0" />
         </radialGradient>
       </defs>
-      <!-- Catenary wires -->
       <path class="wire" d="M-20,0 Q180,68 380,8" />
       <path class="wire" d="M380,8 Q560,78 740,12" />
       <path class="wire" d="M740,12 Q920,76 1100,8" />
       <path class="wire" d="M1100,8 Q1280,68 1460,0" />
 
-      <!-- Warm architectural filament bulbs -->
       <g class="bulb-group b1" transform="translate(80, 25)">
         <line x1="0" y1="0" x2="0" y2="10" class="socket-cord" />
         <circle cx="0" cy="14" r="18" fill="url(#bulb-glow)" class="glow-halo" />
@@ -110,7 +112,7 @@
     </svg>
   </div>
 
-  <!-- Navigation Header: Logo + Light/Dark Mode + Pošalji upit + Hamburger meni -->
+  <!-- Navigation Header: Logo + Pošalji upit + Hamburger meni (unutar trake i na PC-u i na mobitelu) -->
   <header class="site-header" id="top">
     <div class="header-inner">
       <a href="#top" class="brand-logo" aria-label="Elektro Pižeta Početna">
@@ -118,31 +120,8 @@
       </a>
 
       <div class="header-actions">
-        <!-- Prekidač Svijetla / Tamna tema (PC i Mobitel) -->
-        <button type="button" class="theme-toggle-btn" id="theme-toggle-btn" aria-label="Promijeni temu (Svijetla / Tamna)" title="Promijeni temu">
-          <!-- Sunce (prikazuje se u Dark modu za prebacivanje na Light) -->
-          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="5" />
-            <line x1="12" y1="1" x2="12" y2="3" />
-            <line x1="12" y1="21" x2="12" y2="23" />
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-            <line x1="1" y1="12" x2="3" y2="12" />
-            <line x1="21" y1="12" x2="23" y2="12" />
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-          </svg>
-          <!-- Mjesec (prikazuje se u Light modu za prebacivanje na Dark) -->
-          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-          </svg>
-          <span class="theme-toggle-label" id="theme-toggle-label">Svijetla</span>
-        </button>
+        <a href="#upit" class="nav-cta" data-i18n="nav.cta">Pošalji upit</a>
 
-        <!-- Glavni CTA gumb -->
-        <a href="#upit" class="nav-cta">Pošalji upit</a>
-
-        <!-- Hamburger Meni Gumb -->
         <button
           type="button"
           class="hamburger-btn"
@@ -161,7 +140,7 @@
     </div>
   </header>
 
-  <!-- Hamburger Slide-Over Izbornik (sve na jednom mjestu) -->
+  <!-- Hamburger Izbornik: Sekcije + Svijetli/Tamni mod + Jezik (HR/EN) + Kontakt -->
   <div class="nav-drawer-backdrop" id="nav-drawer-backdrop" hidden></div>
   <aside class="nav-drawer" id="nav-drawer" aria-label="Glavni izbornik" aria-hidden="true">
     <div class="nav-drawer-header">
@@ -177,68 +156,51 @@
     </div>
 
     <div class="nav-drawer-body">
-      <!-- Tema u izborniku -->
-      <div class="drawer-theme-bar">
-        <span class="drawer-theme-title">Izgled stranice</span>
-        <button type="button" class="drawer-theme-switch" id="drawer-theme-switch">
-          <span class="drawer-theme-opt" data-mode="dark">Tamna</span>
-          <span class="drawer-theme-opt" data-mode="light">Svijetla</span>
-        </button>
+      <!-- Postavke: Svijetli / Tamni mod i Jezik (HR / EN) -->
+      <div class="drawer-settings-group">
+        <div class="drawer-setting-row">
+          <span class="drawer-setting-label" data-i18n="drawer.theme">Tema</span>
+          <div class="drawer-segmented" id="drawer-theme-switch" role="group" aria-label="Odabir teme">
+            <button type="button" class="seg-btn" data-mode="dark" data-i18n="drawer.dark">Tamni</button>
+            <button type="button" class="seg-btn" data-mode="light" data-i18n="drawer.light">Svijetli</button>
+          </div>
+        </div>
+
+        <div class="drawer-setting-row">
+          <span class="drawer-setting-label" data-i18n="drawer.lang">Jezik</span>
+          <div class="drawer-segmented" id="drawer-lang-switch" role="group" aria-label="Odabir jezika">
+            <button type="button" class="seg-btn active" data-lang-btn="hr">HR</button>
+            <button type="button" class="seg-btn" data-lang-btn="en">EN</button>
+          </div>
+        </div>
       </div>
 
-      <!-- Glavne sekcije -->
+      <!-- Ostale sekcije -->
       <div class="drawer-section">
-        <span class="drawer-eyebrow">Navigacija</span>
+        <span class="drawer-eyebrow" data-i18n="drawer.sections">Sekcije</span>
         <nav class="drawer-nav-list" aria-label="Izbornik sekcija">
           <a href="#top" class="drawer-nav-item" data-close-drawer>
-            <span>Početna &bull; Video prikaz</span>
+            <span data-i18n="nav.home">Početna</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
           </a>
           <a href="#galerija" class="drawer-nav-item" data-close-drawer>
-            <span>Naše usluge</span>
+            <span data-i18n="nav.services">Usluge</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
           </a>
           <a href="#kontakt" class="drawer-nav-item" data-close-drawer>
-            <span>Kontakt i lokacija</span>
+            <span data-i18n="nav.contact">Kontakt</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
           </a>
           <a href="#upit" class="drawer-nav-item drawer-nav-highlight" data-close-drawer>
-            <span>Pošalji upit za ponudu</span>
+            <span data-i18n="nav.cta">Pošalji upit</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
         </nav>
       </div>
 
-      <!-- Brzi odabir usluga -->
+      <!-- Kontakt u hamburger meniju -->
       <div class="drawer-section">
-        <span class="drawer-eyebrow">Odaberite uslugu za brzi upit</span>
-        <div class="drawer-services-list">
-          <button type="button" class="drawer-service-btn" data-select-topic="Dekorativna rasvjeta prostora" data-close-drawer>
-            <span class="drawer-service-num">01</span>
-            <span>Dekorativna rasvjeta prostora</span>
-          </button>
-          <button type="button" class="drawer-service-btn" data-select-topic="Blagdanski i svečani ugođaj" data-close-drawer>
-            <span class="drawer-service-num">02</span>
-            <span>Blagdanski i svečani ugođaj</span>
-          </button>
-          <button type="button" class="drawer-service-btn" data-select-topic="Cjelogodišnje dekoracije" data-close-drawer>
-            <span class="drawer-service-num">03</span>
-            <span>Cjelogodišnje dekoracije</span>
-          </button>
-          <button type="button" class="drawer-service-btn" data-select-topic="Elektroinstalacije" data-close-drawer>
-            <span class="drawer-service-num">04</span>
-            <span>Elektroinstalacije</span>
-          </button>
-          <button type="button" class="drawer-service-btn" data-select-topic="Solarni sustavi" data-close-drawer>
-            <span class="drawer-service-num">05</span>
-            <span>Solarni sustavi</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Brzi kontakt podaci u hamburger meniju -->
-      <div class="drawer-section">
-        <span class="drawer-eyebrow">Izravni kontakt</span>
+        <span class="drawer-eyebrow" data-i18n="nav.contact">Kontakt</span>
         <div class="drawer-contact-links">
           <a href="tel:+385977191897" class="drawer-contact-pill">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -289,7 +251,7 @@
           playsinline
           webkit-playsinline
           muted
-          preload="auto"
+          preload="none"
         ></video>
 
         <!-- Subtle Vignette & Warm Glow Overlay -->
@@ -301,12 +263,12 @@
         <div class="hero-minimal-copy">
           <div class="ambient-badge">
             <span class="pulse-dot"></span>
-            <span>Dekorativna rasvjeta &bull; Cjelogodišnje dekoracije &bull; Elektroinstalacije &bull; Solari</span>
+            <span data-i18n="hero.badge">Dekorativna rasvjeta &bull; Cjelogodišnje dekoracije &bull; Elektroinstalacije &bull; Solari</span>
           </div>
-          <h1 class="hero-title">Svjetlost koja stvara <span class="gold-gradient-text">ambijent.</span></h1>
+          <h1 class="hero-title" data-i18n-html="hero.title">Svjetlost koja stvara <span class="gold-gradient-text">ambijent.</span></h1>
           <div class="hero-actions">
             <a href="#upit" class="btn-primary">
-              <span>Zatražite ponudu</span>
+              <span data-i18n="hero.cta">Zatražite ponudu</span>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
@@ -361,9 +323,9 @@
     <section class="visual-grid-section" id="galerija">
       <div class="section-container">
         <div class="section-intro">
-          <span class="eyebrow-gold">Naše usluge</span>
-          <h2 class="section-heading">Stručna izvedba za <span class="gold-gradient-text">svaki prostor</span></h2>
-          <p class="section-subtitle">Od idejnog koncepta dekorativne rasvjete i aranžmana do vrhunskih elektroinstalacija i solarnih sustava.</p>
+          <span class="eyebrow-gold" data-i18n="services.eyebrow">Naše usluge</span>
+          <h2 class="section-heading" data-i18n-html="services.heading">Stručna izvedba za <span class="gold-gradient-text">svaki prostor</span></h2>
+          <p class="section-subtitle" data-i18n="services.subtitle">Od idejnog koncepta dekorativne rasvjete i aranžmana do vrhunskih elektroinstalacija i solarnih sustava.</p>
         </div>
 
         <div class="bento-gallery">
@@ -372,10 +334,10 @@
             <img src="assets/images/dekor-prostora.jpg" alt="Dekorativna rasvjeta prostora, eksterijera i fasada" loading="lazy" decoding="async" />
             <span class="bento-num">01</span>
             <div class="bento-overlay">
-              <span class="bento-tag">Eksterijeri &amp; Zgrade</span>
-              <h3>Dekorativna rasvjeta prostora</h3>
-              <p class="bento-desc">Osvjetljenje poslovnih zgrada, hotela, fasada i reprezentativnih objekata.</p>
-              <span class="bento-cta">Zatraži ponudu <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+              <span class="bento-tag" data-i18n="s1.tag">Eksterijeri &amp; Zgrade</span>
+              <h3 data-i18n="s1.title">Dekorativna rasvjeta prostora</h3>
+              <p class="bento-desc" data-i18n="s1.desc">Osvjetljenje poslovnih zgrada, hotela, fasada i reprezentativnih objekata.</p>
+              <span class="bento-cta"><span data-i18n="services.cardCta">Zatraži ponudu</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
             </div>
           </article>
 
@@ -384,10 +346,10 @@
             <img src="assets/images/dekor-hilton.jpg" alt="Blagdanski i svečani ugođaj poslovnih objekata" loading="lazy" decoding="async" />
             <span class="bento-num">02</span>
             <div class="bento-overlay">
-              <span class="bento-tag">Prigodne dekoracije</span>
-              <h3>Blagdanski i svečani ugođaj</h3>
-              <p class="bento-desc">Unikatne svjetlosne kulise, 3D figure i dekoracije za gradove, centre i evente.</p>
-              <span class="bento-cta">Zatraži ponudu <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+              <span class="bento-tag" data-i18n="s2.tag">Prigodne dekoracije</span>
+              <h3 data-i18n="s2.title">Blagdanski i svečani ugođaj</h3>
+              <p class="bento-desc" data-i18n="s2.desc">Unikatne svjetlosne kulise, 3D figure i dekoracije za gradove, centre i evente.</p>
+              <span class="bento-cta"><span data-i18n="services.cardCta">Zatraži ponudu</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
             </div>
           </article>
 
@@ -396,10 +358,10 @@
             <img src="assets/images/cjelogodisnje-dekoracije.jpg" alt="Cjelogodišnje dekoracije — dekorativne cvjetne kugle i aranžmani" loading="lazy" decoding="async" />
             <span class="bento-num">03</span>
             <div class="bento-overlay">
-              <span class="bento-tag">Cvjetne kugle &amp; Aranžmani</span>
-              <h3>Cjelogodišnje dekoracije</h3>
-              <p class="bento-desc">Viseće cvjetne kugle, zeleni aranžmani i ambijentalno uređenje terasa i interijera.</p>
-              <span class="bento-cta">Zatraži ponudu <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+              <span class="bento-tag" data-i18n="s3.tag">Cvjetne kugle &amp; Aranžmani</span>
+              <h3 data-i18n="s3.title">Cjelogodišnje dekoracije</h3>
+              <p class="bento-desc" data-i18n="s3.desc">Viseće cvjetne kugle, zeleni aranžmani i ambijentalno uređenje terasa i interijera.</p>
+              <span class="bento-cta"><span data-i18n="services.cardCta">Zatraži ponudu</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
             </div>
           </article>
 
@@ -408,10 +370,10 @@
             <img src="assets/images/elektroinstalacije.jpg" alt="Stručne elektroinstalacije za poslovne i stambene objekte" loading="lazy" decoding="async" />
             <span class="bento-num">04</span>
             <div class="bento-overlay">
-              <span class="bento-tag">Izvedba &amp; Održavanje</span>
-              <h3>Elektroinstalacije</h3>
-              <p class="bento-desc">Pouzdano izvođenje, adaptacija i održavanje elektroinstalacija za tvrtke i domove.</p>
-              <span class="bento-cta">Zatraži ponudu <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+              <span class="bento-tag" data-i18n="s4.tag">Izvedba &amp; Održavanje</span>
+              <h3 data-i18n="s4.title">Elektroinstalacije</h3>
+              <p class="bento-desc" data-i18n="s4.desc">Pouzdano izvođenje, adaptacija i održavanje elektroinstalacija za tvrtke i domove.</p>
+              <span class="bento-cta"><span data-i18n="services.cardCta">Zatraži ponudu</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
             </div>
           </article>
 
@@ -420,10 +382,10 @@
             <img src="assets/images/solar-hero.jpg" alt="Solarni sustavi i elektrane" loading="lazy" decoding="async" />
             <span class="bento-num">05</span>
             <div class="bento-overlay">
-              <span class="bento-tag">Energetska rješenja</span>
-              <h3>Solarni sustavi</h3>
-              <p class="bento-desc">Projektiranje i ugradnja solarnih elektrana za dugoročnu energetsku neovisnost.</p>
-              <span class="bento-cta">Zatraži ponudu <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+              <span class="bento-tag" data-i18n="s5.tag">Energetska rješenja</span>
+              <h3 data-i18n="s5.title">Solarni sustavi</h3>
+              <p class="bento-desc" data-i18n="s5.desc">Projektiranje i ugradnja solarnih elektrana za dugoročnu energetsku neovisnost.</p>
+              <span class="bento-cta"><span data-i18n="services.cardCta">Zatraži ponudu</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
             </div>
           </article>
         </div>
@@ -443,9 +405,9 @@
         <div class="contact-grid">
           <!-- Lijeva strana: Kontakt podaci -->
           <div class="contact-info-panel">
-            <span class="eyebrow-gold">Kontakt</span>
-            <h2 class="section-heading">Javite se za <span class="gold-gradient-text">ponudu ili savjet</span></h2>
-            <p class="contact-lead">Dostupni smo za sve upite, izlazak na teren i izradu neobvezujuće ponude prilagođene vašem objektu.</p>
+            <span class="eyebrow-gold" data-i18n="contact.eyebrow">Kontakt</span>
+            <h2 class="section-heading" data-i18n-html="contact.heading">Javite se za <span class="gold-gradient-text">ponudu ili savjet</span></h2>
+            <p class="contact-lead" data-i18n="contact.lead">Dostupni smo za sve upite, izlazak na teren i izradu neobvezujuće ponude prilagođene vašem objektu.</p>
 
             <div class="contact-cards-list">
               <a href="tel:+385977191897" class="contact-item-card">
@@ -455,7 +417,7 @@
                   </svg>
                 </div>
                 <div class="contact-item-body">
-                  <span class="contact-label">Telefon &bull; Nazovite nas</span>
+                  <span class="contact-label" data-i18n="contact.phoneLabel">Telefon &bull; Nazovite nas</span>
                   <strong class="contact-value">+385 97 719 1897</strong>
                 </div>
                 <span class="contact-card-arrow" aria-hidden="true">
@@ -471,7 +433,7 @@
                   </svg>
                 </div>
                 <div class="contact-item-body">
-                  <span class="contact-label">E-mail adresa</span>
+                  <span class="contact-label" data-i18n="contact.emailLabel">E-mail adresa</span>
                   <strong class="contact-value">info@elektro-pizeta.hr</strong>
                 </div>
                 <span class="contact-card-arrow" aria-hidden="true">
@@ -487,7 +449,7 @@
                   </svg>
                 </div>
                 <div class="contact-item-body">
-                  <span class="contact-label">Sjedište &bull; Otvori kartu</span>
+                  <span class="contact-label" data-i18n="contact.addressLabel">Sjedište &bull; Otvori kartu</span>
                   <strong class="contact-value">Dankovečka 35, 10040 Zagreb</strong>
                   <small class="contact-subvalue">Elektro Pižeta d.o.o. &bull; OIB: 27140284479</small>
                 </div>
@@ -497,13 +459,13 @@
               </a>
             </div>
 
-            <!-- Upečatljiva kartica za društvene mreže sa slikom i većim tipkama -->
+            <!-- Kartica za društvene mreže -->
             <div class="social-showcase-card">
               <div class="social-showcase-media">
                 <img src="assets/images/poster-pc-3.jpg" alt="Elektro Pižeta projekti na društvenim mrežama" loading="lazy" decoding="async" />
                 <div class="social-showcase-overlay">
-                  <span class="social-showcase-badge">Društvene mreže</span>
-                  <p class="social-showcase-caption">Pratite naše najnovije dekoracije i projekte</p>
+                  <span class="social-showcase-badge" data-i18n="social.badge">Društvene mreže</span>
+                  <p class="social-showcase-caption" data-i18n="social.caption">Pratite naše najnovije dekoracije i projekte</p>
                 </div>
               </div>
               <div class="social-links-row">
@@ -529,47 +491,47 @@
           <div class="inquiry-form-panel" id="upit">
             <form id="inquiry-form" class="inquiry-form">
               <div class="form-header-block">
-                <span class="eyebrow-gold">Brzi upit</span>
-                <h3 class="form-title">Pošaljite nam upit</h3>
-                <p class="form-subtitle">Odaberite uslugu i ostavite kontakt — povratno vam se javljamo u najkraćem roku.</p>
+                <span class="eyebrow-gold" data-i18n="form.eyebrow">Brzi upit</span>
+                <h3 class="form-title" data-i18n="form.title">Pošaljite nam upit</h3>
+                <p class="form-subtitle" data-i18n="form.subtitle">Odaberite uslugu i ostavite kontakt — povratno vam se javljamo u najkraćem roku.</p>
               </div>
 
               <!-- Odabir teme jednim klikom -->
               <div class="field-group">
-                <label class="field-label">Što vas zanima?</label>
+                <label class="field-label" data-i18n="form.topicLabel">Što vas zanima?</label>
                 <div class="topic-chips" id="topic-chips">
-                  <button type="button" class="topic-chip active" data-topic="Dekorativna rasvjeta prostora">Dekorativna rasvjeta</button>
-                  <button type="button" class="topic-chip" data-topic="Blagdanski i svečani ugođaj">Blagdanski ugođaj</button>
-                  <button type="button" class="topic-chip" data-topic="Cjelogodišnje dekoracije">Cjelogodišnje dekoracije</button>
-                  <button type="button" class="topic-chip" data-topic="Elektroinstalacije">Elektroinstalacije</button>
-                  <button type="button" class="topic-chip" data-topic="Solarni sustavi">Solarni sustavi</button>
+                  <button type="button" class="topic-chip active" data-topic="Dekorativna rasvjeta prostora" data-i18n="chip.s1">Dekorativna rasvjeta</button>
+                  <button type="button" class="topic-chip" data-topic="Blagdanski i svečani ugođaj" data-i18n="chip.s2">Blagdanski ugođaj</button>
+                  <button type="button" class="topic-chip" data-topic="Cjelogodišnje dekoracije" data-i18n="chip.s3">Cjelogodišnje dekoracije</button>
+                  <button type="button" class="topic-chip" data-topic="Elektroinstalacije" data-i18n="chip.s4">Elektroinstalacije</button>
+                  <button type="button" class="topic-chip" data-topic="Solarni sustavi" data-i18n="chip.s5">Solarni sustavi</button>
                 </div>
                 <input type="hidden" name="kategorija" id="selected-topic" value="Dekorativna rasvjeta prostora" />
               </div>
 
               <div class="form-row-two">
                 <div class="field-group">
-                  <label for="ime" class="field-label">Ime i prezime / Tvrtka *</label>
-                  <input type="text" id="ime" name="ime" required placeholder="Vaše ime ili naziv tvrtke" />
+                  <label for="ime" class="field-label" data-i18n="form.nameLabel">Ime i prezime / Tvrtka *</label>
+                  <input type="text" id="ime" name="ime" required placeholder="Vaše ime ili naziv tvrtke" data-i18n-placeholder="form.namePlaceholder" />
                 </div>
                 <div class="field-group">
-                  <label for="telefon" class="field-label">Broj telefona</label>
-                  <input type="tel" id="telefon" name="telefon" placeholder="+385 9x xxx xxxx (opcionalno)" />
+                  <label for="telefon" class="field-label" data-i18n="form.phoneLabel">Broj telefona</label>
+                  <input type="tel" id="telefon" name="telefon" placeholder="+385 9x xxx xxxx (opcionalno)" data-i18n-placeholder="form.phonePlaceholder" />
                 </div>
               </div>
 
               <div class="field-group">
-                <label for="email" class="field-label">E-mail adresa *</label>
-                <input type="email" id="email" name="email" required placeholder="vasa.adresa@email.hr" />
+                <label for="email" class="field-label" data-i18n="form.emailLabel">E-mail adresa *</label>
+                <input type="email" id="email" name="email" required placeholder="vasa.adresa@email.hr" data-i18n-placeholder="form.emailPlaceholder" />
               </div>
 
               <div class="field-group">
-                <label for="poruka" class="field-label">Vaša poruka ili opis prostora</label>
-                <textarea id="poruka" name="poruka" rows="4" placeholder="Ukratko opišite vaš projekt ili prostor (opcionalno)..."></textarea>
+                <label for="poruka" class="field-label" data-i18n="form.msgLabel">Vaša poruka ili opis prostora</label>
+                <textarea id="poruka" name="poruka" rows="4" placeholder="Ukratko opišite vaš projekt ili prostor (opcionalno)..." data-i18n-placeholder="form.msgPlaceholder"></textarea>
               </div>
 
               <button type="submit" class="btn-submit" id="submit-btn">
-                <span>Pošalji upit na info@elektro-pizeta.hr</span>
+                <span data-i18n="form.submit">Pošalji upit na info@elektro-pizeta.hr</span>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <line x1="22" y1="2" x2="11" y2="13" />
                   <polygon points="22 2 15 22 11 13 2 9 22 2" />
@@ -600,9 +562,9 @@
       </div>
 
       <nav class="footer-quick-links" aria-label="Brze poveznice u podnožju">
-        <a href="#top">Početna</a>
-        <a href="#galerija">Usluge</a>
-        <a href="#upit">Pošalji upit</a>
+        <a href="#top" data-i18n="nav.home">Početna</a>
+        <a href="#galerija" data-i18n="nav.services">Usluge</a>
+        <a href="#upit" data-i18n="nav.cta">Pošalji upit</a>
         <a href="tel:+385977191897">+385 97 719 1897</a>
         <a href="mailto:info@elektro-pizeta.hr">info@elektro-pizeta.hr</a>
       </nav>
@@ -611,14 +573,14 @@
 
       <div class="footer-bottom-bar">
         <div class="footer-legal-links">
-          <button type="button" class="footer-legal-btn" data-open-legal="privacy">Pravila privatnosti</button>
+          <button type="button" class="footer-legal-btn" data-open-legal="privacy" data-i18n="legal.privacy">Pravila privatnosti</button>
           <span class="footer-dot">&bull;</span>
-          <button type="button" class="footer-legal-btn" data-open-legal="cookies">Politika kolačića (EU)</button>
+          <button type="button" class="footer-legal-btn" data-open-legal="cookies" data-i18n="legal.cookies">Politika kolačića (EU)</button>
           <span class="footer-dot">&bull;</span>
-          <button type="button" class="footer-legal-btn" data-open-legal="terms">Uvjeti korištenja</button>
+          <button type="button" class="footer-legal-btn" data-open-legal="terms" data-i18n="legal.terms">Uvjeti korištenja</button>
         </div>
 
-        <p class="footer-copy">&copy; <span id="year">2026</span> Elektro Pižeta d.o.o. Sva prava pridržana.</p>
+        <p class="footer-copy">&copy; <span id="year">2026</span> Elektro Pižeta d.o.o. <span data-i18n="footer.rights">Sva prava pridržana.</span></p>
       </div>
     </div>
   </footer>
@@ -626,11 +588,11 @@
   <!-- Suptilna obavijest o kolačićima (Cookie Toast) -->
   <aside id="cookie-banner" class="cookie-banner" role="dialog" aria-live="polite" aria-label="Obavijest o kolačićima" hidden>
     <div class="cookie-banner-text">
-      <span>Koristimo nužne kolačiće za ispravan rad stranice.</span>
-      <button type="button" class="cookie-link-btn" data-open-legal="cookies">Politika kolačića</button>
+      <span data-i18n="cookie.text">Koristimo nužne kolačiće za ispravan rad stranice.</span>
+      <button type="button" class="cookie-link-btn" data-open-legal="cookies" data-i18n="legal.cookies">Politika kolačića</button>
     </div>
     <div class="cookie-banner-actions">
-      <button type="button" id="cookie-accept-btn" class="cookie-accept-btn">Prihvati</button>
+      <button type="button" id="cookie-accept-btn" class="cookie-accept-btn" data-i18n="cookie.accept">Prihvati</button>
     </div>
   </aside>
 
@@ -639,9 +601,9 @@
     <div class="legal-modal-dialog">
       <div class="legal-modal-header">
         <div class="legal-tabs" role="tablist">
-          <button type="button" class="legal-tab active" data-legal-tab="privacy" role="tab">Pravila privatnosti</button>
-          <button type="button" class="legal-tab" data-legal-tab="cookies" role="tab">Politika kolačića (EU)</button>
-          <button type="button" class="legal-tab" data-legal-tab="terms" role="tab">Uvjeti korištenja</button>
+          <button type="button" class="legal-tab active" data-legal-tab="privacy" role="tab" data-i18n="legal.privacy">Pravila privatnosti</button>
+          <button type="button" class="legal-tab" data-legal-tab="cookies" role="tab" data-i18n="legal.cookies">Politika kolačića (EU)</button>
+          <button type="button" class="legal-tab" data-legal-tab="terms" role="tab" data-i18n="legal.terms">Uvjeti korištenja</button>
         </div>
         <button type="button" id="legal-modal-close" class="legal-close-btn" aria-label="Zatvori">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -652,7 +614,6 @@
       </div>
 
       <div class="legal-modal-body">
-        <!-- Tab 1: Pravila privatnosti -->
         <div class="legal-pane active" id="legal-pane-privacy">
           <h3 id="legal-modal-title">Pravila privatnosti</h3>
           <p><strong>Elektro Pižeta d.o.o.</strong> (Dankovečka 35, 10040 Zagreb, OIB: 27140284479), vlasnik web stranice <code>www.elektro-pizeta.hr</code>, svjesna je važnosti zaštite Vaše privatnosti te se obvezuje štititi podatke prikupljene od posjetitelja naše internetske stranice sukladno Općoj uredbi o zaštiti osobnih podataka (GDPR – Uredba EU 2016/679).</p>
@@ -664,7 +625,6 @@
           <p>U svakom trenutku imate pravo zatražiti pristup svojim osobnim podacima, njihov ispravak ili brisanje slanjem zahtjeva na <a href="mailto:info@elektro-pizeta.hr">info@elektro-pizeta.hr</a>.</p>
         </div>
 
-        <!-- Tab 2: Politika kolačića (EU) -->
         <div class="legal-pane" id="legal-pane-cookies" hidden>
           <h3>Politika kolačića (EU)</h3>
           <p>Ova Politika kolačića primjenjuje se na građane i stalne rezidente Europskog gospodarskog prostora. Naše web mjesto <code>https://elektro-pizeta.hr</code> koristi samo tehnički nužne kolačiće i lokalnu pohranu preglednika radi pravilnog i sigurnog funkcioniranja stranice.</p>
@@ -678,7 +638,6 @@
           <p>Kolačiće možete u bilo kojem trenutku obrisati ili blokirati kroz postavke svojeg internetskog preglednika.</p>
         </div>
 
-        <!-- Tab 3: Uvjeti korištenja -->
         <div class="legal-pane" id="legal-pane-terms" hidden>
           <h3>Uvjeti korištenja</h3>
           <p>Informacije objavljene na internetskoj stranici <code>elektro-pizeta.hr</code> informativnog su karaktera. <strong>Elektro Pižeta d.o.o.</strong> nastoji osigurati točnost i ažurnost svih prikazanih informacija, fotografija i video materijala izvedenih projekata.</p>
