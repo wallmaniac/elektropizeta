@@ -1,6 +1,6 @@
 /**
  * Elektro Pižeta — Dual Responsive Video Playlist (PC Panoramic 16:9 & Mobile Vertical 9:16),
- * In-Memory Video Preloader, Ambient Bokeh & Cookie/Legal Modal Controller
+ * Native Hardware-Accelerated Double-Buffer Preloader, Ambient Bokeh & Cookie/Legal Modal Controller
  */
 
 // 7 najboljih HORIZONTALNIH (panoramskih 16:9) videa za PC i široke ekrane (svi <= 6.5s)
@@ -43,11 +43,12 @@ const PC_VIDEO_PLAYLIST = [
 ];
 
 // 7 najboljih VERTIKALNIH (9:16) videa snimanih mobitelom za mobilnu verziju (svi <= 6.8s)
+// Redoslijed: 01 Zlatna pročelja prvi, a Svečane dvorane pri kraju (06)
 const MOBILE_VIDEO_PLAYLIST = [
   {
-    src: 'assets/videos/mob-1.mp4',
-    title: 'Svečane dvorane',
-    poster: 'assets/images/poster-mob-1.jpg'
+    src: 'assets/videos/mob-6.mp4',
+    title: 'Zlatna pročelja',
+    poster: 'assets/images/poster-mob-6.jpg'
   },
   {
     src: 'assets/videos/mob-2.mp4',
@@ -70,9 +71,9 @@ const MOBILE_VIDEO_PLAYLIST = [
     poster: 'assets/images/poster-mob-5.jpg'
   },
   {
-    src: 'assets/videos/mob-6.mp4',
-    title: 'Zlatna pročelja',
-    poster: 'assets/images/poster-mob-6.jpg'
+    src: 'assets/videos/mob-1.mp4',
+    title: 'Svečane dvorane',
+    poster: 'assets/images/poster-mob-1.jpg'
   },
   {
     src: 'assets/videos/mob-7.mp4',
@@ -97,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
- * Automatski sekvencijalni video player bez trokiranja pri brzom prebacivanju strelicama
+ * Hardverski ubrzan dvostruki video player (Double-Buffered) bez gušenja mobilne mreže
  */
 function initVideoSequentialPlayer() {
   const videoA = document.getElementById('hero-video-primary');
@@ -120,30 +121,26 @@ function initVideoSequentialPlayer() {
   let isPaused = false;
   let switchToken = 0;
   let fadeOutTimer = null;
+  let preloadTimer = null;
   let advanceLock = false;
 
-  // In-memory Blob cache za trenutno prebacivanje bez mrežnog čekanja
-  const blobUrlCache = new Map();
-  const pendingFetches = new Set();
-
-  function preloadPlaylistBlobs(playlist) {
-    playlist.forEach((item, idx) => {
-      // Učitaj u pozadini s malim odmakom da ne guši prvi video
-      setTimeout(() => {
-        if (blobUrlCache.has(item.src) || pendingFetches.has(item.src)) return;
-        pendingFetches.add(item.src);
-        fetch(item.src)
-          .then((res) => (res.ok ? res.blob() : Promise.reject()))
-          .then((blob) => {
-            const objUrl = URL.createObjectURL(blob);
-            blobUrlCache.set(item.src, objUrl);
-          })
-          .catch(() => {})
-          .finally(() => {
-            pendingFetches.delete(item.src);
-          });
-      }, idx * 350);
-    });
+  // Tiho pripremi SAMO idući video u standby elementu (ne guši 4G/5G vezu na mobitelu)
+  function scheduleStandbyPreload() {
+    if (preloadTimer) clearTimeout(preloadTimer);
+    preloadTimer = setTimeout(() => {
+      const nextIdx = (currentIndex + 1) % activePlaylist.length;
+      const nextItem = activePlaylist[nextIdx];
+      if (!nextItem || !standbyVideo) return;
+      if (standbyVideo.getAttribute('data-raw-src') !== nextItem.src) {
+        standbyVideo.pause();
+        standbyVideo.setAttribute('data-raw-src', nextItem.src);
+        if (nextItem.poster) standbyVideo.poster = nextItem.poster;
+        standbyVideo.muted = true;
+        standbyVideo.preload = 'auto';
+        standbyVideo.src = nextItem.src;
+        standbyVideo.load();
+      }
+    }, 550);
   }
 
   function renderPills() {
@@ -199,13 +196,11 @@ function initVideoSequentialPlayer() {
       const bar = document.getElementById(`pill-progress-${currentIndex}`);
       if (bar) bar.style.width = `${pct}%`;
 
-      // Sigurnosni okidač ako video dođe do samog kraja (sprječava zastajanje na zadnjem frameu)
       if (!isPaused && !advanceLock && cur >= dur - 0.08) {
         advanceLock = true;
         switchToVideo(currentIndex + 1);
       }
 
-      // Ako je preglednik slučajno pauzirao aktivni video tijekom brzog prebacivanja, nastavi reprodukciju
       if (!isPaused && activeVideo.paused && activeVideo.readyState >= 2 && cur < dur - 0.15 && !document.hidden) {
         activeVideo.play().catch(() => {});
       }
@@ -218,22 +213,22 @@ function initVideoSequentialPlayer() {
     const targetIndex = ((nextIndex % total) + total) % total;
     const myToken = ++switchToken;
 
-    // Poništi prethodni timer za pauziranje kako nikad ne bi zaustavio trenutno aktivni video!
     if (fadeOutTimer) {
       clearTimeout(fadeOutTimer);
       fadeOutTimer = null;
+    }
+    if (preloadTimer) {
+      clearTimeout(preloadTimer);
+      preloadTimer = null;
     }
 
     currentIndex = targetIndex;
     updatePillStates();
 
     const item = activePlaylist[currentIndex];
-    const resolvedSrc = blobUrlCache.get(item.src) || item.src;
-
     const incoming = standbyVideo;
     const outgoing = activeVideo;
 
-    // Zamijeni reference odmah tako da uzastopni klikovi strelicama uvijek rade ispravno
     activeVideo = incoming;
     standbyVideo = outgoing;
 
@@ -242,7 +237,7 @@ function initVideoSequentialPlayer() {
 
     if (incoming.getAttribute('data-raw-src') !== item.src) {
       incoming.setAttribute('data-raw-src', item.src);
-      incoming.src = resolvedSrc;
+      incoming.src = item.src;
       incoming.load();
     } else {
       try {
@@ -266,20 +261,20 @@ function initVideoSequentialPlayer() {
             if (myToken === switchToken) {
               isPaused = false;
               updatePlayPauseIcons();
+              scheduleStandbyPreload();
             }
           })
           .catch(() => {});
       }
 
       fadeOutTimer = setTimeout(() => {
-        // Pauziraj stari video samo ako u međuvremenu nije ponovno postao aktivni video
         if (outgoing !== activeVideo) {
           outgoing.pause();
         }
-      }, 650);
+      }, 460);
     }
 
-    if (incoming.readyState >= 2) {
+    if (incoming.readyState >= 3) {
       commitReveal();
     } else {
       const onReady = () => {
@@ -289,8 +284,7 @@ function initVideoSequentialPlayer() {
       };
       incoming.addEventListener('canplay', onReady, { once: true });
       incoming.addEventListener('loadeddata', onReady, { once: true });
-      // Fallback ako se event ne okine unutar 180ms
-      setTimeout(commitReveal, 180);
+      setTimeout(commitReveal, 220);
     }
   }
 
@@ -300,7 +294,6 @@ function initVideoSequentialPlayer() {
     playIcon.style.display = isPaused ? 'block' : 'none';
   }
 
-  // Automatski prijelaz na idući video kad trenutni završi
   [videoA, videoB].forEach((vid) => {
     vid.addEventListener('ended', () => {
       if (vid === activeVideo && !advanceLock) {
@@ -342,7 +335,6 @@ function initVideoSequentialPlayer() {
     });
   }
 
-  // Tipkovničke strelice
   window.addEventListener('keydown', (e) => {
     const tag = document.activeElement?.tagName?.toLowerCase();
     if (tag === 'input' || tag === 'textarea') return;
@@ -352,7 +344,6 @@ function initVideoSequentialPlayer() {
     if (e.key === 'ArrowLeft') switchToVideo(currentIndex - 1);
   });
 
-  // Touch Swipe podrška za mobitele, rasklopne uređaje i tablete
   if (stage) {
     let touchStartX = 0;
     let touchStartY = 0;
@@ -378,7 +369,6 @@ function initVideoSequentialPlayer() {
     }, { passive: true });
   }
 
-  // Prilagodba kod promjene veličine ili rasklapanja ekrana (Foldable / Tablet rotacija)
   let resizeTimer = null;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
@@ -389,21 +379,23 @@ function initVideoSequentialPlayer() {
         activePlaylist = currentMode === 'mobile' ? MOBILE_VIDEO_PLAYLIST : PC_VIDEO_PLAYLIST;
         currentIndex = 0;
         renderPills();
-        preloadPlaylistBlobs(activePlaylist);
         switchToVideo(0);
       }
     }, 220);
   });
 
-  // Inicijaliziraj prvi video i pokreni pozadinsko pred-učitavanje u RAM
+  // Inicijaliziraj prvi video i nakon početka tiho pripremi samo sljedeći video
   renderPills();
   const first = activePlaylist[0];
   activeVideo.setAttribute('data-raw-src', first.src);
   activeVideo.src = first.src;
   if (first.poster) activeVideo.poster = first.poster;
   activeVideo.muted = true;
-  activeVideo.play().catch(() => {});
-  preloadPlaylistBlobs(activePlaylist);
+  activeVideo.play().then(() => {
+    scheduleStandbyPreload();
+  }).catch(() => {
+    scheduleStandbyPreload();
+  });
   requestAnimationFrame(updateProgressLoop);
 }
 
@@ -422,7 +414,6 @@ function initCookieAndLegalModal() {
     terms: document.getElementById('legal-pane-terms')
   };
 
-  // Prikaži suptilnu obavijest o kolačićima ako već nije prihvaćena
   try {
     if (cookieBanner && !localStorage.getItem('ep_cookies_accepted_v1')) {
       setTimeout(() => {
@@ -495,7 +486,7 @@ function initCookieAndLegalModal() {
 }
 
 /**
- * Suptilne tople svjetlosne čestice (Warm Bokeh) u pozadini
+ * Suptilne tople svjetlosne čestice (Warm Bokeh) u pozadini (optimizirano za mobilne ekrane)
  */
 function initAmbientBokehCanvas() {
   const canvas = document.getElementById('ambient-lights-canvas');
@@ -511,40 +502,45 @@ function initAmbientBokehCanvas() {
   });
 
   const isMob = window.innerWidth <= 768;
-  const ORB_COUNT = isMob ? 16 : 26;
+  const ORB_COUNT = isMob ? 10 : 24;
   const orbs = Array.from({ length: ORB_COUNT }, () => ({
     x: Math.random() * width,
     y: Math.random() * height,
-    r: 1.5 + Math.random() * 4.2,
-    vx: (Math.random() - 0.5) * 0.16,
-    vy: -0.07 - Math.random() * 0.2,
-    alpha: 0.12 + Math.random() * 0.42,
+    r: 1.5 + Math.random() * 4.0,
+    vx: (Math.random() - 0.5) * 0.14,
+    vy: -0.06 - Math.random() * 0.18,
+    alpha: 0.12 + Math.random() * 0.38,
     phase: Math.random() * Math.PI * 2,
-    speed: 0.008 + Math.random() * 0.015
+    speed: 0.008 + Math.random() * 0.014
   }));
 
+  let frameSkip = 0;
   function draw() {
-    ctx.clearRect(0, 0, width, height);
+    frameSkip++;
+    // Na mobitelu osvježavaj bokeh čestice na 30fps radi maksimalno glatkog 60fps videa
+    if (!isMob || frameSkip % 2 === 0) {
+      ctx.clearRect(0, 0, width, height);
 
-    for (const orb of orbs) {
-      orb.x += orb.vx;
-      orb.y += orb.vy;
-      orb.phase += orb.speed;
+      for (const orb of orbs) {
+        orb.x += orb.vx;
+        orb.y += orb.vy;
+        orb.phase += orb.speed;
 
-      if (orb.y < -20) orb.y = height + 20;
-      if (orb.x < -20) orb.x = width + 20;
-      if (orb.x > width + 20) orb.x = -20;
+        if (orb.y < -20) orb.y = height + 20;
+        if (orb.x < -20) orb.x = width + 20;
+        if (orb.x > width + 20) orb.x = -20;
 
-      const currentAlpha = orb.alpha * (0.65 + 0.35 * Math.sin(orb.phase));
-      const grad = ctx.createRadialGradient(orb.x, orb.y, 0, orb.x, orb.y, orb.r * 5);
-      grad.addColorStop(0, `rgba(255, 240, 195, ${currentAlpha})`);
-      grad.addColorStop(0.4, `rgba(245, 193, 99, ${currentAlpha * 0.45})`);
-      grad.addColorStop(1, 'rgba(245, 193, 99, 0)');
+        const currentAlpha = orb.alpha * (0.65 + 0.35 * Math.sin(orb.phase));
+        const grad = ctx.createRadialGradient(orb.x, orb.y, 0, orb.x, orb.y, orb.r * 5);
+        grad.addColorStop(0, `rgba(255, 240, 195, ${currentAlpha})`);
+        grad.addColorStop(0.4, `rgba(245, 193, 99, ${currentAlpha * 0.45})`);
+        grad.addColorStop(1, 'rgba(245, 193, 99, 0)');
 
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.arc(orb.x, orb.y, orb.r * 5, 0, Math.PI * 2);
-      ctx.fill();
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(orb.x, orb.y, orb.r * 5, 0, Math.PI * 2);
+        ctx.fill();
+      }
     }
 
     requestAnimationFrame(draw);
