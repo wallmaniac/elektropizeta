@@ -1,6 +1,6 @@
 /**
- * Elektro Pižeta — Dual Responsive Video Playlist (PC Panoramic 16:9 & Mobile Vertical 9:16),
- * Native Hardware-Accelerated Double-Buffer Preloader, Ambient Bokeh & Cookie/Legal Modal Controller
+ * Elektro Pižeta — Dual Responsive Video Reel (PC Panoramic 16:9 & Mobile Vertical Reel 9:16),
+ * Zero-Jank Hardware Video Controller, Reel Scroll & Page-Scroll Bridge
  */
 
 // 7 najboljih HORIZONTALNIH (panoramskih 16:9) videa za PC i široke ekrane (svi <= 6.5s)
@@ -42,7 +42,7 @@ const PC_VIDEO_PLAYLIST = [
   }
 ];
 
-// 7 najboljih VERTIKALNIH (9:16) videa snimanih mobitelom za mobilnu verziju (svi <= 6.8s)
+// 7 najboljih VERTIKALNIH (9:16) videa za mobilnu verziju (540x960 Baseline CFR, ~1 MB, bez štekanja)
 // Redoslijed: 01 Zlatna pročelja prvi, a Svečane dvorane pri kraju (06)
 const MOBILE_VIDEO_PLAYLIST = [
   {
@@ -98,13 +98,17 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
- * Hardverski ubrzan dvostruki video player (Double-Buffered) bez gušenja mobilne mreže
+ * Hardverski ubrzan Reel video player s vertikalnim skrolanjem videa i odvojenom zonom za skrolanje stranice
  */
 function initVideoSequentialPlayer() {
   const videoA = document.getElementById('hero-video-primary');
   const videoB = document.getElementById('hero-video-secondary');
   const stage = document.getElementById('video-stage');
   const pillsContainer = document.getElementById('video-playlist-pills');
+  const railDotsContainer = document.getElementById('reel-rail-dots');
+  const reelUpBtn = document.getElementById('reel-up-btn');
+  const reelDownBtn = document.getElementById('reel-down-btn');
+  const swipeHint = document.getElementById('reel-swipe-hint');
   const prevBtn = document.getElementById('prev-video-btn');
   const nextBtn = document.getElementById('next-video-btn');
   const playPauseBtn = document.getElementById('play-pause-btn');
@@ -124,7 +128,13 @@ function initVideoSequentialPlayer() {
   let preloadTimer = null;
   let advanceLock = false;
 
-  // Tiho pripremi SAMO idući video u standby elementu (ne guši 4G/5G vezu na mobitelu)
+  function hideSwipeHint() {
+    if (swipeHint && !swipeHint.classList.contains('hidden-hint')) {
+      swipeHint.classList.add('hidden-hint');
+    }
+  }
+
+  // Tiho pripremi samo idući video u standby elementu nakon što trenutni krene
   function scheduleStandbyPreload() {
     if (preloadTimer) clearTimeout(preloadTimer);
     preloadTimer = setTimeout(() => {
@@ -140,75 +150,108 @@ function initVideoSequentialPlayer() {
         standbyVideo.src = nextItem.src;
         standbyVideo.load();
       }
-    }, 550);
+    }, 650);
   }
 
-  function renderPills() {
-    if (!pillsContainer) return;
-    pillsContainer.innerHTML = '';
-    activePlaylist.forEach((item, idx) => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = `video-pill ${idx === currentIndex ? 'active' : ''}`;
-      btn.dataset.index = idx;
-      btn.innerHTML = `
-        <div class="video-pill-header">
-          <span class="video-pill-title">${item.title}</span>
-          <span class="video-pill-index">0${idx + 1}</span>
-        </div>
-        <div class="video-pill-progress" id="pill-progress-${idx}"></div>
-      `;
-      btn.addEventListener('click', () => {
-        if (idx !== currentIndex) {
-          switchToVideo(idx);
-        } else {
-          activeVideo.currentTime = 0;
-          isPaused = false;
-          updatePlayPauseIcons();
-          activeVideo.play().catch(() => {});
-        }
+  function renderPillsAndDots() {
+    if (pillsContainer) {
+      pillsContainer.innerHTML = '';
+      activePlaylist.forEach((item, idx) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `video-pill ${idx === currentIndex ? 'active' : ''}`;
+        btn.dataset.index = idx;
+        btn.innerHTML = `
+          <div class="video-pill-header">
+            <span class="video-pill-title">${item.title}</span>
+            <span class="video-pill-index">0${idx + 1}</span>
+          </div>
+          <div class="video-pill-progress" id="pill-progress-${idx}"></div>
+        `;
+        btn.addEventListener('click', () => {
+          hideSwipeHint();
+          if (idx !== currentIndex) {
+            const dir = idx > currentIndex ? 'next' : 'prev';
+            switchToVideo(idx, dir);
+          } else {
+            activeVideo.currentTime = 0;
+            isPaused = false;
+            updatePlayPauseIcons();
+            activeVideo.play().catch(() => {});
+          }
+        });
+        pillsContainer.appendChild(btn);
       });
-      pillsContainer.appendChild(btn);
-    });
+    }
+
+    if (railDotsContainer) {
+      railDotsContainer.innerHTML = '';
+      activePlaylist.forEach((item, idx) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = `reel-dot ${idx === currentIndex ? 'active' : ''}`;
+        dot.setAttribute('aria-label', `Video ${idx + 1}: ${item.title}`);
+        dot.addEventListener('click', () => {
+          hideSwipeHint();
+          if (idx !== currentIndex) {
+            const dir = idx > currentIndex ? 'next' : 'prev';
+            switchToVideo(idx, dir);
+          }
+        });
+        railDotsContainer.appendChild(dot);
+      });
+    }
   }
 
   function updatePillStates() {
-    if (!pillsContainer) return;
-    const pills = pillsContainer.querySelectorAll('.video-pill');
-    pills.forEach((pill, idx) => {
-      const isAct = idx === currentIndex;
-      pill.classList.toggle('active', isAct);
-      const bar = pill.querySelector('.video-pill-progress');
-      if (bar && !isAct) {
-        bar.style.width = '0%';
-      }
-      if (isAct && window.innerWidth <= 900) {
-        pill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-      }
-    });
+    if (pillsContainer) {
+      const pills = pillsContainer.querySelectorAll('.video-pill');
+      pills.forEach((pill, idx) => {
+        const isAct = idx === currentIndex;
+        pill.classList.toggle('active', isAct);
+        const bar = pill.querySelector('.video-pill-progress');
+        if (bar && !isAct) {
+          bar.style.width = '0%';
+        }
+        if (isAct && window.innerWidth <= 900) {
+          pill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
+      });
+    }
+
+    if (railDotsContainer) {
+      const dots = railDotsContainer.querySelectorAll('.reel-dot');
+      dots.forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === currentIndex);
+      });
+    }
   }
 
-  function updateProgressLoop() {
+  // Lagani interval (120ms umjesto 60fps layout thrashinga) za glatku reprodukciju na mobitelu
+  setInterval(() => {
     if (activeVideo && activeVideo.duration && !isNaN(activeVideo.duration) && activeVideo.duration > 0) {
       const cur = activeVideo.currentTime;
       const dur = activeVideo.duration;
       const pct = Math.min(100, (cur / dur) * 100);
       const bar = document.getElementById(`pill-progress-${currentIndex}`);
-      if (bar) bar.style.width = `${pct}%`;
+      if (bar) bar.style.width = `${pct.toFixed(1)}%`;
 
       if (!isPaused && !advanceLock && cur >= dur - 0.08) {
         advanceLock = true;
-        switchToVideo(currentIndex + 1);
+        switchToVideo(currentIndex + 1, 'next');
       }
 
       if (!isPaused && activeVideo.paused && activeVideo.readyState >= 2 && cur < dur - 0.15 && !document.hidden) {
         activeVideo.play().catch(() => {});
       }
     }
-    requestAnimationFrame(updateProgressLoop);
+  }, 120);
+
+  function clearReelClasses(vid) {
+    vid.classList.remove('reel-enter-next', 'reel-enter-prev', 'reel-exit-up', 'reel-exit-down');
   }
 
-  function switchToVideo(nextIndex) {
+  function switchToVideo(nextIndex, direction = 'next') {
     const total = activePlaylist.length;
     const targetIndex = ((nextIndex % total) + total) % total;
     const myToken = ++switchToken;
@@ -232,6 +275,9 @@ function initVideoSequentialPlayer() {
     activeVideo = incoming;
     standbyVideo = outgoing;
 
+    clearReelClasses(incoming);
+    clearReelClasses(outgoing);
+
     if (item.poster) incoming.poster = item.poster;
     incoming.muted = true;
 
@@ -251,8 +297,19 @@ function initVideoSequentialPlayer() {
       revealed = true;
       advanceLock = false;
 
+      // Postavi početnu vertikalnu Reel poziciju (odozdo ili odozgo)
+      const enterClass = direction === 'prev' ? 'reel-enter-prev' : 'reel-enter-next';
+      const exitClass = direction === 'prev' ? 'reel-exit-down' : 'reel-exit-up';
+
+      incoming.classList.add(enterClass);
+      // Force reflow za glatku CSS tranziciju skrolanja
+      void incoming.offsetWidth;
+
+      incoming.classList.remove(enterClass);
       incoming.classList.add('active');
+
       outgoing.classList.remove('active');
+      outgoing.classList.add(exitClass);
 
       const playPromise = incoming.play();
       if (playPromise !== undefined) {
@@ -270,11 +327,12 @@ function initVideoSequentialPlayer() {
       fadeOutTimer = setTimeout(() => {
         if (outgoing !== activeVideo) {
           outgoing.pause();
+          clearReelClasses(outgoing);
         }
-      }, 460);
+      }, 440);
     }
 
-    if (incoming.readyState >= 3) {
+    if (incoming.readyState >= 2) {
       commitReveal();
     } else {
       const onReady = () => {
@@ -284,7 +342,7 @@ function initVideoSequentialPlayer() {
       };
       incoming.addEventListener('canplay', onReady, { once: true });
       incoming.addEventListener('loadeddata', onReady, { once: true });
-      setTimeout(commitReveal, 220);
+      setTimeout(commitReveal, 180);
     }
   }
 
@@ -298,7 +356,7 @@ function initVideoSequentialPlayer() {
     vid.addEventListener('ended', () => {
       if (vid === activeVideo && !advanceLock) {
         advanceLock = true;
-        switchToVideo(currentIndex + 1);
+        switchToVideo(currentIndex + 1, 'next');
       }
     });
 
@@ -310,16 +368,34 @@ function initVideoSequentialPlayer() {
 
     vid.addEventListener('error', () => {
       if (vid === activeVideo && activePlaylist.length > 1) {
-        setTimeout(() => switchToVideo(currentIndex + 1), 600);
+        setTimeout(() => switchToVideo(currentIndex + 1, 'next'), 600);
       }
     });
   });
 
   if (prevBtn) {
-    prevBtn.addEventListener('click', () => switchToVideo(currentIndex - 1));
+    prevBtn.addEventListener('click', () => {
+      hideSwipeHint();
+      switchToVideo(currentIndex - 1, 'prev');
+    });
   }
   if (nextBtn) {
-    nextBtn.addEventListener('click', () => switchToVideo(currentIndex + 1));
+    nextBtn.addEventListener('click', () => {
+      hideSwipeHint();
+      switchToVideo(currentIndex + 1, 'next');
+    });
+  }
+  if (reelUpBtn) {
+    reelUpBtn.addEventListener('click', () => {
+      hideSwipeHint();
+      switchToVideo(currentIndex - 1, 'prev');
+    });
+  }
+  if (reelDownBtn) {
+    reelDownBtn.addEventListener('click', () => {
+      hideSwipeHint();
+      switchToVideo(currentIndex + 1, 'next');
+    });
   }
 
   if (playPauseBtn) {
@@ -340,13 +416,15 @@ function initVideoSequentialPlayer() {
     if (tag === 'input' || tag === 'textarea') return;
     const modal = document.getElementById('legal-modal');
     if (modal && !modal.hidden) return;
-    if (e.key === 'ArrowRight') switchToVideo(currentIndex + 1);
-    if (e.key === 'ArrowLeft') switchToVideo(currentIndex - 1);
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') switchToVideo(currentIndex + 1, 'next');
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') switchToVideo(currentIndex - 1, 'prev');
   });
 
+  // Vertikalno i horizontalno Reel skrolanje na gornjoj video zoni (#video-stage)
   if (stage) {
     let touchStartX = 0;
     let touchStartY = 0;
+
     stage.addEventListener('touchstart', (e) => {
       if (e.touches.length === 1) {
         touchStartX = e.touches[0].clientX;
@@ -358,11 +436,22 @@ function initVideoSequentialPlayer() {
       if (e.changedTouches.length === 1) {
         const dx = e.changedTouches[0].clientX - touchStartX;
         const dy = e.changedTouches[0].clientY - touchStartY;
-        if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.4) {
-          if (dx < 0) {
-            switchToVideo(currentIndex + 1);
+
+        // Vertikalni swipe (Reels stil: povuci gore za idući video, povuci dolje za prethodni)
+        if (Math.abs(dy) > 38 && Math.abs(dy) >= Math.abs(dx)) {
+          hideSwipeHint();
+          if (dy < 0) {
+            switchToVideo(currentIndex + 1, 'next');
           } else {
-            switchToVideo(currentIndex - 1);
+            switchToVideo(currentIndex - 1, 'prev');
+          }
+        } else if (Math.abs(dx) > 42 && Math.abs(dx) > Math.abs(dy)) {
+          // Horizontalni swipe također mijenja video
+          hideSwipeHint();
+          if (dx < 0) {
+            switchToVideo(currentIndex + 1, 'next');
+          } else {
+            switchToVideo(currentIndex - 1, 'prev');
           }
         }
       }
@@ -378,14 +467,14 @@ function initVideoSequentialPlayer() {
         currentMode = nextMode;
         activePlaylist = currentMode === 'mobile' ? MOBILE_VIDEO_PLAYLIST : PC_VIDEO_PLAYLIST;
         currentIndex = 0;
-        renderPills();
-        switchToVideo(0);
+        renderPillsAndDots();
+        switchToVideo(0, 'next');
       }
     }, 220);
   });
 
-  // Inicijaliziraj prvi video i nakon početka tiho pripremi samo sljedeći video
-  renderPills();
+  // Inicijaliziraj prvi video
+  renderPillsAndDots();
   const first = activePlaylist[0];
   activeVideo.setAttribute('data-raw-src', first.src);
   activeVideo.src = first.src;
@@ -396,7 +485,6 @@ function initVideoSequentialPlayer() {
   }).catch(() => {
     scheduleStandbyPreload();
   });
-  requestAnimationFrame(updateProgressLoop);
 }
 
 /**
@@ -486,9 +574,10 @@ function initCookieAndLegalModal() {
 }
 
 /**
- * Suptilne tople svjetlosne čestice (Warm Bokeh) u pozadini (optimizirano za mobilne ekrane)
+ * Suptilne tople svjetlosne čestice (Warm Bokeh) — uključeno samo na PC-u kako na mobitelu ne bi trošilo GPU tijekom videa
  */
 function initAmbientBokehCanvas() {
+  if (window.innerWidth <= 768) return;
   const canvas = document.getElementById('ambient-lights-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
@@ -501,8 +590,7 @@ function initAmbientBokehCanvas() {
     height = canvas.height = window.innerHeight;
   });
 
-  const isMob = window.innerWidth <= 768;
-  const ORB_COUNT = isMob ? 10 : 24;
+  const ORB_COUNT = 22;
   const orbs = Array.from({ length: ORB_COUNT }, () => ({
     x: Math.random() * width,
     y: Math.random() * height,
@@ -514,33 +602,28 @@ function initAmbientBokehCanvas() {
     speed: 0.008 + Math.random() * 0.014
   }));
 
-  let frameSkip = 0;
   function draw() {
-    frameSkip++;
-    // Na mobitelu osvježavaj bokeh čestice na 30fps radi maksimalno glatkog 60fps videa
-    if (!isMob || frameSkip % 2 === 0) {
-      ctx.clearRect(0, 0, width, height);
+    ctx.clearRect(0, 0, width, height);
 
-      for (const orb of orbs) {
-        orb.x += orb.vx;
-        orb.y += orb.vy;
-        orb.phase += orb.speed;
+    for (const orb of orbs) {
+      orb.x += orb.vx;
+      orb.y += orb.vy;
+      orb.phase += orb.speed;
 
-        if (orb.y < -20) orb.y = height + 20;
-        if (orb.x < -20) orb.x = width + 20;
-        if (orb.x > width + 20) orb.x = -20;
+      if (orb.y < -20) orb.y = height + 20;
+      if (orb.x < -20) orb.x = width + 20;
+      if (orb.x > width + 20) orb.x = -20;
 
-        const currentAlpha = orb.alpha * (0.65 + 0.35 * Math.sin(orb.phase));
-        const grad = ctx.createRadialGradient(orb.x, orb.y, 0, orb.x, orb.y, orb.r * 5);
-        grad.addColorStop(0, `rgba(255, 240, 195, ${currentAlpha})`);
-        grad.addColorStop(0.4, `rgba(245, 193, 99, ${currentAlpha * 0.45})`);
-        grad.addColorStop(1, 'rgba(245, 193, 99, 0)');
+      const currentAlpha = orb.alpha * (0.65 + 0.35 * Math.sin(orb.phase));
+      const grad = ctx.createRadialGradient(orb.x, orb.y, 0, orb.x, orb.y, orb.r * 5);
+      grad.addColorStop(0, `rgba(255, 240, 195, ${currentAlpha})`);
+      grad.addColorStop(0.4, `rgba(245, 193, 99, ${currentAlpha * 0.45})`);
+      grad.addColorStop(1, 'rgba(245, 193, 99, 0)');
 
-        ctx.fillStyle = grad;
-        ctx.beginPath();
-        ctx.arc(orb.x, orb.y, orb.r * 5, 0, Math.PI * 2);
-        ctx.fill();
-      }
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(orb.x, orb.y, orb.r * 5, 0, Math.PI * 2);
+      ctx.fill();
     }
 
     requestAnimationFrame(draw);

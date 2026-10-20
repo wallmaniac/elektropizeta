@@ -114,31 +114,59 @@
   </header>
 
   <main>
-    <!-- HERO: Fullscreen Sequential Video Showcase (PC Panoramic 16:9 / Mobile Vertical 9:16) -->
+    <!-- HERO: Fullscreen Sequential Video Showcase (PC Panoramic 16:9 / Mobile Vertical Reel 9:16) -->
     <section class="hero-video-section" aria-label="Video prezentacija radova">
       <div class="video-stage" id="video-stage">
         <video
           id="hero-video-primary"
           class="hero-video active"
           playsinline
+          webkit-playsinline
           muted
           preload="auto"
-          poster="assets/images/poster-pc-1.jpg"
+          poster="assets/images/poster-mob-6.jpg"
         ></video>
         <video
           id="hero-video-secondary"
           class="hero-video"
           playsinline
+          webkit-playsinline
           muted
           preload="auto"
         ></video>
 
         <!-- Subtle Vignette & Warm Glow Overlay -->
         <div class="video-vignette"></div>
+
+        <!-- Indikator za vertikalno skrolanje videa (Reels stil na desnom rubu) -->
+        <div class="reel-side-rail" id="reel-side-rail" aria-label="Vertikalna navigacija videa">
+          <button type="button" class="reel-rail-arrow" id="reel-up-btn" aria-label="Prethodni video">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+              <path d="M18 15l-6-6-6 6" />
+            </svg>
+          </button>
+          <div class="reel-rail-dots" id="reel-rail-dots"></div>
+          <button type="button" class="reel-rail-arrow" id="reel-down-btn" aria-label="Sljedeći video">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </button>
+          <span class="reel-rail-label">VIDEO</span>
+        </div>
+
+        <!-- Animirana oznaka koja posjetitelju pokazuje da se videi mogu skrolati -->
+        <div class="reel-swipe-hint" id="reel-swipe-hint" aria-hidden="true">
+          <div class="swipe-hint-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 3v18M8 7l4-4 4 4M8 17l4 4 4-4" />
+            </svg>
+          </div>
+          <span>Povuci video za sljedeći</span>
+        </div>
       </div>
 
-      <!-- Minimalist Overlay Content -->
-      <div class="hero-content-container">
+      <!-- Donja zona (Naslov, gumbi i traka za skrolanje STRANICE na Usluge i Upit) -->
+      <div class="hero-content-container" id="hero-page-scroll-zone">
         <div class="hero-minimal-copy">
           <div class="ambient-badge">
             <span class="pulse-dot"></span>
@@ -161,7 +189,7 @@
           </div>
         </div>
 
-        <!-- Video Playlist Controls (Auto-advance + Manual Switching + Touch Swipe) -->
+        <!-- Video Playlist Controls -->
         <div class="video-controls-bar" aria-label="Kontrole video galerije">
           <div class="video-nav-arrows">
             <button type="button" class="video-ctrl-btn" id="prev-video-btn" aria-label="Prethodni video" title="Prethodni video">
@@ -188,6 +216,21 @@
           <!-- Dynamic Video Pills with Progress Bars -->
           <div class="video-playlist-pills" id="video-playlist-pills"></div>
         </div>
+
+        <!-- Rješenje za skrolanje stranice dalje: Posebna traka za prijelaz na Usluge i Upit -->
+        <a href="#galerija" class="page-scroll-bridge" id="scroll-down-page-btn" aria-label="Skrolaj dolje na usluge i upit">
+          <span class="bridge-line"></span>
+          <span class="bridge-text">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="bridge-chevron">
+              <path d="M7 13l5 5 5-5M7 6l5 5 5-5" />
+            </svg>
+            <span>Nastavi na usluge i upit</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="bridge-chevron">
+              <path d="M7 13l5 5 5-5M7 6l5 5 5-5" />
+            </svg>
+          </span>
+          <span class="bridge-line"></span>
+        </a>
       </div>
     </section>
 

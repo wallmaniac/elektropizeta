@@ -200,6 +200,8 @@ body {
   width: 100%;
   height: 100%;
   background: #040507;
+  overflow: hidden;
+  touch-action: none; /* Gornja video zona prima swipe za skrolanje videa */
 }
 
 .hero-video {
@@ -210,15 +212,208 @@ body {
   object-fit: cover;
   object-position: center center;
   opacity: 0;
-  will-change: opacity;
-  transform: translateZ(0);
+  will-change: transform, opacity;
+  transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  transition: opacity 0.45s ease-out;
+  transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.38s ease-out;
 }
 
 .hero-video.active {
   opacity: 1;
+  transform: translate3d(0, 0, 0);
+  z-index: 2;
+}
+
+/* Reel vertikalni scroll prijelazi (kao TikTok / Reels) */
+.hero-video.reel-enter-next {
+  transition: none !important;
+  opacity: 1;
+  transform: translate3d(0, 100%, 0);
+  z-index: 3;
+}
+
+.hero-video.reel-enter-prev {
+  transition: none !important;
+  opacity: 1;
+  transform: translate3d(0, -100%, 0);
+  z-index: 3;
+}
+
+.hero-video.reel-exit-up {
+  opacity: 0.35;
+  transform: translate3d(0, -100%, 0);
+  z-index: 1;
+}
+
+.hero-video.reel-exit-down {
+  opacity: 0.35;
+  transform: translate3d(0, 100%, 0);
+  z-index: 1;
+}
+
+/* Desna vertikalna traka indikatora za skrolanje videa (Reels stil) */
+.reel-side-rail {
+  position: absolute;
+  right: 16px;
+  top: 42%;
+  transform: translateY(-50%);
+  z-index: 12;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 7px;
+  border-radius: var(--radius-pill);
+  background: rgba(8, 10, 15, 0.62);
+  border: 1px solid rgba(245, 193, 99, 0.28);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.reel-rail-arrow {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--gold-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s ease, transform 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.reel-rail-arrow:hover,
+.reel-rail-arrow:active {
+  background: rgba(245, 193, 99, 0.25);
+  transform: scale(1.08);
+}
+
+.reel-rail-dots {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0;
+}
+
+.reel-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.28);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: height 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.reel-dot.active {
+  height: 20px;
+  background: var(--gold-primary);
+  box-shadow: 0 0 10px var(--gold-primary);
+}
+
+.reel-rail-label {
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--gold-light);
+  opacity: 0.8;
+}
+
+/* Animirana oznaka "Povuci video za sljedeći" */
+.reel-swipe-hint {
+  position: absolute;
+  right: 66px;
+  top: 42%;
+  transform: translateY(-50%);
+  z-index: 11;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+  background: rgba(8, 10, 15, 0.72);
+  border: 1px solid rgba(245, 193, 99, 0.35);
+  color: var(--gold-light);
+  font-size: 0.76rem;
+  font-weight: 600;
+  pointer-events: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.reel-swipe-hint.hidden-hint {
+  opacity: 0;
+  transform: translateY(-50%) translateX(10px);
+}
+
+.swipe-hint-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-primary);
+  animation: swipeUpDown 1.6s ease-in-out infinite;
+}
+
+@keyframes swipeUpDown {
+  0%, 100% { transform: translateY(-3px); }
+  50% { transform: translateY(3px); }
+}
+
+/* Donja traka za glatko skrolanje STRANICE na Usluge i Upit */
+.page-scroll-bridge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 11px 18px;
+  margin-top: -6px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(135deg, rgba(245, 193, 99, 0.16), rgba(15, 18, 26, 0.85));
+  border: 1px solid rgba(245, 193, 99, 0.42);
+  color: var(--gold-light);
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.45);
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.page-scroll-bridge:hover {
+  transform: translateY(-1px);
+  border-color: var(--gold-light);
+  background: linear-gradient(135deg, rgba(245, 193, 99, 0.26), rgba(15, 18, 26, 0.92));
+}
+
+.bridge-line {
+  flex: 1;
+  max-width: 80px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(245, 193, 99, 0.5), transparent);
+}
+
+.bridge-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bridge-chevron {
+  color: var(--gold-primary);
+  animation: chevronBounce 1.8s ease-in-out infinite;
+}
+
+@keyframes chevronBounce {
+  0%, 100% { transform: translateY(-2px); }
+  50% { transform: translateY(2px); }
 }
 
 .video-vignette {
@@ -236,10 +431,11 @@ body {
   width: 100%;
   max-width: 1320px;
   margin: 0 auto;
-  padding: 0 28px max(38px, env(safe-area-inset-bottom));
+  padding: 0 28px max(24px, env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 18px;
+  touch-action: pan-y; /* Donja zona uvijek normalno skrola stranicu prema Uslugama i Upitu */
 }
 
 .hero-minimal-copy {
@@ -1265,6 +1461,28 @@ body {
 
 /* 3. Standardni mobiteli (Portrait: do 640px) */
 @media (max-width: 640px) {
+  /* Isključi pozadinski 2D canvas i teške blur filtere na mobitelu radi 100% glatkog videa */
+  #ambient-lights-canvas {
+    display: none !important;
+  }
+  .video-controls-bar,
+  .reel-side-rail,
+  .ambient-badge,
+  .btn-glass {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  .reel-side-rail {
+    right: 10px;
+    top: 34%;
+    background: rgba(8, 10, 15, 0.85);
+  }
+  .reel-swipe-hint {
+    right: 54px;
+    top: 34%;
+    font-size: 0.72rem;
+    padding: 6px 11px;
+  }
   .string-lights-wrapper {
     height: 64px;
   }
