@@ -577,9 +577,7 @@ function initInquiryForm() {
       const poruka = document.getElementById('poruka')?.value.trim() || '';
       const kategorija = hiddenTopic?.value || 'Opći upit';
 
-      const targetEmail = kategorija.toLowerCase().includes('solar')
-        ? 'solari@elektro-pizeta.hr'
-        : 'info@elektro-pizeta.hr';
+      const targetEmail = 'info@elektro-pizeta.hr';
 
       const subject = encodeURIComponent(`Web upit: ${kategorija} — ${ime}`);
       const bodyLines = [
