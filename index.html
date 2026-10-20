@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <!-- Subtle Ambient Warm Bokeh Canvas -->
+  <!-- Subtle Ambient Warm Bokeh Canvas (PC only) -->
   <canvas id="ambient-lights-canvas" aria-hidden="true"></canvas>
 
   <!-- Subtle Hanging Architectural String Lights (Top Catenary Garland) -->
@@ -102,7 +102,7 @@
   <header class="site-header" id="top">
     <div class="header-inner">
       <a href="#top" class="brand-logo" aria-label="Elektro Pižeta Početna">
-        <img src="assets/images/logo-light.png" alt="Elektro Pižeta" />
+        <img src="assets/images/logo-light.png" alt="Elektro Pižeta" decoding="async" />
       </a>
 
       <nav class="main-nav" aria-label="Glavna navigacija">
@@ -114,8 +114,8 @@
   </header>
 
   <main>
-    <!-- HERO: Fullscreen Sequential Video Showcase (PC Panoramic 16:9 / Mobile Vertical Reel 9:16) -->
-    <section class="hero-video-section" aria-label="Video prezentacija radova">
+    <!-- HERO: Fullscreen Sequential Video Showcase (PC Panoramic 16:9 / Mobile Vertical 9:16) -->
+    <section class="hero-video-section" id="hero-section" aria-label="Video prezentacija radova">
       <div class="video-stage" id="video-stage">
         <video
           id="hero-video-primary"
@@ -137,36 +137,10 @@
 
         <!-- Subtle Vignette & Warm Glow Overlay -->
         <div class="video-vignette"></div>
-
-        <!-- Indikator za vertikalno skrolanje videa (Reels stil na desnom rubu) -->
-        <div class="reel-side-rail" id="reel-side-rail" aria-label="Vertikalna navigacija videa">
-          <button type="button" class="reel-rail-arrow" id="reel-up-btn" aria-label="Prethodni video">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
-              <path d="M18 15l-6-6-6 6" />
-            </svg>
-          </button>
-          <div class="reel-rail-dots" id="reel-rail-dots"></div>
-          <button type="button" class="reel-rail-arrow" id="reel-down-btn" aria-label="Sljedeći video">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
-              <path d="M6 9l6 6 6-6" />
-            </svg>
-          </button>
-          <span class="reel-rail-label">VIDEO</span>
-        </div>
-
-        <!-- Animirana oznaka koja posjetitelju pokazuje da se videi mogu skrolati -->
-        <div class="reel-swipe-hint" id="reel-swipe-hint" aria-hidden="true">
-          <div class="swipe-hint-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 3v18M8 7l4-4 4 4M8 17l4 4 4-4" />
-            </svg>
-          </div>
-          <span>Povuci video za sljedeći</span>
-        </div>
       </div>
 
-      <!-- Donja zona (Naslov, gumbi i traka za skrolanje STRANICE na Usluge i Upit) -->
-      <div class="hero-content-container" id="hero-page-scroll-zone">
+      <!-- Minimalist Overlay Content -->
+      <div class="hero-content-container">
         <div class="hero-minimal-copy">
           <div class="ambient-badge">
             <span class="pulse-dot"></span>
@@ -189,7 +163,7 @@
           </div>
         </div>
 
-        <!-- Video Playlist Controls -->
+        <!-- Video Playlist Controls (Auto-advance + Manual Switching + Horizontal Swipe) -->
         <div class="video-controls-bar" aria-label="Kontrole video galerije">
           <div class="video-nav-arrows">
             <button type="button" class="video-ctrl-btn" id="prev-video-btn" aria-label="Prethodni video" title="Prethodni video">
@@ -216,21 +190,6 @@
           <!-- Dynamic Video Pills with Progress Bars -->
           <div class="video-playlist-pills" id="video-playlist-pills"></div>
         </div>
-
-        <!-- Rješenje za skrolanje stranice dalje: Posebna traka za prijelaz na Usluge i Upit -->
-        <a href="#galerija" class="page-scroll-bridge" id="scroll-down-page-btn" aria-label="Skrolaj dolje na usluge i upit">
-          <span class="bridge-line"></span>
-          <span class="bridge-text">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="bridge-chevron">
-              <path d="M7 13l5 5 5-5M7 6l5 5 5-5" />
-            </svg>
-            <span>Nastavi na usluge i upit</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="bridge-chevron">
-              <path d="M7 13l5 5 5-5M7 6l5 5 5-5" />
-            </svg>
-          </span>
-          <span class="bridge-line"></span>
-        </a>
       </div>
     </section>
 
@@ -244,49 +203,70 @@
     <!-- USLUGE (Bento Grid) -->
     <section class="visual-grid-section" id="galerija">
       <div class="section-container">
+        <div class="section-intro">
+          <span class="eyebrow-gold">Naše usluge</span>
+          <h2 class="section-heading">Stručna izvedba za <span class="gold-gradient-text">svaki prostor</span></h2>
+          <p class="section-subtitle">Od idejnog koncepta dekorativne rasvjete i aranžmana do vrhunskih elektroinstalacija i solarnih sustava.</p>
+        </div>
+
         <div class="bento-gallery">
           <!-- 1. Dekorativna rasvjeta prostora -->
-          <article class="bento-card bento-wide">
-            <img src="assets/images/dekor-prostora.jpg" alt="Dekorativna rasvjeta prostora, eksterijera i fasada" loading="lazy" />
+          <article class="bento-card bento-wide" data-select-topic="Dekorativna rasvjeta prostora">
+            <img src="assets/images/dekor-prostora.jpg" alt="Dekorativna rasvjeta prostora, eksterijera i fasada" loading="lazy" decoding="async" />
+            <span class="bento-num">01</span>
             <div class="bento-overlay">
               <span class="bento-tag">Eksterijeri &amp; Zgrade</span>
-              <h2>Dekorativna rasvjeta prostora</h2>
+              <h3>Dekorativna rasvjeta prostora</h3>
+              <p class="bento-desc">Osvjetljenje poslovnih zgrada, hotela, fasada i reprezentativnih objekata.</p>
+              <span class="bento-cta">Zatraži ponudu <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
             </div>
           </article>
 
           <!-- 2. Blagdanski i svečani ugođaj -->
-          <article class="bento-card">
-            <img src="assets/images/dekor-hilton.jpg" alt="Blagdanski i svečani ugođaj poslovnih objekata" loading="lazy" />
+          <article class="bento-card" data-select-topic="Blagdanski i svečani ugođaj">
+            <img src="assets/images/dekor-hilton.jpg" alt="Blagdanski i svečani ugođaj poslovnih objekata" loading="lazy" decoding="async" />
+            <span class="bento-num">02</span>
             <div class="bento-overlay">
               <span class="bento-tag">Prigodne dekoracije</span>
-              <h2>Blagdanski i svečani ugođaj</h2>
+              <h3>Blagdanski i svečani ugođaj</h3>
+              <p class="bento-desc">Unikatne svjetlosne kulise, 3D figure i dekoracije za gradove, centre i evente.</p>
+              <span class="bento-cta">Zatraži ponudu <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
             </div>
           </article>
 
           <!-- 3. Cjelogodišnje dekoracije (Dekorativne lopte, cvijeće, bez božićnih motiva) -->
-          <article class="bento-card">
-            <img src="assets/images/cjelogodisnje-dekoracije.jpg" alt="Cjelogodišnje dekoracije — dekorativne cvjetne kugle i aranžmani" loading="lazy" />
+          <article class="bento-card" data-select-topic="Cjelogodišnje dekoracije">
+            <img src="assets/images/cjelogodisnje-dekoracije.jpg" alt="Cjelogodišnje dekoracije — dekorativne cvjetne kugle i aranžmani" loading="lazy" decoding="async" />
+            <span class="bento-num">03</span>
             <div class="bento-overlay">
               <span class="bento-tag">Cvjetne kugle &amp; Aranžmani</span>
-              <h2>Cjelogodišnje dekoracije</h2>
+              <h3>Cjelogodišnje dekoracije</h3>
+              <p class="bento-desc">Viseće cvjetne kugle, zeleni aranžmani i ambijentalno uređenje terasa i interijera.</p>
+              <span class="bento-cta">Zatraži ponudu <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
             </div>
           </article>
 
           <!-- 4. Elektroinstalacije -->
-          <article class="bento-card">
-            <img src="assets/images/elektroinstalacije.jpg" alt="Stručne elektroinstalacije za poslovne i stambene objekte" loading="lazy" />
+          <article class="bento-card" data-select-topic="Elektroinstalacije">
+            <img src="assets/images/elektroinstalacije.jpg" alt="Stručne elektroinstalacije za poslovne i stambene objekte" loading="lazy" decoding="async" />
+            <span class="bento-num">04</span>
             <div class="bento-overlay">
               <span class="bento-tag">Izvedba &amp; Održavanje</span>
-              <h2>Elektroinstalacije</h2>
+              <h3>Elektroinstalacije</h3>
+              <p class="bento-desc">Pouzdano izvođenje, adaptacija i održavanje elektroinstalacija za tvrtke i domove.</p>
+              <span class="bento-cta">Zatraži ponudu <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
             </div>
           </article>
 
           <!-- 5. Solarni sustavi -->
-          <article class="bento-card">
-            <img src="assets/images/solar-hero.jpg" alt="Solarni sustavi i elektrane" loading="lazy" />
+          <article class="bento-card" data-select-topic="Solarni sustavi">
+            <img src="assets/images/solar-hero.jpg" alt="Solarni sustavi i elektrane" loading="lazy" decoding="async" />
+            <span class="bento-num">05</span>
             <div class="bento-overlay">
               <span class="bento-tag">Energetska rješenja</span>
-              <h2>Solarni sustavi</h2>
+              <h3>Solarni sustavi</h3>
+              <p class="bento-desc">Projektiranje i ugradnja solarnih elektrana za dugoročnu energetsku neovisnost.</p>
+              <span class="bento-cta">Zatraži ponudu <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
             </div>
           </article>
         </div>
@@ -303,11 +283,12 @@
     <!-- KONTAKT & FORMA ZA UPIT -->
     <section class="contact-section" id="kontakt">
       <div class="section-container">
-        <div class="contact-grid" id="upit">
+        <div class="contact-grid">
           <!-- Lijeva strana: Kontakt podaci -->
           <div class="contact-info-panel">
             <span class="eyebrow-gold">Kontakt</span>
-            <h2 class="section-heading">Javite se za ponudu ili upit</h2>
+            <h2 class="section-heading">Javite se za <span class="gold-gradient-text">ponudu ili savjet</span></h2>
+            <p class="contact-lead">Dostupni smo za sve upite, izlazak na teren i izradu neobvezujuće ponude prilagođene vašem objektu.</p>
 
             <div class="contact-cards-list">
               <a href="tel:+385977191897" class="contact-item-card">
@@ -316,10 +297,13 @@
                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
                   </svg>
                 </div>
-                <div>
-                  <span class="contact-label">Telefon</span>
+                <div class="contact-item-body">
+                  <span class="contact-label">Telefon &bull; Nazovite nas</span>
                   <strong class="contact-value">+385 97 719 1897</strong>
                 </div>
+                <span class="contact-card-arrow" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                </span>
               </a>
 
               <a href="mailto:info@elektro-pizeta.hr" class="contact-item-card">
@@ -329,10 +313,13 @@
                     <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                   </svg>
                 </div>
-                <div>
-                  <span class="contact-label">E-mail</span>
+                <div class="contact-item-body">
+                  <span class="contact-label">E-mail adresa</span>
                   <strong class="contact-value">info@elektro-pizeta.hr</strong>
                 </div>
+                <span class="contact-card-arrow" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                </span>
               </a>
 
               <a href="https://maps.google.com/?q=Dankovečka+35,+10040+Zagreb" target="_blank" rel="noopener noreferrer" class="contact-item-card">
@@ -342,25 +329,28 @@
                     <circle cx="12" cy="10" r="3" />
                   </svg>
                 </div>
-                <div>
-                  <span class="contact-label">Adresa</span>
+                <div class="contact-item-body">
+                  <span class="contact-label">Sjedište &bull; Otvori kartu</span>
                   <strong class="contact-value">Dankovečka 35, 10040 Zagreb</strong>
                   <small class="contact-subvalue">Elektro Pižeta d.o.o. &bull; OIB: 27140284479</small>
                 </div>
+                <span class="contact-card-arrow" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                </span>
               </a>
             </div>
 
             <!-- Upečatljiva kartica za društvene mreže sa slikom i većim tipkama -->
             <div class="social-showcase-card">
               <div class="social-showcase-media">
-                <img src="assets/images/poster-pc-3.jpg" alt="Elektro Pižeta projekti na društvenim mrežama" loading="lazy" />
+                <img src="assets/images/poster-pc-3.jpg" alt="Elektro Pižeta projekti na društvenim mrežama" loading="lazy" decoding="async" />
                 <div class="social-showcase-overlay">
-                  <span class="social-showcase-badge">Zapratite nas</span>
-                  <p class="social-showcase-caption">Pogledajte više naših dekoracija i projekata uživo</p>
+                  <span class="social-showcase-badge">Društvene mreže</span>
+                  <p class="social-showcase-caption">Pratite naše najnovije dekoracije i projekte</p>
                 </div>
               </div>
               <div class="social-links-row">
-                <a href="https://www.instagram.com/elektro_pizeta/" target="_blank" rel="noopener noreferrer" class="social-pill social-pill-lg">
+                <a href="https://www.instagram.com/elektro_pizeta/" target="_blank" rel="noopener noreferrer" class="social-pill social-pill-ig">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
                     <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
@@ -368,7 +358,7 @@
                   </svg>
                   <span>Instagram</span>
                 </a>
-                <a href="https://www.facebook.com/people/Elektro-Pieta/100046227527095/" target="_blank" rel="noopener noreferrer" class="social-pill social-pill-lg">
+                <a href="https://www.facebook.com/people/Elektro-Pieta/100046227527095/" target="_blank" rel="noopener noreferrer" class="social-pill social-pill-fb">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
                   </svg>
@@ -379,16 +369,20 @@
           </div>
 
           <!-- Desna strana: Forma za upit -->
-          <div class="inquiry-form-panel">
+          <div class="inquiry-form-panel" id="upit">
             <form id="inquiry-form" class="inquiry-form">
-              <h3 class="form-title">Pošaljite nam upit</h3>
+              <div class="form-header-block">
+                <span class="eyebrow-gold">Brzi upit</span>
+                <h3 class="form-title">Pošaljite nam upit</h3>
+                <p class="form-subtitle">Odaberite uslugu i ostavite kontakt — povratno vam se javljamo u najkraćem roku.</p>
+              </div>
 
               <!-- Odabir teme jednim klikom -->
               <div class="field-group">
                 <label class="field-label">Što vas zanima?</label>
                 <div class="topic-chips" id="topic-chips">
                   <button type="button" class="topic-chip active" data-topic="Dekorativna rasvjeta prostora">Dekorativna rasvjeta</button>
-                  <button type="button" class="topic-chip" data-topic="Blagdanski i svečani ugođaj">Blagdanska dekoracija</button>
+                  <button type="button" class="topic-chip" data-topic="Blagdanski i svečani ugođaj">Blagdanski ugođaj</button>
                   <button type="button" class="topic-chip" data-topic="Cjelogodišnje dekoracije">Cjelogodišnje dekoracije</button>
                   <button type="button" class="topic-chip" data-topic="Elektroinstalacije">Elektroinstalacije</button>
                   <button type="button" class="topic-chip" data-topic="Solarni sustavi">Solarni sustavi</button>
@@ -418,7 +412,7 @@
               </div>
 
               <button type="submit" class="btn-submit" id="submit-btn">
-                <span>Pošalji upit</span>
+                <span>Pošalji upit na info@elektro-pizeta.hr</span>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <line x1="22" y1="2" x2="11" y2="13" />
                   <polygon points="22 2 15 22 11 13 2 9 22 2" />
@@ -437,22 +431,22 @@
   <footer class="site-footer">
     <div class="section-container footer-symmetric">
       <a href="#top" class="footer-brand-link" aria-label="Povratak na vrh">
-        <img src="assets/images/logo-light.png" alt="Elektro Pižeta" class="footer-logo" />
+        <img src="assets/images/logo-light.png" alt="Elektro Pižeta" class="footer-logo" decoding="async" />
       </a>
 
-      <p class="footer-company-details">
-        Elektro Pižeta d.o.o. &bull; Dankovečka 35, 10040 Zagreb &bull; OIB: 27140284479
-      </p>
+      <div class="footer-company-details">
+        <span>Elektro Pižeta d.o.o.</span>
+        <span class="footer-dot">&bull;</span>
+        <span>Dankovečka 35, 10040 Zagreb</span>
+        <span class="footer-dot">&bull;</span>
+        <span>OIB: 27140284479</span>
+      </div>
 
       <nav class="footer-quick-links" aria-label="Brze poveznice u podnožju">
         <a href="#top">Početna</a>
-        <span class="footer-dot">&bull;</span>
         <a href="#galerija">Usluge</a>
-        <span class="footer-dot">&bull;</span>
         <a href="#upit">Pošalji upit</a>
-        <span class="footer-dot">&bull;</span>
         <a href="tel:+385977191897">+385 97 719 1897</a>
-        <span class="footer-dot">&bull;</span>
         <a href="mailto:info@elektro-pizeta.hr">info@elektro-pizeta.hr</a>
       </nav>
 
