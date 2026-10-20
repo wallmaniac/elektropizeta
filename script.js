@@ -1,9 +1,9 @@
 /**
- * Elektro Pižeta — Dual Responsive Video Showcase (PC Panoramic 16:9 & Mobile Vertical 9:16),
- * Zero-Jank Scroll Optimization (IntersectionObserver Pause + Pure Horizontal Pill Scroll)
+ * Elektro Pižeta — Dual Responsive Video Showcase (1.0x Prirodna brzina, bez trzanja),
+ * Hamburger Izbornik & Svijetla / Tamna Tema (Light / Dark Mode za PC i Mobitel)
  */
 
-// 7 najboljih HORIZONTALNIH (panoramskih 16:9) videa za PC i široke ekrane
+// 7 HORIZONTALNIH (panoramskih 16:9) videa za PC (1.0x prirodna brzina, svi < 6.5s, 0 B-frameova)
 const PC_VIDEO_PLAYLIST = [
   {
     src: 'assets/videos/pc-1.mp4',
@@ -42,7 +42,7 @@ const PC_VIDEO_PLAYLIST = [
   }
 ];
 
-// 7 najboljih VERTIKALNIH (9:16) videa za mobilnu verziju (~535 KB, čisti SDR bt709)
+// 7 VERTIKALNIH (9:16) videa za mobilnu verziju (1.0x prirodna brzina, svi < 6.5s, 0 B-frameova)
 // Redoslijed: 01 Zlatna pročelja prvi, a Svečane dvorane pri kraju (06)
 const MOBILE_VIDEO_PLAYLIST = [
   {
@@ -89,6 +89,8 @@ function isMobileOrPortraitViewport() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  initThemeToggle();
+  initNavigationDrawer();
   initVideoSequentialPlayer();
   initAmbientBokehCanvas();
   initInquiryForm();
@@ -98,7 +100,109 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
- * Sekvencijalni video player bez blokiranja skrolanja stranice
+ * Svijetla / Tamna tema (Light / Dark Mode) za PC i Mobitel
+ */
+function initThemeToggle() {
+  const root = document.documentElement;
+  const headerToggleBtn = document.getElementById('theme-toggle-btn');
+  const headerToggleLabel = document.getElementById('theme-toggle-label');
+  const drawerThemeSwitch = document.getElementById('drawer-theme-switch');
+
+  function applyTheme(theme) {
+    const validTheme = theme === 'light' ? 'light' : 'dark';
+    root.setAttribute('data-theme', validTheme);
+    if (headerToggleLabel) {
+      headerToggleLabel.textContent = validTheme === 'dark' ? 'Svijetla' : 'Tamna';
+    }
+    try {
+      localStorage.setItem('ep_theme', validTheme);
+    } catch (_) {}
+  }
+
+  // Inicijaliziraj tekst oznake prema trenutnoj temi
+  const initialTheme = root.getAttribute('data-theme') || 'dark';
+  applyTheme(initialTheme);
+
+  if (headerToggleBtn) {
+    headerToggleBtn.addEventListener('click', () => {
+      const current = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+      applyTheme(current === 'dark' ? 'light' : 'dark');
+    });
+  }
+
+  if (drawerThemeSwitch) {
+    drawerThemeSwitch.addEventListener('click', (e) => {
+      const opt = e.target.closest('[data-mode]');
+      if (opt) {
+        applyTheme(opt.getAttribute('data-mode'));
+      } else {
+        const current = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+        applyTheme(current === 'dark' ? 'light' : 'dark');
+      }
+    });
+  }
+}
+
+/**
+ * Hamburger Meni Drawer
+ */
+function initNavigationDrawer() {
+  const hamburgerBtn = document.getElementById('hamburger-btn');
+  const drawer = document.getElementById('nav-drawer');
+  const backdrop = document.getElementById('nav-drawer-backdrop');
+  const closeBtn = document.getElementById('nav-drawer-close');
+
+  if (!hamburgerBtn || !drawer || !backdrop) return;
+
+  function openDrawer() {
+    backdrop.hidden = false;
+    void backdrop.offsetWidth;
+    backdrop.classList.add('is-visible');
+    drawer.classList.add('is-open');
+    drawer.setAttribute('aria-hidden', 'false');
+    hamburgerBtn.classList.add('is-open');
+    hamburgerBtn.setAttribute('aria-expanded', 'true');
+  }
+
+  function closeDrawer() {
+    backdrop.classList.remove('is-visible');
+    drawer.classList.remove('is-open');
+    drawer.setAttribute('aria-hidden', 'true');
+    hamburgerBtn.classList.remove('is-open');
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+    setTimeout(() => {
+      if (!drawer.classList.contains('is-open')) {
+        backdrop.hidden = true;
+      }
+    }, 280);
+  }
+
+  hamburgerBtn.addEventListener('click', () => {
+    if (drawer.classList.contains('is-open')) {
+      closeDrawer();
+    } else {
+      openDrawer();
+    }
+  });
+
+  if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+  backdrop.addEventListener('click', closeDrawer);
+
+  drawer.querySelectorAll('[data-close-drawer]').forEach((el) => {
+    el.addEventListener('click', () => {
+      closeDrawer();
+    });
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && drawer.classList.contains('is-open')) {
+      closeDrawer();
+    }
+  });
+}
+
+/**
+ * Sekvencijalni video player (1.0x prirodna brzina, bez trzanja)
  */
 function initVideoSequentialPlayer() {
   const heroSection = document.getElementById('hero-section');
@@ -126,7 +230,6 @@ function initVideoSequentialPlayer() {
   let advanceLock = false;
   const warmedUrls = new Set();
 
-  // Pripremi idući video u standby elementu čim trenutni krene
   function preloadNextIntoStandby() {
     const nextIdx = (currentIndex + 1) % activePlaylist.length;
     const nextItem = activePlaylist[nextIdx];
@@ -142,7 +245,6 @@ function initVideoSequentialPlayer() {
       standbyVideo.load();
     }
 
-    // Tiho zagrij predmemoriju preglednika za video nakon idućeg
     const afterNextIdx = (currentIndex + 2) % activePlaylist.length;
     const afterNextSrc = activePlaylist[afterNextIdx]?.src;
     if (afterNextSrc && !warmedUrls.has(afterNextSrc)) {
@@ -190,7 +292,6 @@ function initVideoSequentialPlayer() {
       if (bar && !isAct) {
         bar.style.width = '0%';
       }
-      // VAŽNO: Koristi isključivo horizontalni scrollTo unutar trake (NIKAD scrollIntoView koji trza vertikalni scroll stranice!)
       if (isAct && isHeroInView) {
         const targetLeft = pill.offsetLeft - (pillsContainer.clientWidth / 2) + (pill.clientWidth / 2);
         pillsContainer.scrollTo({
@@ -201,7 +302,6 @@ function initVideoSequentialPlayer() {
     });
   }
 
-  // Lagani interval (150ms) koji radi samo kad je Hero vidljiv na ekranu
   setInterval(() => {
     if (!isHeroInView || document.hidden) return;
     if (activeVideo && activeVideo.duration && !isNaN(activeVideo.duration) && activeVideo.duration > 0) {
@@ -244,6 +344,7 @@ function initVideoSequentialPlayer() {
 
     if (item.poster) incoming.poster = item.poster;
     incoming.muted = true;
+    incoming.playbackRate = 1.0;
 
     if (incoming.getAttribute('data-raw-src') !== item.src) {
       incoming.setAttribute('data-raw-src', item.src);
@@ -287,7 +388,6 @@ function initVideoSequentialPlayer() {
       }, 460);
     }
 
-    // Prikaži novi video tek kad ima dekodiran prvi frame (sprječava crni bljesak ili zastoj)
     if (incoming.readyState >= 2) {
       commitReveal();
     } else {
@@ -348,7 +448,6 @@ function initVideoSequentialPlayer() {
     if (e.key === 'ArrowLeft') switchToVideo(currentIndex - 1);
   });
 
-  // Samo horizontalni swipe (lijevo/desno) za promjenu videa — vertikalni scroll stranice radi 100% prirodno
   if (stage) {
     let touchStartX = 0;
     let touchStartY = 0;
@@ -371,7 +470,6 @@ function initVideoSequentialPlayer() {
     }, { passive: true });
   }
 
-  // Automatski pauziraj video kad posjetitelj skrola dolje na Usluge i Kontakt (oslobađa 100% GPU-a na mobitelu)
   if (heroSection && 'IntersectionObserver' in window) {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -404,12 +502,12 @@ function initVideoSequentialPlayer() {
     }, 220);
   });
 
-  // Pokreni prvi video odmah i pripremi idući
   renderPills();
   const first = activePlaylist[0];
   activeVideo.setAttribute('data-raw-src', first.src);
   if (first.poster) activeVideo.poster = first.poster;
   activeVideo.muted = true;
+  activeVideo.playbackRate = 1.0;
   activeVideo.src = first.src;
   warmedUrls.add(first.src);
 
@@ -507,7 +605,7 @@ function initCookieAndLegalModal() {
 }
 
 /**
- * Suptilne tople svjetlosne čestice (Warm Bokeh) — uključeno samo na PC-u
+ * Suptilne tople svjetlosne čestice (Warm Bokeh) — uključeno samo na PC-u u Dark Modu
  */
 function initAmbientBokehCanvas() {
   if (window.innerWidth <= 768) return;
@@ -523,40 +621,42 @@ function initAmbientBokehCanvas() {
     height = canvas.height = window.innerHeight;
   });
 
-  const ORB_COUNT = 20;
+  const ORB_COUNT = 18;
   const orbs = Array.from({ length: ORB_COUNT }, () => ({
     x: Math.random() * width,
     y: Math.random() * height,
     r: 1.5 + Math.random() * 4.0,
     vx: (Math.random() - 0.5) * 0.14,
     vy: -0.06 - Math.random() * 0.18,
-    alpha: 0.12 + Math.random() * 0.38,
+    alpha: 0.12 + Math.random() * 0.35,
     phase: Math.random() * Math.PI * 2,
     speed: 0.008 + Math.random() * 0.014
   }));
 
   function draw() {
-    ctx.clearRect(0, 0, width, height);
+    if (document.documentElement.getAttribute('data-theme') !== 'light') {
+      ctx.clearRect(0, 0, width, height);
 
-    for (const orb of orbs) {
-      orb.x += orb.vx;
-      orb.y += orb.vy;
-      orb.phase += orb.speed;
+      for (const orb of orbs) {
+        orb.x += orb.vx;
+        orb.y += orb.vy;
+        orb.phase += orb.speed;
 
-      if (orb.y < -20) orb.y = height + 20;
-      if (orb.x < -20) orb.x = width + 20;
-      if (orb.x > width + 20) orb.x = -20;
+        if (orb.y < -20) orb.y = height + 20;
+        if (orb.x < -20) orb.x = width + 20;
+        if (orb.x > width + 20) orb.x = -20;
 
-      const currentAlpha = orb.alpha * (0.65 + 0.35 * Math.sin(orb.phase));
-      const grad = ctx.createRadialGradient(orb.x, orb.y, 0, orb.x, orb.y, orb.r * 5);
-      grad.addColorStop(0, `rgba(255, 240, 195, ${currentAlpha})`);
-      grad.addColorStop(0.4, `rgba(245, 193, 99, ${currentAlpha * 0.45})`);
-      grad.addColorStop(1, 'rgba(245, 193, 99, 0)');
+        const currentAlpha = orb.alpha * (0.65 + 0.35 * Math.sin(orb.phase));
+        const grad = ctx.createRadialGradient(orb.x, orb.y, 0, orb.x, orb.y, orb.r * 5);
+        grad.addColorStop(0, `rgba(255, 240, 195, ${currentAlpha})`);
+        grad.addColorStop(0.4, `rgba(245, 193, 99, ${currentAlpha * 0.45})`);
+        grad.addColorStop(1, 'rgba(245, 193, 99, 0)');
 
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.arc(orb.x, orb.y, orb.r * 5, 0, Math.PI * 2);
-      ctx.fill();
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(orb.x, orb.y, orb.r * 5, 0, Math.PI * 2);
+        ctx.fill();
+      }
     }
 
     requestAnimationFrame(draw);
@@ -566,7 +666,7 @@ function initAmbientBokehCanvas() {
 }
 
 /**
- * Forma za upit + interaktivno klikanje na kartice usluga
+ * Forma za upit + interaktivno klikanje na kartice usluga i u hamburger izborniku
  */
 function initInquiryForm() {
   const chipsContainer = document.getElementById('topic-chips');
@@ -592,13 +692,14 @@ function initInquiryForm() {
     });
   }
 
-  // Klik na bilo koju Bento karticu usluge automatski odabire tu uslugu i spušta na formu za upit
-  document.querySelectorAll('[data-select-topic]').forEach((card) => {
-    card.addEventListener('click', () => {
-      const topic = card.getAttribute('data-select-topic');
+  document.querySelectorAll('[data-select-topic]').forEach((el) => {
+    el.addEventListener('click', () => {
+      const topic = el.getAttribute('data-select-topic');
       if (topic) selectTopicByName(topic);
       if (upitPanel) {
-        upitPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        setTimeout(() => {
+          upitPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 60);
       }
     });
   });
