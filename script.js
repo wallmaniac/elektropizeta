@@ -5,22 +5,16 @@
 
 const PC_VIDEO_PLAYLIST = [
   {
-    src: 'assets/videos/pc-1.mp4',
-    title_hr: 'Poslovne zgrade',
-    title_en: 'Office Buildings',
-    poster: 'assets/images/poster-pc-1.jpg'
+    src: 'assets/videos/pc-3.mp4',
+    title_hr: 'Dekoracija fasada',
+    title_en: 'Facade Lighting',
+    poster: 'assets/images/poster-pc-3.jpg'
   },
   {
     src: 'assets/videos/pc-2.mp4',
     title_hr: 'Poslovna pročelja',
     title_en: 'Commercial Facades',
     poster: 'assets/images/poster-pc-2.jpg'
-  },
-  {
-    src: 'assets/videos/pc-3.mp4',
-    title_hr: 'Dekoracija fasada',
-    title_en: 'Facade Lighting',
-    poster: 'assets/images/poster-pc-3.jpg'
   },
   {
     src: 'assets/videos/pc-4.mp4',
@@ -45,6 +39,12 @@ const PC_VIDEO_PLAYLIST = [
     title_hr: 'Kuće i okućnice',
     title_en: 'Homes & Gardens',
     poster: 'assets/images/poster-pc-7.jpg'
+  },
+  {
+    src: 'assets/videos/pc-1.mp4',
+    title_hr: 'Poslovne zgrade',
+    title_en: 'Office Buildings',
+    poster: 'assets/images/poster-pc-1.jpg'
   }
 ];
 
