@@ -111,22 +111,30 @@ const I18N = {
     'services.eyebrow': 'Naše usluge',
     'services.heading': 'Stručna izvedba za <span class="gold-gradient-text">svaki prostor</span>',
     'services.subtitle': 'Od idejnog koncepta dekorativne rasvjete i aranžmana do vrhunskih elektroinstalacija i solarnih sustava.',
-    'services.cardCta': 'Zatraži ponudu',
+    'services.cardCta': 'Pogledaj slike i videe',
+    'usluge.backHome': 'Povratak na početnu',
+    'usluge.heroTitle': 'Galerija <span class="gold-gradient-text">izvedenih projekata</span>',
+    'usluge.heroSubtitle': 'Odaberite kategoriju usluge i pregledajte odabrane videozapise i fotografije naših radova.',
+    'usluge.quoteBtn': 'Zatražite ponudu',
+    'usluge.videosHeading': 'Video prikaz projekata',
+    'usluge.videoHint': 'Kliknite na video za pokretanje',
+    'usluge.photosHeading': 'Galerija fotografija',
+    'usluge.photoHint': 'Kliknite na sliku za uvećani prikaz',
     's1.tag': 'Eksterijeri & Zgrade',
     's1.title': 'Dekorativna rasvjeta prostora',
-    's1.desc': 'Osvjetljenje poslovnih zgrada, hotela, fasada i reprezentativnih objekata.',
+    's1.desc': 'Osvjetljenje poslovnih zgrada, hotela, fasada, gradova i reprezentativnih objekata.',
     's2.tag': 'Prigodne dekoracije',
     's2.title': 'Blagdanski i svečani ugođaj',
     's2.desc': 'Unikatne svjetlosne kulise, 3D figure i dekoracije za gradove, centre i evente.',
-    's3.tag': 'Cvjetne kugle & Aranžmani',
+    's3.tag': 'All Season & Eventi',
     's3.title': 'Cjelogodišnje dekoracije',
-    's3.desc': 'Viseće cvjetne kugle, zeleni aranžmani i ambijentalno uređenje terasa i interijera.',
+    's3.desc': 'Ambijentalno uređenje terasa, svečanih dvorana, vjenčanja, šatora i interijera kroz cijelu godinu.',
     's4.tag': 'Izvedba & Održavanje',
     's4.title': 'Elektroinstalacije',
-    's4.desc': 'Pouzdano izvođenje, adaptacija i održavanje elektroinstalacija za tvrtke i domove.',
+    's4.desc': 'Pouzdano izvođenje, razvodni ormari, arhitektonska LED rasvjeta i održavanje za tvrtke i domove.',
     's5.tag': 'Energetska rješenja',
     's5.title': 'Solarni sustavi',
-    's5.desc': 'Projektiranje i ugradnja solarnih elektrana za dugoročnu energetsku neovisnost.',
+    's5.desc': 'Projektiranje i ugradnja solarnih elektrana po principu ključ u ruke za energetsku neovisnost.',
     'contact.eyebrow': 'Kontakt',
     'contact.heading': 'Javite se za <span class="gold-gradient-text">ponudu ili savjet</span>',
     'contact.lead': 'Dostupni smo za sve upite, izlazak na teren i izradu neobvezujuće ponude prilagođene vašem objektu.',
@@ -177,19 +185,27 @@ const I18N = {
     'services.eyebrow': 'Our Services',
     'services.heading': 'Expert execution for <span class="gold-gradient-text">every space</span>',
     'services.subtitle': 'From bespoke decorative lighting concepts and floral arrangements to electrical installations and solar power systems.',
-    'services.cardCta': 'Request a quote',
+    'services.cardCta': 'View photos & videos',
+    'usluge.backHome': 'Back to Home',
+    'usluge.heroTitle': 'Gallery of <span class="gold-gradient-text">Completed Projects</span>',
+    'usluge.heroSubtitle': 'Select a service category to explore curated videos and photographs of our work.',
+    'usluge.quoteBtn': 'Request a Quote',
+    'usluge.videosHeading': 'Project Videos',
+    'usluge.videoHint': 'Click a video to play',
+    'usluge.photosHeading': 'Photo Gallery',
+    'usluge.photoHint': 'Click any photo to enlarge',
     's1.tag': 'Exteriors & Buildings',
     's1.title': 'Architectural & Space Lighting',
-    's1.desc': 'Custom lighting for office buildings, hotels, facades, and landmark properties.',
+    's1.desc': 'Custom lighting for office buildings, hotels, facades, cities, and landmark properties.',
     's2.tag': 'Seasonal & Event Decor',
     's2.title': 'Festive & Holiday Ambiance',
     's2.desc': 'Bespoke light displays, 3D sculptures, and festive decorations for cities, malls, and events.',
-    's3.tag': 'Floral Spheres & Arrangements',
+    's3.tag': 'All Season & Events',
     's3.title': 'Year-Round Decorations',
-    's3.desc': 'Suspended floral spheres, botanical arrangements, and ambient styling for terraces and interiors.',
+    's3.desc': 'Ambient lighting and decorations for venues, weddings, terraces, marquees, and interiors all year round.',
     's4.tag': 'Engineering & Maintenance',
     's4.title': 'Electrical Installations',
-    's4.desc': 'Reliable execution, upgrades, and maintenance of electrical installations for businesses and homes.',
+    's4.desc': 'Reliable execution, distribution cabinets, architectural LED lighting, and maintenance for businesses and homes.',
     's5.tag': 'Energy Solutions',
     's5.title': 'Solar Power Systems',
     's5.desc': 'Turnkey design and installation of solar power plants for long-term energy independence.',
@@ -244,6 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initVideoSequentialPlayer();
   initAmbientBokehCanvas();
   initInquiryForm();
+  initUslugeSubpage();
   initCookieAndLegalModal();
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
@@ -944,6 +961,21 @@ function initInquiryForm() {
         selectTopicByName(chip.dataset.topic || '');
       });
     });
+
+    // Ako korisnik dolazi s podstranice Usluge (?usluga=...)
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const uslugaParam = params.get('usluga');
+      const mapParamToTopic = {
+        dekorativna: 'Dekorativna rasvjeta prostora',
+        cjelogodisnje: 'Cjelogodišnje dekoracije',
+        elektroinstalacije: 'Elektroinstalacije',
+        solari: 'Solarni sustavi'
+      };
+      if (uslugaParam && mapParamToTopic[uslugaParam]) {
+        selectTopicByName(mapParamToTopic[uslugaParam]);
+      }
+    } catch (_) {}
   }
 
   document.querySelectorAll('[data-select-topic]').forEach((el) => {
@@ -988,5 +1020,144 @@ function initInquiryForm() {
 
       window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
     });
+  }
+}
+
+/**
+ * Podstranica Usluge (usluge.html):
+ * - Interaktivni video player po kartici (samo 1 video istovremeno radi 100% glatke reprodukcije)
+ * - Lightbox preglednik fotografija u punoj rezoluciji (strelica lijevo/desno, tipkovnica, swipe)
+ * - Automatsko označavanje aktivne kategorije u sticky navigacijskoj traci
+ */
+function initUslugeSubpage() {
+  const videoCards = document.querySelectorAll('[data-video-card]');
+  const photoBtns = document.querySelectorAll('[data-lightbox-src]');
+  const catSections = document.querySelectorAll('[data-category-section]');
+  const catTabs = document.querySelectorAll('[data-cat-tab]');
+
+  // 1. Video kartice
+  if (videoCards.length > 0) {
+    function pauseAllExcept(currentVideo) {
+      videoCards.forEach((card) => {
+        const vid = card.querySelector('video');
+        const playSvg = card.querySelector('.icon-play');
+        const pauseSvg = card.querySelector('.icon-pause');
+        if (vid && vid !== currentVideo) {
+          vid.pause();
+          card.classList.remove('is-playing');
+          if (playSvg) playSvg.style.display = '';
+          if (pauseSvg) pauseSvg.style.display = 'none';
+        }
+      });
+    }
+
+    videoCards.forEach((card) => {
+      const vid = card.querySelector('video');
+      const playSvg = card.querySelector('.icon-play');
+      const pauseSvg = card.querySelector('.icon-pause');
+      if (!vid) return;
+
+      card.addEventListener('click', () => {
+        if (vid.paused) {
+          pauseAllExcept(vid);
+          vid.muted = true;
+          vid.playbackRate = 1.0;
+          vid.play().then(() => {
+            card.classList.add('is-playing');
+            if (playSvg) playSvg.style.display = 'none';
+            if (pauseSvg) pauseSvg.style.display = '';
+          }).catch(() => {});
+        } else {
+          vid.pause();
+          card.classList.remove('is-playing');
+          if (playSvg) playSvg.style.display = '';
+          if (pauseSvg) pauseSvg.style.display = 'none';
+        }
+      });
+    });
+  }
+
+  // 2. Lightbox za fotografije
+  const lightbox = document.getElementById('photo-lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const lightboxCounter = document.getElementById('lightbox-counter');
+  const closeBtn = document.getElementById('lightbox-close');
+  const prevBtn = document.getElementById('lightbox-prev');
+  const nextBtn = document.getElementById('lightbox-next');
+
+  if (lightbox && lightboxImg && photoBtns.length > 0) {
+    let activeGroup = [];
+    let activeIndex = 0;
+
+    function showLightboxImage(idx) {
+      if (!activeGroup.length) return;
+      activeIndex = (idx + activeGroup.length) % activeGroup.length;
+      const item = activeGroup[activeIndex];
+      lightboxImg.src = item.getAttribute('data-lightbox-src') || '';
+      if (lightboxCounter) {
+        lightboxCounter.textContent = `${activeIndex + 1} / ${activeGroup.length}`;
+      }
+    }
+
+    function openLightbox(groupName, index) {
+      activeGroup = Array.from(document.querySelectorAll(`[data-lightbox-group="${groupName}"]`));
+      lightbox.hidden = false;
+      showLightboxImage(index);
+    }
+
+    function closeLightbox() {
+      lightbox.hidden = true;
+      lightboxImg.src = '';
+    }
+
+    photoBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const grp = btn.getAttribute('data-lightbox-group') || '';
+        const idx = parseInt(btn.getAttribute('data-lightbox-index') || '0', 10);
+        openLightbox(grp, idx);
+      });
+    });
+
+    if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+    if (prevBtn) prevBtn.addEventListener('click', () => showLightboxImage(activeIndex - 1));
+    if (nextBtn) nextBtn.addEventListener('click', () => showLightboxImage(activeIndex + 1));
+
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox || e.target.classList.contains('lightbox-stage')) {
+        closeLightbox();
+      }
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (lightbox.hidden) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') showLightboxImage(activeIndex - 1);
+      if (e.key === 'ArrowRight') showLightboxImage(activeIndex + 1);
+    });
+  }
+
+  // 3. Sticky traka kategorija — automatsko praćenje sekcije pri skrolanju
+  if (catSections.length > 0 && catTabs.length > 0) {
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('data-category-section');
+            catTabs.forEach((tab) => {
+              const isMatch = tab.getAttribute('data-cat-tab') === id;
+              tab.classList.toggle('active', isMatch);
+              if (isMatch && tab.parentElement) {
+                const parent = tab.parentElement;
+                const left = tab.offsetLeft - parent.clientWidth / 2 + tab.offsetWidth / 2;
+                parent.scrollTo({ left: Math.max(0, left), behavior: 'smooth' });
+              }
+            });
+          }
+        });
+      },
+      { rootMargin: '-25% 0px -60% 0px', threshold: 0 }
+    );
+
+    catSections.forEach((sec) => obs.observe(sec));
   }
 }

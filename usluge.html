@@ -1,0 +1,1923 @@
+<!DOCTYPE html>
+<html lang="hr" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Naše usluge i galerija radova — Elektro Pižeta</title>
+  <meta name="description" content="Pogledajte galeriju fotografija i videozapisa naših usluga: dekorativna rasvjeta prostora, cjelogodišnje dekoracije, elektroinstalacije i solarni sustavi." />
+  <link rel="icon" type="image/png" href="assets/images/favicon.png" />
+
+  <!-- Google Fonts: Montserrat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet" />
+
+  <script>
+    (function () {
+      try {
+        var savedTheme = localStorage.getItem('ep_theme');
+        if (savedTheme === 'light' || savedTheme === 'dark') {
+          document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+        var savedLang = localStorage.getItem('ep_lang');
+        if (savedLang === 'en' || savedLang === 'hr') {
+          document.documentElement.setAttribute('lang', savedLang);
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="subpage-usluge">
+  <canvas id="ambient-lights-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation Header -->
+  <header class="site-header" id="top">
+    <div class="header-inner">
+      <a href="index.html" class="brand-logo" aria-label="Elektro Pižeta Početna">
+        <img src="assets/images/logo-light.png" alt="Elektro Pižeta" decoding="async" />
+      </a>
+
+      <div class="header-actions">
+        <a href="index.html#upit" class="nav-cta" data-i18n="nav.cta">Pošalji upit</a>
+
+        <button
+          type="button"
+          class="hamburger-btn"
+          id="hamburger-btn"
+          aria-label="Otvori izbornik"
+          aria-expanded="false"
+          aria-controls="nav-drawer"
+        >
+          <span class="hamburger-box">
+            <span class="hamburger-line line-1"></span>
+            <span class="hamburger-line line-2"></span>
+            <span class="hamburger-line line-3"></span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hamburger Izbornik -->
+  <div class="nav-drawer-backdrop" id="nav-drawer-backdrop" hidden></div>
+  <aside class="nav-drawer" id="nav-drawer" aria-label="Glavni izbornik" aria-hidden="true">
+    <div class="nav-drawer-header">
+      <a href="index.html" class="brand-logo" data-close-drawer>
+        <img src="assets/images/logo-light.png" alt="Elektro Pižeta" decoding="async" />
+      </a>
+      <button type="button" class="nav-drawer-close" id="nav-drawer-close" aria-label="Zatvori izbornik">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="nav-drawer-body">
+      <div class="drawer-settings-group">
+        <div class="drawer-setting-row">
+          <span class="drawer-setting-label" data-i18n="drawer.theme">Tema</span>
+          <div class="drawer-segmented" id="drawer-theme-switch" role="group" aria-label="Odabir teme">
+            <button type="button" class="seg-btn" data-mode="dark" data-i18n="drawer.dark">Tamni</button>
+            <button type="button" class="seg-btn" data-mode="light" data-i18n="drawer.light">Svijetli</button>
+          </div>
+        </div>
+
+        <div class="drawer-setting-row">
+          <span class="drawer-setting-label" data-i18n="drawer.lang">Jezik</span>
+          <div class="drawer-segmented" id="drawer-lang-switch" role="group" aria-label="Odabir jezika">
+            <button type="button" class="seg-btn active" data-lang-btn="hr">HR</button>
+            <button type="button" class="seg-btn" data-lang-btn="en">EN</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="drawer-section">
+        <span class="drawer-eyebrow" data-i18n="drawer.sections">Sekcije</span>
+        <nav class="drawer-nav-list" aria-label="Izbornik sekcija">
+          <a href="index.html" class="drawer-nav-item" data-close-drawer>
+            <span data-i18n="nav.home">Početna</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          </a>
+          <a href="#dekorativna" class="drawer-nav-item" data-close-drawer>
+            <span data-i18n="s1.title">Dekorativna rasvjeta prostora</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          </a>
+          <a href="#cjelogodisnje" class="drawer-nav-item" data-close-drawer>
+            <span data-i18n="s3.title">Cjelogodišnje dekoracije</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          </a>
+          <a href="#elektroinstalacije" class="drawer-nav-item" data-close-drawer>
+            <span data-i18n="s4.title">Elektroinstalacije</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          </a>
+          <a href="#solari" class="drawer-nav-item" data-close-drawer>
+            <span data-i18n="s5.title">Solarni sustavi</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          </a>
+          <a href="index.html#kontakt" class="drawer-nav-item" data-close-drawer>
+            <span data-i18n="nav.contact">Kontakt</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          </a>
+          <a href="index.html#upit" class="drawer-nav-item drawer-nav-highlight" data-close-drawer>
+            <span data-i18n="nav.cta">Pošalji upit</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </nav>
+      </div>
+
+      <div class="drawer-section drawer-contact-block">
+        <span class="drawer-eyebrow" data-i18n="nav.contact">Kontakt</span>
+        <a href="tel:+385977191897" class="drawer-contact-link">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+          </svg>
+          <span>+385 97 719 1897</span>
+        </a>
+        <a href="mailto:info@elektro-pizeta.hr" class="drawer-contact-link">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="4" width="20" height="16" rx="3" />
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+          </svg>
+          <span>info@elektro-pizeta.hr</span>
+        </a>
+        <a href="https://maps.google.com/?q=Dankovečka+35,+10040+Zagreb" target="_blank" rel="noopener noreferrer" class="drawer-contact-link">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
+          <span>Dankovečka 35, 10040 Zagreb</span>
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <main>
+    <!-- Uvodni Hero na podstranici Usluge + Brza navigacija po kategorijama -->
+    <section class="usluge-hero-section">
+      <div class="section-container">
+        <a href="index.html#galerija" class="back-home-pill">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          <span data-i18n="usluge.backHome">Povratak na početnu</span>
+        </a>
+
+        <div class="usluge-hero-copy">
+          <span class="eyebrow-gold" data-i18n="services.eyebrow">Naše usluge</span>
+          <h1 class="usluge-hero-title" data-i18n-html="usluge.heroTitle">Galerija <span class="gold-gradient-text">izvedenih projekata</span></h1>
+          <p class="usluge-hero-subtitle" data-i18n="usluge.heroSubtitle">Odaberite kategoriju usluge i pregledajte odabrane videozapise i fotografije naših radova.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sticky traka s 4 kategorije usluga -->
+    <div class="usluge-sticky-nav-wrap" id="usluge-sticky-nav">
+      <div class="section-container">
+        <nav class="usluge-category-tabs" aria-label="Kategorije usluga">
+          <a href="#dekorativna" class="usluge-cat-tab active" data-cat-tab="dekorativna">
+            <span class="tab-num">01</span>
+            <span data-i18n="s1.title">Dekorativna rasvjeta prostora</span>
+          </a>
+          <a href="#cjelogodisnje" class="usluge-cat-tab" data-cat-tab="cjelogodisnje">
+            <span class="tab-num">02</span>
+            <span data-i18n="s3.title">Cjelogodišnje dekoracije</span>
+          </a>
+          <a href="#elektroinstalacije" class="usluge-cat-tab" data-cat-tab="elektroinstalacije">
+            <span class="tab-num">03</span>
+            <span data-i18n="s4.title">Elektroinstalacije</span>
+          </a>
+          <a href="#solari" class="usluge-cat-tab" data-cat-tab="solari">
+            <span class="tab-num">04</span>
+            <span data-i18n="s5.title">Solarni sustavi</span>
+          </a>
+        </nav>
+      </div>
+    </div>
+
+    
+    <!-- KATEGORIJA 01: Dekorativna rasvjeta prostora -->
+    <section class="service-category-section" id="dekorativna" data-category-section="dekorativna">
+      <div class="section-container">
+        <div class="service-cat-header">
+          <div class="service-cat-title-wrap">
+            <div class="service-cat-eyebrow-row">
+              <span class="service-cat-num">01</span>
+              <span class="eyebrow-gold" data-i18n="s1.tag">Eksterijeri & Zgrade</span>
+            </div>
+            <h2 class="section-heading" data-i18n="s1.title">Dekorativna rasvjeta prostora</h2>
+            <p class="service-cat-desc" data-i18n="s1.desc">Osvjetljenje poslovnih zgrada, hotela, fasada, gradskih trgova, obiteljskih vila i reprezentativnih objekata.</p>
+          </div>
+          <div class="service-cat-actions">
+            <a href="index.html?usluga=dekorativna#upit" class="btn-primary service-quote-btn">
+              <span data-i18n="usluge.quoteBtn">Zatražite ponudu</span>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Video sekcija (5 videa) -->
+        <div class="service-media-block">
+          <div class="service-media-subhead">
+            <h3 class="service-media-subtitle">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+              <span data-i18n="usluge.videosHeading">Video prikaz projekata</span>
+              <span class="media-count-badge">5</span>
+            </h3>
+            <span class="service-media-hint" data-i18n="usluge.videoHint">Kliknite na video za pokretanje</span>
+          </div>
+          <div class="service-videos-grid">
+            
+            <div class="service-video-card vid-landscape" data-video-card>
+              <video
+                class="service-video-el"
+                src="assets/usluge/dekorativna/vid-1.mp4"
+                poster="assets/usluge/dekorativna/vid-1-poster.jpg"
+                playsinline
+                webkit-playsinline
+                muted
+                loop
+                preload="none"
+              ></video>
+              <button type="button" class="service-video-overlay" aria-label="Pokreni ili pauziraj video">
+                <span class="service-video-play-badge">
+                  <svg class="icon-play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                  <svg class="icon-pause" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+                </span>
+                <span class="service-video-Tag">Video 01</span>
+              </button>
+            </div>
+            <div class="service-video-card vid-landscape" data-video-card>
+              <video
+                class="service-video-el"
+                src="assets/usluge/dekorativna/vid-2.mp4"
+                poster="assets/usluge/dekorativna/vid-2-poster.jpg"
+                playsinline
+                webkit-playsinline
+                muted
+                loop
+                preload="none"
+              ></video>
+              <button type="button" class="service-video-overlay" aria-label="Pokreni ili pauziraj video">
+                <span class="service-video-play-badge">
+                  <svg class="icon-play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                  <svg class="icon-pause" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+                </span>
+                <span class="service-video-Tag">Video 02</span>
+              </button>
+            </div>
+            <div class="service-video-card vid-landscape" data-video-card>
+              <video
+                class="service-video-el"
+                src="assets/usluge/dekorativna/vid-3.mp4"
+                poster="assets/usluge/dekorativna/vid-3-poster.jpg"
+                playsinline
+                webkit-playsinline
+                muted
+                loop
+                preload="none"
+              ></video>
+              <button type="button" class="service-video-overlay" aria-label="Pokreni ili pauziraj video">
+                <span class="service-video-play-badge">
+                  <svg class="icon-play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                  <svg class="icon-pause" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+                </span>
+                <span class="service-video-Tag">Video 03</span>
+              </button>
+            </div>
+            <div class="service-video-card vid-landscape" data-video-card>
+              <video
+                class="service-video-el"
+                src="assets/usluge/dekorativna/vid-4.mp4"
+                poster="assets/usluge/dekorativna/vid-4-poster.jpg"
+                playsinline
+                webkit-playsinline
+                muted
+                loop
+                preload="none"
+              ></video>
+              <button type="button" class="service-video-overlay" aria-label="Pokreni ili pauziraj video">
+                <span class="service-video-play-badge">
+                  <svg class="icon-play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                  <svg class="icon-pause" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+                </span>
+                <span class="service-video-Tag">Video 04</span>
+              </button>
+            </div>
+            <div class="service-video-card vid-portrait" data-video-card>
+              <video
+                class="service-video-el"
+                src="assets/usluge/dekorativna/vid-5.mp4"
+                poster="assets/usluge/dekorativna/vid-5-poster.jpg"
+                playsinline
+                webkit-playsinline
+                muted
+                loop
+                preload="none"
+              ></video>
+              <button type="button" class="service-video-overlay" aria-label="Pokreni ili pauziraj video">
+                <span class="service-video-play-badge">
+                  <svg class="icon-play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                  <svg class="icon-pause" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+                </span>
+                <span class="service-video-Tag">Video 05</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Foto galerija (18 slika) -->
+        <div class="service-media-block">
+          <div class="service-media-subhead">
+            <h3 class="service-media-subtitle">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <span data-i18n="usluge.photosHeading">Galerija fotografija</span>
+              <span class="media-count-badge">18</span>
+            </h3>
+            <span class="service-media-hint" data-i18n="usluge.photoHint">Kliknite na sliku za uvećani prikaz</span>
+          </div>
+          <div class="service-photos-grid">
+            
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/dekorativna/img-1.jpg"
+              data-lightbox-group="dekorativna"
+              data-lightbox-index="0"
+              aria-label="Dekorativna rasvjeta prostora — Fotografija 1"
+            >
+              <img src="assets/usluge/dekorativna/img-1.jpg" alt="Dekorativna rasvjeta prostora — projekt 1" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/dekorativna/img-2.jpg"
+              data-lightbox-group="dekorativna"
+              data-lightbox-index="1"
+              aria-label="Dekorativna rasvjeta prostora — Fotografija 2"
+            >
+              <img src="assets/usluge/dekorativna/img-2.jpg" alt="Dekorativna rasvjeta prostora — projekt 2" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-portrait"
+              data-lightbox-src="assets/usluge/dekorativna/img-3.jpg"
+              data-lightbox-group="dekorativna"
+              data-lightbox-index="2"
+              aria-label="Dekorativna rasvjeta prostora — Fotografija 3"
+            >
+              <img src="assets/usluge/dekorativna/img-3.jpg" alt="Dekorativna rasvjeta prostora — projekt 3" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/dekorativna/img-4.jpg"
+              data-lightbox-group="dekorativna"
+              data-lightbox-index="3"
+              aria-label="Dekorativna rasvjeta prostora — Fotografija 4"
+            >
+              <img src="assets/usluge/dekorativna/img-4.jpg" alt="Dekorativna rasvjeta prostora — projekt 4" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-portrait"
+              data-lightbox-src="assets/usluge/dekorativna/img-5.jpg"
+              data-lightbox-group="dekorativna"
+              data-lightbox-index="4"
+              aria-label="Dekorativna rasvjeta prostora — Fotografija 5"
+            >
+              <img src="assets/usluge/dekorativna/img-5.jpg" alt="Dekorativna rasvjeta prostora — projekt 5" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/dekorativna/img-6.jpg"
+              data-lightbox-group="dekorativna"
+              data-lightbox-index="5"
+              aria-label="Dekorativna rasvjeta prostora — Fotografija 6"
+            >
+              <img src="assets/usluge/dekorativna/img-6.jpg" alt="Dekorativna rasvjeta prostora — projekt 6" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-portrait"
+              data-lightbox-src="assets/usluge/dekorativna/img-7.jpg"
+              data-lightbox-group="dekorativna"
+              data-lightbox-index="6"
+              aria-label="Dekorativna rasvjeta prostora — Fotografija 7"
+            >
+              <img src="assets/usluge/dekorativna/img-7.jpg" alt="Dekorativna rasvjeta prostora — projekt 7" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/dekorativna/img-8.jpg"
+              data-lightbox-group="dekorativna"
+              data-lightbox-index="7"
+              aria-label="Dekorativna rasvjeta prostora — Fotografija 8"
+            >
+              <img src="assets/usluge/dekorativna/img-8.jpg" alt="Dekorativna rasvjeta prostora — projekt 8" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-portrait"
+              data-lightbox-src="assets/usluge/dekorativna/img-9.jpg"
+              data-lightbox-group="dekorativna"
+              data-lightbox-index="8"
+              aria-label="Dekorativna rasvjeta prostora — Fotografija 9"
+            >
+              <img src="assets/usluge/dekorativna/img-9.jpg" alt="Dekorativna rasvjeta prostora — projekt 9" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-portrait"
+              data-lightbox-src="assets/usluge/dekorativna/img-10.jpg"
+              data-lightbox-group="dekorativna"
+              data-lightbox-index="9"
+              aria-label="Dekorativna rasvjeta prostora — Fotografija 10"
+            >
+              <img src="assets/usluge/dekorativna/img-10.jpg" alt="Dekorativna rasvjeta prostora — projekt 10" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-portrait"
+              data-lightbox-src="assets/usluge/dekorativna/img-11.jpg"
+              data-lightbox-group="dekorativna"
+              data-lightbox-index="10"
+              aria-label="Dekorativna rasvjeta prostora — Fotografija 11"
+            >
+              <img src="assets/usluge/dekorativna/img-11.jpg" alt="Dekorativna rasvjeta prostora — projekt 11" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/dekorativna/img-12.jpg"
+              data-lightbox-group="dekorativna"
+              data-lightbox-index="11"
+              aria-label="Dekorativna rasvjeta prostora — Fotografija 12"
+            >
+              <img src="assets/usluge/dekorativna/img-12.jpg" alt="Dekorativna rasvjeta prostora — projekt 12" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-portrait"
+              data-lightbox-src="assets/usluge/dekorativna/img-13.jpg"
+              data-lightbox-group="dekorativna"
+              data-lightbox-index="12"
+              aria-label="Dekorativna rasvjeta prostora — Fotografija 13"
+            >
+              <img src="assets/usluge/dekorativna/img-13.jpg" alt="Dekorativna rasvjeta prostora — projekt 13" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-portrait"
+              data-lightbox-src="assets/usluge/dekorativna/img-14.jpg"
+              data-lightbox-group="dekorativna"
+              data-lightbox-index="13"
+              aria-label="Dekorativna rasvjeta prostora — Fotografija 14"
+            >
+              <img src="assets/usluge/dekorativna/img-14.jpg" alt="Dekorativna rasvjeta prostora — projekt 14" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-portrait"
+              data-lightbox-src="assets/usluge/dekorativna/img-15.jpg"
+              data-lightbox-group="dekorativna"
+              data-lightbox-index="14"
+              aria-label="Dekorativna rasvjeta prostora — Fotografija 15"
+            >
+              <img src="assets/usluge/dekorativna/img-15.jpg" alt="Dekorativna rasvjeta prostora — projekt 15" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-portrait"
+              data-lightbox-src="assets/usluge/dekorativna/img-16.jpg"
+              data-lightbox-group="dekorativna"
+              data-lightbox-index="15"
+              aria-label="Dekorativna rasvjeta prostora — Fotografija 16"
+            >
+              <img src="assets/usluge/dekorativna/img-16.jpg" alt="Dekorativna rasvjeta prostora — projekt 16" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/dekorativna/img-17.jpg"
+              data-lightbox-group="dekorativna"
+              data-lightbox-index="16"
+              aria-label="Dekorativna rasvjeta prostora — Fotografija 17"
+            >
+              <img src="assets/usluge/dekorativna/img-17.jpg" alt="Dekorativna rasvjeta prostora — projekt 17" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/dekorativna/img-18.jpg"
+              data-lightbox-group="dekorativna"
+              data-lightbox-index="17"
+              aria-label="Dekorativna rasvjeta prostora — Fotografija 18"
+            >
+              <img src="assets/usluge/dekorativna/img-18.jpg" alt="Dekorativna rasvjeta prostora — projekt 18" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="glow-divider" aria-hidden="true">
+      <span class="glow-node"></span>
+      <span class="glow-node large"></span>
+      <span class="glow-node"></span>
+    </div>
+    <!-- KATEGORIJA 02: Cjelogodišnje dekoracije -->
+    <section class="service-category-section" id="cjelogodisnje" data-category-section="cjelogodisnje">
+      <div class="section-container">
+        <div class="service-cat-header">
+          <div class="service-cat-title-wrap">
+            <div class="service-cat-eyebrow-row">
+              <span class="service-cat-num">02</span>
+              <span class="eyebrow-gold" data-i18n="s3.tag">All Season & Eventi</span>
+            </div>
+            <h2 class="section-heading" data-i18n="s3.title">Cjelogodišnje dekoracije</h2>
+            <p class="service-cat-desc" data-i18n="s3.desc">Ambijentalna rasvjeta i dekoracije za svečane dvorane, vjenčanja, terase, šatore, evente i interijere kroz cijelu godinu.</p>
+          </div>
+          <div class="service-cat-actions">
+            <a href="index.html?usluga=cjelogodisnje#upit" class="btn-primary service-quote-btn">
+              <span data-i18n="usluge.quoteBtn">Zatražite ponudu</span>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Video sekcija (4 videa) -->
+        <div class="service-media-block">
+          <div class="service-media-subhead">
+            <h3 class="service-media-subtitle">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+              <span data-i18n="usluge.videosHeading">Video prikaz projekata</span>
+              <span class="media-count-badge">4</span>
+            </h3>
+            <span class="service-media-hint" data-i18n="usluge.videoHint">Kliknite na video za pokretanje</span>
+          </div>
+          <div class="service-videos-grid">
+            
+            <div class="service-video-card vid-landscape" data-video-card>
+              <video
+                class="service-video-el"
+                src="assets/usluge/cjelogodisnje/vid-1.mp4"
+                poster="assets/usluge/cjelogodisnje/vid-1-poster.jpg"
+                playsinline
+                webkit-playsinline
+                muted
+                loop
+                preload="none"
+              ></video>
+              <button type="button" class="service-video-overlay" aria-label="Pokreni ili pauziraj video">
+                <span class="service-video-play-badge">
+                  <svg class="icon-play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                  <svg class="icon-pause" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+                </span>
+                <span class="service-video-Tag">Video 01</span>
+              </button>
+            </div>
+            <div class="service-video-card vid-portrait" data-video-card>
+              <video
+                class="service-video-el"
+                src="assets/usluge/cjelogodisnje/vid-2.mp4"
+                poster="assets/usluge/cjelogodisnje/vid-2-poster.jpg"
+                playsinline
+                webkit-playsinline
+                muted
+                loop
+                preload="none"
+              ></video>
+              <button type="button" class="service-video-overlay" aria-label="Pokreni ili pauziraj video">
+                <span class="service-video-play-badge">
+                  <svg class="icon-play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                  <svg class="icon-pause" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+                </span>
+                <span class="service-video-Tag">Video 02</span>
+              </button>
+            </div>
+            <div class="service-video-card vid-portrait" data-video-card>
+              <video
+                class="service-video-el"
+                src="assets/usluge/cjelogodisnje/vid-3.mp4"
+                poster="assets/usluge/cjelogodisnje/vid-3-poster.jpg"
+                playsinline
+                webkit-playsinline
+                muted
+                loop
+                preload="none"
+              ></video>
+              <button type="button" class="service-video-overlay" aria-label="Pokreni ili pauziraj video">
+                <span class="service-video-play-badge">
+                  <svg class="icon-play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                  <svg class="icon-pause" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+                </span>
+                <span class="service-video-Tag">Video 03</span>
+              </button>
+            </div>
+            <div class="service-video-card vid-portrait" data-video-card>
+              <video
+                class="service-video-el"
+                src="assets/usluge/cjelogodisnje/vid-4.mp4"
+                poster="assets/usluge/cjelogodisnje/vid-4-poster.jpg"
+                playsinline
+                webkit-playsinline
+                muted
+                loop
+                preload="none"
+              ></video>
+              <button type="button" class="service-video-overlay" aria-label="Pokreni ili pauziraj video">
+                <span class="service-video-play-badge">
+                  <svg class="icon-play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                  <svg class="icon-pause" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+                </span>
+                <span class="service-video-Tag">Video 04</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Foto galerija (18 slika) -->
+        <div class="service-media-block">
+          <div class="service-media-subhead">
+            <h3 class="service-media-subtitle">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <span data-i18n="usluge.photosHeading">Galerija fotografija</span>
+              <span class="media-count-badge">18</span>
+            </h3>
+            <span class="service-media-hint" data-i18n="usluge.photoHint">Kliknite na sliku za uvećani prikaz</span>
+          </div>
+          <div class="service-photos-grid">
+            
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/cjelogodisnje/img-1.jpg"
+              data-lightbox-group="cjelogodisnje"
+              data-lightbox-index="0"
+              aria-label="Cjelogodišnje dekoracije — Fotografija 1"
+            >
+              <img src="assets/usluge/cjelogodisnje/img-1.jpg" alt="Cjelogodišnje dekoracije — projekt 1" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/cjelogodisnje/img-2.jpg"
+              data-lightbox-group="cjelogodisnje"
+              data-lightbox-index="1"
+              aria-label="Cjelogodišnje dekoracije — Fotografija 2"
+            >
+              <img src="assets/usluge/cjelogodisnje/img-2.jpg" alt="Cjelogodišnje dekoracije — projekt 2" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-portrait"
+              data-lightbox-src="assets/usluge/cjelogodisnje/img-3.jpg"
+              data-lightbox-group="cjelogodisnje"
+              data-lightbox-index="2"
+              aria-label="Cjelogodišnje dekoracije — Fotografija 3"
+            >
+              <img src="assets/usluge/cjelogodisnje/img-3.jpg" alt="Cjelogodišnje dekoracije — projekt 3" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/cjelogodisnje/img-4.jpg"
+              data-lightbox-group="cjelogodisnje"
+              data-lightbox-index="3"
+              aria-label="Cjelogodišnje dekoracije — Fotografija 4"
+            >
+              <img src="assets/usluge/cjelogodisnje/img-4.jpg" alt="Cjelogodišnje dekoracije — projekt 4" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/cjelogodisnje/img-5.jpg"
+              data-lightbox-group="cjelogodisnje"
+              data-lightbox-index="4"
+              aria-label="Cjelogodišnje dekoracije — Fotografija 5"
+            >
+              <img src="assets/usluge/cjelogodisnje/img-5.jpg" alt="Cjelogodišnje dekoracije — projekt 5" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/cjelogodisnje/img-6.jpg"
+              data-lightbox-group="cjelogodisnje"
+              data-lightbox-index="5"
+              aria-label="Cjelogodišnje dekoracije — Fotografija 6"
+            >
+              <img src="assets/usluge/cjelogodisnje/img-6.jpg" alt="Cjelogodišnje dekoracije — projekt 6" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-portrait"
+              data-lightbox-src="assets/usluge/cjelogodisnje/img-7.jpg"
+              data-lightbox-group="cjelogodisnje"
+              data-lightbox-index="6"
+              aria-label="Cjelogodišnje dekoracije — Fotografija 7"
+            >
+              <img src="assets/usluge/cjelogodisnje/img-7.jpg" alt="Cjelogodišnje dekoracije — projekt 7" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/cjelogodisnje/img-8.jpg"
+              data-lightbox-group="cjelogodisnje"
+              data-lightbox-index="7"
+              aria-label="Cjelogodišnje dekoracije — Fotografija 8"
+            >
+              <img src="assets/usluge/cjelogodisnje/img-8.jpg" alt="Cjelogodišnje dekoracije — projekt 8" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/cjelogodisnje/img-9.jpg"
+              data-lightbox-group="cjelogodisnje"
+              data-lightbox-index="8"
+              aria-label="Cjelogodišnje dekoracije — Fotografija 9"
+            >
+              <img src="assets/usluge/cjelogodisnje/img-9.jpg" alt="Cjelogodišnje dekoracije — projekt 9" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/cjelogodisnje/img-10.jpg"
+              data-lightbox-group="cjelogodisnje"
+              data-lightbox-index="9"
+              aria-label="Cjelogodišnje dekoracije — Fotografija 10"
+            >
+              <img src="assets/usluge/cjelogodisnje/img-10.jpg" alt="Cjelogodišnje dekoracije — projekt 10" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-portrait"
+              data-lightbox-src="assets/usluge/cjelogodisnje/img-11.jpg"
+              data-lightbox-group="cjelogodisnje"
+              data-lightbox-index="10"
+              aria-label="Cjelogodišnje dekoracije — Fotografija 11"
+            >
+              <img src="assets/usluge/cjelogodisnje/img-11.jpg" alt="Cjelogodišnje dekoracije — projekt 11" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/cjelogodisnje/img-12.jpg"
+              data-lightbox-group="cjelogodisnje"
+              data-lightbox-index="11"
+              aria-label="Cjelogodišnje dekoracije — Fotografija 12"
+            >
+              <img src="assets/usluge/cjelogodisnje/img-12.jpg" alt="Cjelogodišnje dekoracije — projekt 12" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-portrait"
+              data-lightbox-src="assets/usluge/cjelogodisnje/img-13.jpg"
+              data-lightbox-group="cjelogodisnje"
+              data-lightbox-index="12"
+              aria-label="Cjelogodišnje dekoracije — Fotografija 13"
+            >
+              <img src="assets/usluge/cjelogodisnje/img-13.jpg" alt="Cjelogodišnje dekoracije — projekt 13" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/cjelogodisnje/img-14.jpg"
+              data-lightbox-group="cjelogodisnje"
+              data-lightbox-index="13"
+              aria-label="Cjelogodišnje dekoracije — Fotografija 14"
+            >
+              <img src="assets/usluge/cjelogodisnje/img-14.jpg" alt="Cjelogodišnje dekoracije — projekt 14" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-portrait"
+              data-lightbox-src="assets/usluge/cjelogodisnje/img-15.jpg"
+              data-lightbox-group="cjelogodisnje"
+              data-lightbox-index="14"
+              aria-label="Cjelogodišnje dekoracije — Fotografija 15"
+            >
+              <img src="assets/usluge/cjelogodisnje/img-15.jpg" alt="Cjelogodišnje dekoracije — projekt 15" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-portrait"
+              data-lightbox-src="assets/usluge/cjelogodisnje/img-16.jpg"
+              data-lightbox-group="cjelogodisnje"
+              data-lightbox-index="15"
+              aria-label="Cjelogodišnje dekoracije — Fotografija 16"
+            >
+              <img src="assets/usluge/cjelogodisnje/img-16.jpg" alt="Cjelogodišnje dekoracije — projekt 16" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-portrait"
+              data-lightbox-src="assets/usluge/cjelogodisnje/img-17.jpg"
+              data-lightbox-group="cjelogodisnje"
+              data-lightbox-index="16"
+              aria-label="Cjelogodišnje dekoracije — Fotografija 17"
+            >
+              <img src="assets/usluge/cjelogodisnje/img-17.jpg" alt="Cjelogodišnje dekoracije — projekt 17" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/cjelogodisnje/img-18.jpg"
+              data-lightbox-group="cjelogodisnje"
+              data-lightbox-index="17"
+              aria-label="Cjelogodišnje dekoracije — Fotografija 18"
+            >
+              <img src="assets/usluge/cjelogodisnje/img-18.jpg" alt="Cjelogodišnje dekoracije — projekt 18" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="glow-divider" aria-hidden="true">
+      <span class="glow-node"></span>
+      <span class="glow-node large"></span>
+      <span class="glow-node"></span>
+    </div>
+    <!-- KATEGORIJA 03: Elektroinstalacije -->
+    <section class="service-category-section" id="elektroinstalacije" data-category-section="elektroinstalacije">
+      <div class="section-container">
+        <div class="service-cat-header">
+          <div class="service-cat-title-wrap">
+            <div class="service-cat-eyebrow-row">
+              <span class="service-cat-num">03</span>
+              <span class="eyebrow-gold" data-i18n="s4.tag">Izvedba & Održavanje</span>
+            </div>
+            <h2 class="section-heading" data-i18n="s4.title">Elektroinstalacije</h2>
+            <p class="service-cat-desc" data-i18n="s4.desc">Stručno izvođenje elektroinstalacija, razvodnih ormara, pametnih sustava i dizajnerske LED rasvjete za poslovne i stambene objekte.</p>
+          </div>
+          <div class="service-cat-actions">
+            <a href="index.html?usluga=elektroinstalacije#upit" class="btn-primary service-quote-btn">
+              <span data-i18n="usluge.quoteBtn">Zatražite ponudu</span>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Video sekcija (5 videa) -->
+        <div class="service-media-block">
+          <div class="service-media-subhead">
+            <h3 class="service-media-subtitle">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+              <span data-i18n="usluge.videosHeading">Video prikaz projekata</span>
+              <span class="media-count-badge">5</span>
+            </h3>
+            <span class="service-media-hint" data-i18n="usluge.videoHint">Kliknite na video za pokretanje</span>
+          </div>
+          <div class="service-videos-grid">
+            
+            <div class="service-video-card vid-portrait" data-video-card>
+              <video
+                class="service-video-el"
+                src="assets/usluge/elektroinstalacije/vid-1.mp4"
+                poster="assets/usluge/elektroinstalacije/vid-1-poster.jpg"
+                playsinline
+                webkit-playsinline
+                muted
+                loop
+                preload="none"
+              ></video>
+              <button type="button" class="service-video-overlay" aria-label="Pokreni ili pauziraj video">
+                <span class="service-video-play-badge">
+                  <svg class="icon-play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                  <svg class="icon-pause" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+                </span>
+                <span class="service-video-Tag">Video 01</span>
+              </button>
+            </div>
+            <div class="service-video-card vid-portrait" data-video-card>
+              <video
+                class="service-video-el"
+                src="assets/usluge/elektroinstalacije/vid-2.mp4"
+                poster="assets/usluge/elektroinstalacije/vid-2-poster.jpg"
+                playsinline
+                webkit-playsinline
+                muted
+                loop
+                preload="none"
+              ></video>
+              <button type="button" class="service-video-overlay" aria-label="Pokreni ili pauziraj video">
+                <span class="service-video-play-badge">
+                  <svg class="icon-play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                  <svg class="icon-pause" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+                </span>
+                <span class="service-video-Tag">Video 02</span>
+              </button>
+            </div>
+            <div class="service-video-card vid-portrait" data-video-card>
+              <video
+                class="service-video-el"
+                src="assets/usluge/elektroinstalacije/vid-3.mp4"
+                poster="assets/usluge/elektroinstalacije/vid-3-poster.jpg"
+                playsinline
+                webkit-playsinline
+                muted
+                loop
+                preload="none"
+              ></video>
+              <button type="button" class="service-video-overlay" aria-label="Pokreni ili pauziraj video">
+                <span class="service-video-play-badge">
+                  <svg class="icon-play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                  <svg class="icon-pause" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+                </span>
+                <span class="service-video-Tag">Video 03</span>
+              </button>
+            </div>
+            <div class="service-video-card vid-portrait" data-video-card>
+              <video
+                class="service-video-el"
+                src="assets/usluge/elektroinstalacije/vid-4.mp4"
+                poster="assets/usluge/elektroinstalacije/vid-4-poster.jpg"
+                playsinline
+                webkit-playsinline
+                muted
+                loop
+                preload="none"
+              ></video>
+              <button type="button" class="service-video-overlay" aria-label="Pokreni ili pauziraj video">
+                <span class="service-video-play-badge">
+                  <svg class="icon-play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                  <svg class="icon-pause" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+                </span>
+                <span class="service-video-Tag">Video 04</span>
+              </button>
+            </div>
+            <div class="service-video-card vid-portrait" data-video-card>
+              <video
+                class="service-video-el"
+                src="assets/usluge/elektroinstalacije/vid-5.mp4"
+                poster="assets/usluge/elektroinstalacije/vid-5-poster.jpg"
+                playsinline
+                webkit-playsinline
+                muted
+                loop
+                preload="none"
+              ></video>
+              <button type="button" class="service-video-overlay" aria-label="Pokreni ili pauziraj video">
+                <span class="service-video-play-badge">
+                  <svg class="icon-play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                  <svg class="icon-pause" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+                </span>
+                <span class="service-video-Tag">Video 05</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Foto galerija (18 slika) -->
+        <div class="service-media-block">
+          <div class="service-media-subhead">
+            <h3 class="service-media-subtitle">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <span data-i18n="usluge.photosHeading">Galerija fotografija</span>
+              <span class="media-count-badge">18</span>
+            </h3>
+            <span class="service-media-hint" data-i18n="usluge.photoHint">Kliknite na sliku za uvećani prikaz</span>
+          </div>
+          <div class="service-photos-grid">
+            
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/elektroinstalacije/img-1.jpg"
+              data-lightbox-group="elektroinstalacije"
+              data-lightbox-index="0"
+              aria-label="Elektroinstalacije — Fotografija 1"
+            >
+              <img src="assets/usluge/elektroinstalacije/img-1.jpg" alt="Elektroinstalacije — projekt 1" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/elektroinstalacije/img-2.jpg"
+              data-lightbox-group="elektroinstalacije"
+              data-lightbox-index="1"
+              aria-label="Elektroinstalacije — Fotografija 2"
+            >
+              <img src="assets/usluge/elektroinstalacije/img-2.jpg" alt="Elektroinstalacije — projekt 2" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/elektroinstalacije/img-3.jpg"
+              data-lightbox-group="elektroinstalacije"
+              data-lightbox-index="2"
+              aria-label="Elektroinstalacije — Fotografija 3"
+            >
+              <img src="assets/usluge/elektroinstalacije/img-3.jpg" alt="Elektroinstalacije — projekt 3" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/elektroinstalacije/img-4.jpg"
+              data-lightbox-group="elektroinstalacije"
+              data-lightbox-index="3"
+              aria-label="Elektroinstalacije — Fotografija 4"
+            >
+              <img src="assets/usluge/elektroinstalacije/img-4.jpg" alt="Elektroinstalacije — projekt 4" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/elektroinstalacije/img-5.jpg"
+              data-lightbox-group="elektroinstalacije"
+              data-lightbox-index="4"
+              aria-label="Elektroinstalacije — Fotografija 5"
+            >
+              <img src="assets/usluge/elektroinstalacije/img-5.jpg" alt="Elektroinstalacije — projekt 5" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/elektroinstalacije/img-6.jpg"
+              data-lightbox-group="elektroinstalacije"
+              data-lightbox-index="5"
+              aria-label="Elektroinstalacije — Fotografija 6"
+            >
+              <img src="assets/usluge/elektroinstalacije/img-6.jpg" alt="Elektroinstalacije — projekt 6" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/elektroinstalacije/img-7.jpg"
+              data-lightbox-group="elektroinstalacije"
+              data-lightbox-index="6"
+              aria-label="Elektroinstalacije — Fotografija 7"
+            >
+              <img src="assets/usluge/elektroinstalacije/img-7.jpg" alt="Elektroinstalacije — projekt 7" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/elektroinstalacije/img-8.jpg"
+              data-lightbox-group="elektroinstalacije"
+              data-lightbox-index="7"
+              aria-label="Elektroinstalacije — Fotografija 8"
+            >
+              <img src="assets/usluge/elektroinstalacije/img-8.jpg" alt="Elektroinstalacije — projekt 8" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/elektroinstalacije/img-9.jpg"
+              data-lightbox-group="elektroinstalacije"
+              data-lightbox-index="8"
+              aria-label="Elektroinstalacije — Fotografija 9"
+            >
+              <img src="assets/usluge/elektroinstalacije/img-9.jpg" alt="Elektroinstalacije — projekt 9" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/elektroinstalacije/img-10.jpg"
+              data-lightbox-group="elektroinstalacije"
+              data-lightbox-index="9"
+              aria-label="Elektroinstalacije — Fotografija 10"
+            >
+              <img src="assets/usluge/elektroinstalacije/img-10.jpg" alt="Elektroinstalacije — projekt 10" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-portrait"
+              data-lightbox-src="assets/usluge/elektroinstalacije/img-11.jpg"
+              data-lightbox-group="elektroinstalacije"
+              data-lightbox-index="10"
+              aria-label="Elektroinstalacije — Fotografija 11"
+            >
+              <img src="assets/usluge/elektroinstalacije/img-11.jpg" alt="Elektroinstalacije — projekt 11" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/elektroinstalacije/img-12.jpg"
+              data-lightbox-group="elektroinstalacije"
+              data-lightbox-index="11"
+              aria-label="Elektroinstalacije — Fotografija 12"
+            >
+              <img src="assets/usluge/elektroinstalacije/img-12.jpg" alt="Elektroinstalacije — projekt 12" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/elektroinstalacije/img-13.jpg"
+              data-lightbox-group="elektroinstalacije"
+              data-lightbox-index="12"
+              aria-label="Elektroinstalacije — Fotografija 13"
+            >
+              <img src="assets/usluge/elektroinstalacije/img-13.jpg" alt="Elektroinstalacije — projekt 13" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-portrait"
+              data-lightbox-src="assets/usluge/elektroinstalacije/img-14.jpg"
+              data-lightbox-group="elektroinstalacije"
+              data-lightbox-index="13"
+              aria-label="Elektroinstalacije — Fotografija 14"
+            >
+              <img src="assets/usluge/elektroinstalacije/img-14.jpg" alt="Elektroinstalacije — projekt 14" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/elektroinstalacije/img-15.jpg"
+              data-lightbox-group="elektroinstalacije"
+              data-lightbox-index="14"
+              aria-label="Elektroinstalacije — Fotografija 15"
+            >
+              <img src="assets/usluge/elektroinstalacije/img-15.jpg" alt="Elektroinstalacije — projekt 15" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/elektroinstalacije/img-16.jpg"
+              data-lightbox-group="elektroinstalacije"
+              data-lightbox-index="15"
+              aria-label="Elektroinstalacije — Fotografija 16"
+            >
+              <img src="assets/usluge/elektroinstalacije/img-16.jpg" alt="Elektroinstalacije — projekt 16" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-portrait"
+              data-lightbox-src="assets/usluge/elektroinstalacije/img-17.jpg"
+              data-lightbox-group="elektroinstalacije"
+              data-lightbox-index="16"
+              aria-label="Elektroinstalacije — Fotografija 17"
+            >
+              <img src="assets/usluge/elektroinstalacije/img-17.jpg" alt="Elektroinstalacije — projekt 17" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/elektroinstalacije/img-18.jpg"
+              data-lightbox-group="elektroinstalacije"
+              data-lightbox-index="17"
+              aria-label="Elektroinstalacije — Fotografija 18"
+            >
+              <img src="assets/usluge/elektroinstalacije/img-18.jpg" alt="Elektroinstalacije — projekt 18" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="glow-divider" aria-hidden="true">
+      <span class="glow-node"></span>
+      <span class="glow-node large"></span>
+      <span class="glow-node"></span>
+    </div>
+    <!-- KATEGORIJA 04: Solarni sustavi -->
+    <section class="service-category-section" id="solari" data-category-section="solari">
+      <div class="section-container">
+        <div class="service-cat-header">
+          <div class="service-cat-title-wrap">
+            <div class="service-cat-eyebrow-row">
+              <span class="service-cat-num">04</span>
+              <span class="eyebrow-gold" data-i18n="s5.tag">Energetska rješenja</span>
+            </div>
+            <h2 class="section-heading" data-i18n="s5.title">Solarni sustavi</h2>
+            <p class="service-cat-desc" data-i18n="s5.desc">Projektiranje, montaža i puštanje u pogon solarnih elektrana za tvrtke, hale i obiteljske kuće po principu ključ u ruke.</p>
+          </div>
+          <div class="service-cat-actions">
+            <a href="index.html?usluga=solari#upit" class="btn-primary service-quote-btn">
+              <span data-i18n="usluge.quoteBtn">Zatražite ponudu</span>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Video sekcija (5 videa) -->
+        <div class="service-media-block">
+          <div class="service-media-subhead">
+            <h3 class="service-media-subtitle">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+              <span data-i18n="usluge.videosHeading">Video prikaz projekata</span>
+              <span class="media-count-badge">5</span>
+            </h3>
+            <span class="service-media-hint" data-i18n="usluge.videoHint">Kliknite na video za pokretanje</span>
+          </div>
+          <div class="service-videos-grid">
+            
+            <div class="service-video-card vid-landscape" data-video-card>
+              <video
+                class="service-video-el"
+                src="assets/usluge/solari/vid-1.mp4"
+                poster="assets/usluge/solari/vid-1-poster.jpg"
+                playsinline
+                webkit-playsinline
+                muted
+                loop
+                preload="none"
+              ></video>
+              <button type="button" class="service-video-overlay" aria-label="Pokreni ili pauziraj video">
+                <span class="service-video-play-badge">
+                  <svg class="icon-play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                  <svg class="icon-pause" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+                </span>
+                <span class="service-video-Tag">Video 01</span>
+              </button>
+            </div>
+            <div class="service-video-card vid-portrait" data-video-card>
+              <video
+                class="service-video-el"
+                src="assets/usluge/solari/vid-2.mp4"
+                poster="assets/usluge/solari/vid-2-poster.jpg"
+                playsinline
+                webkit-playsinline
+                muted
+                loop
+                preload="none"
+              ></video>
+              <button type="button" class="service-video-overlay" aria-label="Pokreni ili pauziraj video">
+                <span class="service-video-play-badge">
+                  <svg class="icon-play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                  <svg class="icon-pause" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+                </span>
+                <span class="service-video-Tag">Video 02</span>
+              </button>
+            </div>
+            <div class="service-video-card vid-portrait" data-video-card>
+              <video
+                class="service-video-el"
+                src="assets/usluge/solari/vid-3.mp4"
+                poster="assets/usluge/solari/vid-3-poster.jpg"
+                playsinline
+                webkit-playsinline
+                muted
+                loop
+                preload="none"
+              ></video>
+              <button type="button" class="service-video-overlay" aria-label="Pokreni ili pauziraj video">
+                <span class="service-video-play-badge">
+                  <svg class="icon-play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                  <svg class="icon-pause" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+                </span>
+                <span class="service-video-Tag">Video 03</span>
+              </button>
+            </div>
+            <div class="service-video-card vid-portrait" data-video-card>
+              <video
+                class="service-video-el"
+                src="assets/usluge/solari/vid-4.mp4"
+                poster="assets/usluge/solari/vid-4-poster.jpg"
+                playsinline
+                webkit-playsinline
+                muted
+                loop
+                preload="none"
+              ></video>
+              <button type="button" class="service-video-overlay" aria-label="Pokreni ili pauziraj video">
+                <span class="service-video-play-badge">
+                  <svg class="icon-play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                  <svg class="icon-pause" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+                </span>
+                <span class="service-video-Tag">Video 04</span>
+              </button>
+            </div>
+            <div class="service-video-card vid-portrait" data-video-card>
+              <video
+                class="service-video-el"
+                src="assets/usluge/solari/vid-5.mp4"
+                poster="assets/usluge/solari/vid-5-poster.jpg"
+                playsinline
+                webkit-playsinline
+                muted
+                loop
+                preload="none"
+              ></video>
+              <button type="button" class="service-video-overlay" aria-label="Pokreni ili pauziraj video">
+                <span class="service-video-play-badge">
+                  <svg class="icon-play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                  <svg class="icon-pause" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+                </span>
+                <span class="service-video-Tag">Video 05</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Foto galerija (12 slika) -->
+        <div class="service-media-block">
+          <div class="service-media-subhead">
+            <h3 class="service-media-subtitle">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <span data-i18n="usluge.photosHeading">Galerija fotografija</span>
+              <span class="media-count-badge">12</span>
+            </h3>
+            <span class="service-media-hint" data-i18n="usluge.photoHint">Kliknite na sliku za uvećani prikaz</span>
+          </div>
+          <div class="service-photos-grid">
+            
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/solari/img-1.jpg"
+              data-lightbox-group="solari"
+              data-lightbox-index="0"
+              aria-label="Solarni sustavi — Fotografija 1"
+            >
+              <img src="assets/usluge/solari/img-1.jpg" alt="Solarni sustavi — projekt 1" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/solari/img-2.jpg"
+              data-lightbox-group="solari"
+              data-lightbox-index="1"
+              aria-label="Solarni sustavi — Fotografija 2"
+            >
+              <img src="assets/usluge/solari/img-2.jpg" alt="Solarni sustavi — projekt 2" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/solari/img-3.jpg"
+              data-lightbox-group="solari"
+              data-lightbox-index="2"
+              aria-label="Solarni sustavi — Fotografija 3"
+            >
+              <img src="assets/usluge/solari/img-3.jpg" alt="Solarni sustavi — projekt 3" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/solari/img-4.jpg"
+              data-lightbox-group="solari"
+              data-lightbox-index="3"
+              aria-label="Solarni sustavi — Fotografija 4"
+            >
+              <img src="assets/usluge/solari/img-4.jpg" alt="Solarni sustavi — projekt 4" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-portrait"
+              data-lightbox-src="assets/usluge/solari/img-5.jpg"
+              data-lightbox-group="solari"
+              data-lightbox-index="4"
+              aria-label="Solarni sustavi — Fotografija 5"
+            >
+              <img src="assets/usluge/solari/img-5.jpg" alt="Solarni sustavi — projekt 5" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-portrait"
+              data-lightbox-src="assets/usluge/solari/img-6.jpg"
+              data-lightbox-group="solari"
+              data-lightbox-index="5"
+              aria-label="Solarni sustavi — Fotografija 6"
+            >
+              <img src="assets/usluge/solari/img-6.jpg" alt="Solarni sustavi — projekt 6" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/solari/img-7.jpg"
+              data-lightbox-group="solari"
+              data-lightbox-index="6"
+              aria-label="Solarni sustavi — Fotografija 7"
+            >
+              <img src="assets/usluge/solari/img-7.jpg" alt="Solarni sustavi — projekt 7" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/solari/img-8.jpg"
+              data-lightbox-group="solari"
+              data-lightbox-index="7"
+              aria-label="Solarni sustavi — Fotografija 8"
+            >
+              <img src="assets/usluge/solari/img-8.jpg" alt="Solarni sustavi — projekt 8" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/solari/img-9.jpg"
+              data-lightbox-group="solari"
+              data-lightbox-index="8"
+              aria-label="Solarni sustavi — Fotografija 9"
+            >
+              <img src="assets/usluge/solari/img-9.jpg" alt="Solarni sustavi — projekt 9" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-landscape"
+              data-lightbox-src="assets/usluge/solari/img-10.jpg"
+              data-lightbox-group="solari"
+              data-lightbox-index="9"
+              aria-label="Solarni sustavi — Fotografija 10"
+            >
+              <img src="assets/usluge/solari/img-10.jpg" alt="Solarni sustavi — projekt 10" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-portrait"
+              data-lightbox-src="assets/usluge/solari/img-11.jpg"
+              data-lightbox-group="solari"
+              data-lightbox-index="10"
+              aria-label="Solarni sustavi — Fotografija 11"
+            >
+              <img src="assets/usluge/solari/img-11.jpg" alt="Solarni sustavi — projekt 11" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="service-photo-card photo-portrait"
+              data-lightbox-src="assets/usluge/solari/img-12.jpg"
+              data-lightbox-group="solari"
+              data-lightbox-index="11"
+              aria-label="Solarni sustavi — Fotografija 12"
+            >
+              <img src="assets/usluge/solari/img-12.jpg" alt="Solarni sustavi — projekt 12" loading="lazy" decoding="async" />
+              <span class="service-photo-zoom" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="glow-divider" aria-hidden="true">
+      <span class="glow-node"></span>
+      <span class="glow-node large"></span>
+      <span class="glow-node"></span>
+    </div>
+
+    <!-- Završni CTA banner -->
+    <section class="usluge-bottom-cta-section">
+      <div class="section-container">
+        <div class="usluge-bottom-cta-card">
+          <div>
+            <span class="eyebrow-gold" data-i18n="form.eyebrow">Brzi upit</span>
+            <h2 class="section-heading" data-i18n-html="contact.heading">Javite se za <span class="gold-gradient-text">ponudu ili savjet</span></h2>
+            <p class="contact-lead" data-i18n="contact.lead">Dostupni smo za sve upite, izlazak na teren i izradu neobvezujuće ponude prilagođene vašem objektu.</p>
+          </div>
+          <div class="usluge-bottom-cta-buttons">
+            <a href="index.html#upit" class="btn-primary">
+              <span data-i18n="nav.cta">Pošalji upit</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <a href="tel:+385977191897" class="btn-glass">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+              </svg>
+              <span>+385 97 719 1897</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Lightbox Modal za pregled fotografija u punoj veličini -->
+  <div id="photo-lightbox" class="photo-lightbox" role="dialog" aria-modal="true" aria-label="Pregled fotografije" hidden>
+    <button type="button" class="lightbox-close-btn" id="lightbox-close" aria-label="Zatvori prikaz">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+    <button type="button" class="lightbox-nav-btn lightbox-prev" id="lightbox-prev" aria-label="Prethodna slika">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="lightbox-stage">
+      <img id="lightbox-img" src="" alt="Uvećani prikaz projekta" />
+      <div class="lightbox-counter" id="lightbox-counter">1 / 18</div>
+    </div>
+    <button type="button" class="lightbox-nav-btn lightbox-next" id="lightbox-next" aria-label="Sljedeća slika">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+  </div>
+
+  <!-- Podnožje -->
+  <footer class="site-footer">
+    <div class="section-container footer-symmetric">
+      <a href="index.html" class="footer-brand-link" aria-label="Povratak na početnu">
+        <img src="assets/images/logo-light.png" alt="Elektro Pižeta" class="footer-logo" decoding="async" />
+      </a>
+
+      <div class="footer-company-details">
+        <span>Elektro Pižeta d.o.o.</span>
+        <span class="footer-dot">&bull;</span>
+        <span>Dankovečka 35, 10040 Zagreb</span>
+        <span class="footer-dot">&bull;</span>
+        <span>OIB: 27140284479</span>
+      </div>
+
+      <nav class="footer-quick-links" aria-label="Brze poveznice u podnožju">
+        <a href="index.html" data-i18n="nav.home">Početna</a>
+        <a href="#top" data-i18n="nav.services">Usluge</a>
+        <a href="index.html#upit" data-i18n="nav.cta">Pošalji upit</a>
+        <a href="tel:+385977191897">+385 97 719 1897</a>
+        <a href="mailto:info@elektro-pizeta.hr">info@elektro-pizeta.hr</a>
+      </nav>
+
+      <div class="footer-divider" aria-hidden="true"></div>
+
+      <div class="footer-bottom-bar">
+        <p class="footer-copy">&copy; <span id="year">2026</span> Elektro Pižeta d.o.o. <span data-i18n="footer.rights">Sva prava pridržana.</span></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

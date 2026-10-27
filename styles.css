@@ -844,8 +844,16 @@ body {
   gap: 20px;
 }
 
+.bento-gallery.bento-gallery-four {
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: 340px;
+}
+
 .bento-card {
   position: relative;
+  display: block;
+  text-decoration: none;
+  color: inherit;
   border-radius: var(--radius-lg);
   overflow: hidden;
   border: 1px solid var(--border-subtle);
@@ -1907,5 +1915,576 @@ body {
   }
   .topic-chip:first-child {
     grid-column: span 1;
+  }
+}
+
+/* ==========================================================================
+   PODSTRANICA USLUGE (usluge.html) — KATEGORIJE, VIDEI I FOTO GALERIJA
+   ========================================================================== */
+
+.usluge-hero-section {
+  padding: calc(max(12px, env(safe-area-inset-top)) + 92px) 0 28px;
+  position: relative;
+  z-index: 2;
+}
+
+.back-home-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 15px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 18px;
+  transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.back-home-pill:hover {
+  color: var(--gold-accent-text);
+  border-color: var(--gold-primary);
+  transform: translateX(-2px);
+}
+
+.usluge-hero-copy {
+  max-width: 760px;
+}
+
+.usluge-hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.4vw, 3.3rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--text-main);
+  margin: 6px 0 10px;
+}
+
+.usluge-hero-subtitle {
+  font-size: 1rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+/* Sticky navigacija kategorija */
+.usluge-sticky-nav-wrap {
+  position: sticky;
+  top: calc(max(12px, env(safe-area-inset-top)) + 68px);
+  z-index: 40;
+  padding: 8px 0 14px;
+}
+
+.usluge-category-tabs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--header-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-card);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.usluge-category-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.usluge-cat-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.usluge-cat-tab .tab-num {
+  font-size: 0.72rem;
+  font-weight: 700;
+  opacity: 0.7;
+  color: var(--gold-accent-text);
+}
+
+.usluge-cat-tab:hover {
+  color: var(--text-main);
+  background: rgba(245, 193, 99, 0.1);
+}
+
+.usluge-cat-tab.active {
+  background: linear-gradient(135deg, #ffefc2, #f5c163);
+  color: #090a0d;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(245, 193, 99, 0.28);
+}
+
+.usluge-cat-tab.active .tab-num {
+  color: #090a0d;
+  opacity: 0.85;
+}
+
+/* Sekcija pojedine kategorije usluge */
+.service-category-section {
+  padding: 46px 0 54px;
+  position: relative;
+  z-index: 2;
+  scroll-margin-top: 145px;
+}
+
+.service-cat-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.service-cat-title-wrap {
+  max-width: 740px;
+}
+
+.service-cat-eyebrow-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.service-cat-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(245, 193, 99, 0.14);
+  border: 1px solid var(--border-subtle);
+  color: var(--gold-accent-text);
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.service-cat-desc {
+  font-size: 0.96rem;
+  color: var(--text-muted);
+  margin-top: 8px;
+  line-height: 1.55;
+}
+
+.service-cat-actions {
+  flex-shrink: 0;
+}
+
+.service-media-block {
+  margin-top: 28px;
+}
+
+.service-media-subhead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.service-media-subtitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.service-media-subtitle svg {
+  color: var(--gold-accent-text);
+}
+
+.media-count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: var(--radius-pill);
+  background: rgba(245, 193, 99, 0.15);
+  border: 1px solid var(--border-subtle);
+  color: var(--gold-accent-text);
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.service-media-hint {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+/* Video mreža (3-5 videa po kategoriji) */
+.service-videos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.service-video-card {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #080a0f;
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-card);
+  aspect-ratio: 9 / 14;
+  cursor: pointer;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.service-video-card.vid-landscape {
+  aspect-ratio: 9 / 14;
+}
+
+.service-video-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--gold-primary);
+}
+
+.service-video-el {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.service-video-overlay {
+  position: absolute;
+  inset: 0;
+  border: none;
+  background: linear-gradient(180deg, rgba(5, 6, 9, 0.05) 55%, rgba(5, 6, 9, 0.72) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+
+.service-video-card.is-playing .service-video-overlay {
+  background: linear-gradient(180deg, transparent 75%, rgba(5, 6, 9, 0.45) 100%);
+}
+
+.service-video-play-badge {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: rgba(10, 12, 18, 0.76);
+  border: 1.5px solid rgba(245, 193, 99, 0.75);
+  color: #f5c163;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  transition: transform 0.2s ease, opacity 0.25s ease, background 0.2s ease;
+}
+
+.service-video-card:hover .service-video-play-badge {
+  transform: scale(1.08);
+  background: rgba(245, 193, 99, 0.95);
+  color: #090a0d;
+}
+
+.service-video-card.is-playing .service-video-play-badge {
+  opacity: 0;
+  transform: scale(0.85);
+}
+
+.service-video-card.is-playing:hover .service-video-play-badge {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.service-video-Tag {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  font-size: 0.73rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #f7f5f0;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: rgba(8, 10, 14, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+/* Foto galerija (12-18 slika po kategoriji) */
+.service-photos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  grid-auto-rows: 220px;
+  gap: 14px;
+}
+
+.service-photo-card {
+  position: relative;
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  overflow: hidden;
+  padding: 0;
+  background: #090b10;
+  cursor: pointer;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.service-photo-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--gold-primary);
+}
+
+.service-photo-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.45s ease;
+}
+
+.service-photo-card:hover img {
+  transform: scale(1.05);
+}
+
+.service-photo-zoom {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(8, 10, 15, 0.72);
+  border: 1px solid rgba(245, 193, 99, 0.45);
+  color: #f5c163;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.service-photo-card:hover .service-photo-zoom {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Bottom CTA na podstranici Usluge */
+.usluge-bottom-cta-section {
+  padding: 24px 0 64px;
+  position: relative;
+  z-index: 2;
+}
+
+.usluge-bottom-cta-card {
+  padding: 36px 40px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+}
+
+.usluge-bottom-cta-buttons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+/* Lightbox Modal za slike */
+.photo-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  background: rgba(4, 5, 8, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.photo-lightbox[hidden] {
+  display: none !important;
+}
+
+.lightbox-stage {
+  max-width: 90vw;
+  max-height: 86vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.lightbox-stage img {
+  max-width: 90vw;
+  max-height: 80vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 14px;
+  border: 1px solid rgba(245, 193, 99, 0.3);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.7);
+}
+
+.lightbox-counter {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #f5c163;
+  padding: 5px 14px;
+  border-radius: var(--radius-pill);
+  background: rgba(14, 17, 24, 0.85);
+  border: 1px solid rgba(245, 193, 99, 0.25);
+}
+
+.lightbox-close-btn,
+.lightbox-nav-btn {
+  position: fixed;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid rgba(245, 193, 99, 0.38);
+  background: rgba(12, 15, 22, 0.85);
+  color: #f7f5f0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 125;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.lightbox-close-btn:hover,
+.lightbox-nav-btn:hover {
+  background: #f5c163;
+  color: #090a0d;
+}
+
+.lightbox-close-btn {
+  top: max(20px, env(safe-area-inset-top));
+  right: 20px;
+}
+
+.lightbox-prev {
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lightbox-next {
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+@media (max-width: 768px) {
+  .bento-gallery.bento-gallery-four {
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+  }
+  .usluge-hero-section {
+    padding: calc(max(10px, env(safe-area-inset-top)) + 68px) 0 18px;
+  }
+  .usluge-sticky-nav-wrap {
+    top: calc(max(10px, env(safe-area-inset-top)) + 54px);
+    padding: 4px 0 10px;
+  }
+  .usluge-category-tabs {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    padding: 6px;
+    gap: 6px;
+  }
+  .usluge-cat-tab {
+    padding: 8px 13px;
+    font-size: 0.78rem;
+  }
+  .service-category-section {
+    padding: 28px 0 36px;
+    scroll-margin-top: 120px;
+  }
+  .service-cat-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+  }
+  .service-cat-actions,
+  .service-quote-btn {
+    width: 100%;
+  }
+  .service-media-subhead {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .service-videos-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .service-photos-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 160px;
+    gap: 10px;
+  }
+  .service-photo-zoom {
+    opacity: 1;
+    width: 28px;
+    height: 28px;
+    right: 7px;
+    bottom: 7px;
+  }
+  .usluge-bottom-cta-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px 20px;
+    gap: 18px;
+  }
+  .usluge-bottom-cta-buttons {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .lightbox-prev {
+    left: 10px;
+  }
+  .lightbox-next {
+    right: 10px;
+  }
+  .lightbox-close-btn,
+  .lightbox-nav-btn {
+    width: 40px;
+    height: 40px;
   }
 }
