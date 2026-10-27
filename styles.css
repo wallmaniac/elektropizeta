@@ -168,11 +168,16 @@ body {
 }
 
 .brand-logo img {
-  height: 26px;
+  height: 38px;
   width: auto;
   max-width: 100%;
   object-fit: contain;
   display: block;
+}
+
+[data-theme="light"] .brand-logo img,
+[data-theme="light"] .footer-logo {
+  filter: drop-shadow(0 1px 2px rgba(15, 18, 24, 0.42)) contrast(1.06);
 }
 
 .header-actions {
@@ -306,7 +311,7 @@ body {
 }
 
 .nav-drawer-header .brand-logo img {
-  height: 22px;
+  height: 34px;
 }
 
 .nav-drawer-close {
@@ -1326,7 +1331,7 @@ body {
 }
 
 .footer-logo {
-  height: 28px;
+  height: 48px;
   width: auto;
   display: block;
 }
@@ -1631,7 +1636,7 @@ body {
     gap: 8px;
   }
   .brand-logo img {
-    height: 15px;
+    height: 28px;
     max-width: 112px;
     width: auto;
   }
@@ -1868,7 +1873,7 @@ body {
 
 @media (max-width: 360px) {
   .brand-logo img {
-    height: 13px;
+    height: 24px;
     max-width: 96px;
   }
   .nav-cta {
