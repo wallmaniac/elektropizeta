@@ -165,13 +165,14 @@ body {
   align-items: center;
   min-width: 0;
   flex-shrink: 1;
+  margin: -6px 0;
 }
 
 .brand-logo img {
-  height: 38px;
-  width: auto;
+  height: 48px;
+  width: 190px;
   max-width: 100%;
-  object-fit: contain;
+  object-fit: fill;
   display: block;
 }
 
@@ -310,8 +311,14 @@ body {
   border-bottom: 1px solid var(--border-subtle);
 }
 
+.nav-drawer-header .brand-logo {
+  margin: -4px 0;
+}
+
 .nav-drawer-header .brand-logo img {
-  height: 34px;
+  height: 42px;
+  width: 165px;
+  object-fit: fill;
 }
 
 .nav-drawer-close {
@@ -1331,8 +1338,10 @@ body {
 }
 
 .footer-logo {
-  height: 48px;
-  width: auto;
+  height: 54px;
+  width: 210px;
+  max-width: 100%;
+  object-fit: fill;
   display: block;
 }
 
@@ -1635,10 +1644,14 @@ body {
     padding: 7px 10px 7px 14px;
     gap: 8px;
   }
+  .brand-logo {
+    margin: -4px 0;
+  }
   .brand-logo img {
-    height: 28px;
-    max-width: 112px;
-    width: auto;
+    height: 36px;
+    width: 135px;
+    max-width: 140px;
+    object-fit: fill;
   }
   .header-actions {
     gap: 8px;
@@ -1873,8 +1886,10 @@ body {
 
 @media (max-width: 360px) {
   .brand-logo img {
-    height: 24px;
-    max-width: 96px;
+    height: 32px;
+    width: 115px;
+    max-width: 115px;
+    object-fit: fill;
   }
   .nav-cta {
     padding: 6px 10px;
