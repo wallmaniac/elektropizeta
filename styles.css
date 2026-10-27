@@ -1657,8 +1657,8 @@ body {
   }
   .brand-logo img {
     height: 36px;
-    width: 135px;
-    max-width: 140px;
+    width: clamp(114px, 35vw, 145px);
+    max-width: calc(100vw - 202px);
     object-fit: fill;
   }
   .header-actions {
@@ -1846,9 +1846,6 @@ body {
     font-size: 0.77rem;
     border-radius: 12px;
   }
-  .topic-chip:first-child {
-    grid-column: span 2;
-  }
   .form-row-two {
     grid-template-columns: 1fr;
     gap: 0;
@@ -1979,6 +1976,7 @@ body {
 }
 
 .usluge-category-tabs {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -1991,6 +1989,7 @@ body {
   box-shadow: var(--shadow-card);
   overflow-x: auto;
   scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 .usluge-category-tabs::-webkit-scrollbar {
@@ -2136,10 +2135,10 @@ body {
   color: var(--text-dim);
 }
 
-/* Video mreža (3-5 videa po kategoriji) */
+/* Video mreža (4-5 videa po kategoriji u jednom simetričnom redu na PC-u) */
 .service-videos-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
   gap: 16px;
 }
 
@@ -2232,12 +2231,12 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.14);
 }
 
-/* Foto galerija (12-18 slika po kategoriji) */
+/* Foto galerija (12 ili 18 slika po kategoriji — 3 stupca na PC-u i tabletu = 100% popunjeni redovi bez praznina) */
 .service-photos-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-  grid-auto-rows: 220px;
-  gap: 14px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 265px;
+  gap: 16px;
 }
 
 .service-photo-card {
@@ -2406,55 +2405,148 @@ body {
   transform: translateY(-50%);
 }
 
+/* Prilagodba za tablete (769px – 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .site-header {
+    padding: 0 18px;
+  }
+  .header-inner {
+    padding: 9px 14px 9px 18px;
+  }
+  .brand-logo img {
+    height: 42px;
+    width: 165px;
+  }
+  .bento-gallery.bento-gallery-four {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 290px;
+    gap: 16px;
+  }
+  .usluge-hero-section {
+    padding: calc(max(12px, env(safe-area-inset-top)) + 84px) 0 22px;
+  }
+  .usluge-sticky-nav-wrap {
+    top: calc(max(12px, env(safe-area-inset-top)) + 64px);
+  }
+  .usluge-cat-tab {
+    padding: 9px 15px;
+    font-size: 0.82rem;
+  }
+  .service-cat-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .service-videos-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  .service-videos-grid > .service-video-card:last-child:nth-child(odd) {
+    grid-column: span 2;
+    aspect-ratio: 16 / 9;
+  }
+  .service-photos-grid {
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 200px;
+    gap: 12px;
+  }
+  .service-photo-zoom {
+    opacity: 1;
+  }
+  .usluge-bottom-cta-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 28px 26px;
+  }
+}
+
 @media (max-width: 768px) {
   .bento-gallery.bento-gallery-four {
     grid-template-columns: 1fr;
     grid-auto-rows: auto;
   }
   .usluge-hero-section {
-    padding: calc(max(10px, env(safe-area-inset-top)) + 68px) 0 18px;
+    padding: calc(max(10px, env(safe-area-inset-top)) + 68px) 0 14px;
+  }
+  .back-home-pill {
+    font-size: 0.78rem;
+    padding: 6px 13px;
+    margin-bottom: 12px;
+  }
+  .usluge-hero-title {
+    font-size: clamp(1.65rem, 6.8vw, 2.2rem);
+    margin: 4px 0 8px;
+  }
+  .usluge-hero-subtitle {
+    font-size: 0.88rem;
   }
   .usluge-sticky-nav-wrap {
-    top: calc(max(10px, env(safe-area-inset-top)) + 54px);
-    padding: 4px 0 10px;
+    top: calc(max(10px, env(safe-area-inset-top)) + 52px);
+    padding: 4px 0 8px;
   }
   .usluge-category-tabs {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    padding: 6px;
+    padding: 5px;
     gap: 6px;
+    border-radius: 16px;
   }
   .usluge-cat-tab {
     padding: 8px 13px;
     font-size: 0.78rem;
+    border-radius: 12px;
   }
   .service-category-section {
-    padding: 28px 0 36px;
-    scroll-margin-top: 120px;
+    padding: 24px 0 32px;
+    scroll-margin-top: 118px;
   }
   .service-cat-header {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
     gap: 14px;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
     padding-bottom: 16px;
+  }
+  .service-cat-desc {
+    font-size: 0.87rem;
   }
   .service-cat-actions,
   .service-quote-btn {
     width: 100%;
+    justify-content: center;
+  }
+  .service-media-block {
+    margin-top: 22px;
   }
   .service-media-subhead {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .service-media-subtitle {
+    font-size: 0.98rem;
+  }
+  .service-media-hint {
+    font-size: 0.74rem;
   }
   .service-videos-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
   }
+  .service-videos-grid > .service-video-card:last-child:nth-child(odd) {
+    grid-column: span 2;
+    aspect-ratio: 16 / 10;
+  }
+  .service-video-play-badge {
+    width: 44px;
+    height: 44px;
+  }
   .service-photos-grid {
     grid-template-columns: repeat(2, 1fr);
-    grid-auto-rows: 160px;
+    grid-auto-rows: 165px;
     gap: 10px;
   }
   .service-photo-zoom {
@@ -2464,11 +2556,14 @@ body {
     right: 7px;
     bottom: 7px;
   }
+  .usluge-bottom-cta-section {
+    padding: 16px 0 44px;
+  }
   .usluge-bottom-cta-card {
     flex-direction: column;
-    align-items: flex-start;
-    padding: 24px 20px;
-    gap: 18px;
+    align-items: stretch;
+    padding: 22px 18px;
+    gap: 16px;
   }
   .usluge-bottom-cta-buttons {
     width: 100%;
@@ -2476,15 +2571,38 @@ body {
     grid-template-columns: 1fr 1fr;
     gap: 8px;
   }
+  .photo-lightbox {
+    padding: 14px;
+  }
+  .lightbox-stage {
+    max-width: 96vw;
+    max-height: 82vh;
+  }
+  .lightbox-stage img {
+    max-width: 96vw;
+    max-height: 72vh;
+  }
   .lightbox-prev {
-    left: 10px;
+    left: 14px;
+    top: auto;
+    bottom: max(22px, env(safe-area-inset-bottom));
+    transform: none;
   }
   .lightbox-next {
-    right: 10px;
+    right: 14px;
+    top: auto;
+    bottom: max(22px, env(safe-area-inset-bottom));
+    transform: none;
+  }
+  .lightbox-counter {
+    position: fixed;
+    bottom: calc(max(22px, env(safe-area-inset-bottom)) + 6px);
+    left: 50%;
+    transform: translateX(-50%);
   }
   .lightbox-close-btn,
   .lightbox-nav-btn {
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
   }
 }

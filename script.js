@@ -1134,24 +1134,56 @@ function initUslugeSubpage() {
       if (e.key === 'ArrowLeft') showLightboxImage(activeIndex - 1);
       if (e.key === 'ArrowRight') showLightboxImage(activeIndex + 1);
     });
+
+    // Touch swipe lijevo/desno na mobitelima i tabletima
+    let touchStartX = 0;
+    let touchStartY = 0;
+    lightbox.addEventListener('touchstart', (e) => {
+      if (e.touches && e.touches.length === 1) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      }
+    }, { passive: true });
+
+    lightbox.addEventListener('touchend', (e) => {
+      if (!e.changedTouches || e.changedTouches.length === 0) return;
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      const dy = e.changedTouches[0].clientY - touchStartY;
+      if (Math.abs(dx) > 42 && Math.abs(dx) > Math.abs(dy)) {
+        if (dx < 0) {
+          showLightboxImage(activeIndex + 1);
+        } else {
+          showLightboxImage(activeIndex - 1);
+        }
+      }
+    }, { passive: true });
   }
 
-  // 3. Sticky traka kategorija — automatsko praćenje sekcije pri skrolanju
+  // 3. Sticky traka kategorija — automatsko praćenje sekcije pri skrolanju + početni hash
   if (catSections.length > 0 && catTabs.length > 0) {
+    function activateCatTab(id, smoothScroll = true) {
+      catTabs.forEach((tab) => {
+        const isMatch = tab.getAttribute('data-cat-tab') === id;
+        tab.classList.toggle('active', isMatch);
+        if (isMatch && tab.parentElement) {
+          const parent = tab.parentElement;
+          const left = tab.offsetLeft - parent.clientWidth / 2 + tab.offsetWidth / 2;
+          parent.scrollTo({ left: Math.max(0, left), behavior: smoothScroll ? 'smooth' : 'auto' });
+        }
+      });
+    }
+
+    const initialHash = (window.location.hash || '').replace('#', '');
+    if (initialHash) {
+      setTimeout(() => activateCatTab(initialHash, false), 60);
+    }
+
     const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const id = entry.target.getAttribute('data-category-section');
-            catTabs.forEach((tab) => {
-              const isMatch = tab.getAttribute('data-cat-tab') === id;
-              tab.classList.toggle('active', isMatch);
-              if (isMatch && tab.parentElement) {
-                const parent = tab.parentElement;
-                const left = tab.offsetLeft - parent.clientWidth / 2 + tab.offsetWidth / 2;
-                parent.scrollTo({ left: Math.max(0, left), behavior: 'smooth' });
-              }
-            });
+            if (id) activateCatTab(id, true);
           }
         });
       },
