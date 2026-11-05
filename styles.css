@@ -170,7 +170,7 @@ body {
 
 .brand-logo img {
   height: 48px;
-  width: 142.5px;
+  width: 121.13px;
   max-width: 100%;
   object-fit: fill;
   display: block;
@@ -317,7 +317,7 @@ body {
 
 .nav-drawer-header .brand-logo img {
   height: 42px;
-  width: 123.75px;
+  width: 105.19px;
   object-fit: fill;
 }
 
@@ -1347,7 +1347,7 @@ body {
 
 .footer-logo {
   height: 54px;
-  width: 157.5px;
+  width: 133.88px;
   max-width: 100%;
   object-fit: fill;
   display: block;
@@ -1657,7 +1657,7 @@ body {
   }
   .brand-logo img {
     height: 36px;
-    width: clamp(85.5px, 26.25vw, 108.75px);
+    width: clamp(72.68px, 22.31vw, 92.44px);
     max-width: calc(100vw - 202px);
     object-fit: fill;
   }
@@ -1892,8 +1892,8 @@ body {
 @media (max-width: 360px) {
   .brand-logo img {
     height: 32px;
-    width: 86.25px;
-    max-width: 86.25px;
+    width: 73.31px;
+    max-width: 73.31px;
     object-fit: fill;
   }
   .nav-cta {
@@ -2415,7 +2415,7 @@ body {
   }
   .brand-logo img {
     height: 42px;
-    width: 123.75px;
+    width: 105.19px;
   }
   .bento-gallery.bento-gallery-four {
     grid-template-columns: repeat(2, 1fr);
