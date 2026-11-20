@@ -11,6 +11,12 @@ const PC_VIDEO_PLAYLIST = [
     poster: 'assets/images/poster-pc-3.jpg'
   },
   {
+    src: 'assets/videos/pc-8.mp4',
+    title_hr: 'Svjetlosne kupole',
+    title_en: 'Light Domes',
+    poster: 'assets/images/poster-pc-8.jpg'
+  },
+  {
     src: 'assets/videos/pc-2.mp4',
     title_hr: 'Poslovna pročelja',
     title_en: 'Commercial Facades',
@@ -55,6 +61,12 @@ const MOBILE_VIDEO_PLAYLIST = [
     title_hr: 'Zlatna pročelja',
     title_en: 'Golden Facades',
     poster: 'assets/images/poster-mob-6.jpg'
+  },
+  {
+    src: 'assets/videos/mob-8.mp4',
+    title_hr: 'Svjetlosne kupole',
+    title_en: 'Light Domes',
+    poster: 'assets/images/poster-mob-8.jpg'
   },
   {
     src: 'assets/videos/mob-2.mp4',
@@ -485,7 +497,7 @@ function initVideoSequentialPlayer() {
       btn.dataset.index = idx;
       btn.innerHTML = `
         <div class="video-pill-header">
-          <span class="video-pill-index">0${idx + 1}</span>
+          <span class="video-pill-index">${String(idx + 1).padStart(2, '0')}</span>
           <span class="video-pill-title">${getItemTitle(item)}</span>
         </div>
         <div class="video-pill-progress" id="pill-progress-${idx}"></div>
